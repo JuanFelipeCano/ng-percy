@@ -1,0 +1,90 @@
+:host.dialog-screen {
+  --backdrop-bg-color: rgba(0, 0, 0, 0.5);
+  --content-bg-color: #fff;
+  --drag-handle-bg-color: #ccc;
+}
+
+.dialog-screen {
+  background-color: transparent;
+
+  &_backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: var(--backdrop-bg-color);
+  }
+
+  &_container {
+    position: fixed;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 2rem;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+
+    &.bottom-sheet {
+      position: fixed;
+      top: initial;
+      margin: initial;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      max-width: 100dvh;
+      padding-top: 30px;
+      max-height: 95vh;
+      transition: transform 0.3s ease;
+
+      .dialog-screen_content {
+        border-radius: 1rem 1rem 0 0;
+        padding: 0 1rem 1rem;
+      }
+    }
+  }
+
+  &_content {
+    overflow-y: visible;
+    position: relative;
+    height: auto;
+    padding: 1.5rem;
+    border-radius: .5rem;
+    max-width: 100%;
+    max-height: 90%;
+    background-color: var(--content-bg-color);
+  }
+
+  &_content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 2.5rem;
+  }
+
+  &_close-btn {
+    position: absolute;
+    background: none;
+    border: none;
+    cursor: pointer;
+    top: .5rem;
+    right: .5rem;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  &_drag-handle {
+    position: absolute;
+    cursor: grab;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 5px;
+    border-radius: 2.5px;
+    background-color: var(--drag-handle-bg-color);
+  }
+}

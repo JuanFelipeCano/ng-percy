@@ -1,0 +1,31 @@
+<div class="dialog-screen_backdrop" *ngIf="isVisible" (click)="close()"></div>
+@if (isVisible) {
+  <div
+    class="dialog-screen_container"
+    aria-modal="true"
+    [attr.role]="'dialog'"
+    [class.bottom-sheet]="isMobile"
+    [@dialog-screen-animation]="isMobile ? 'mobile' : 'desktop'"
+  >
+    <div
+      #content
+      class="dialog-screen_content"
+      (click)="$event.stopPropagation()"
+    >
+      <div
+        class="dialog-screen_content-header"
+        (touchstart)="onTouchStart($event)"
+        (touchmove)="onTouchMove($event)"
+        (touchend)="onTouchEnd($event)"
+      >
+        <span #dragHandle *ngIf="isMobile" class="dialog-screen_drag-handle" aria-hidden="true"></span>
+        <button class="dialog-screen_close-btn" (click)="close()" aria-label="Close modal">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+      <div class="dialog-screen_content-body">
+        <ng-container #container></ng-container>
+      </div>
+    </div>
+  </div>
+}
