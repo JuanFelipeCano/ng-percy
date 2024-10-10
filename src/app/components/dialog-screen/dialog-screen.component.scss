@@ -2,6 +2,8 @@
   --backdrop-bg-color: rgba(0, 0, 0, 0.5);
   --content-bg-color: #fff;
   --drag-handle-bg-color: #ccc;
+  --screen-box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  --screen-dialog-z-index: 10;
 }
 
 .dialog-screen {
@@ -13,7 +15,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 10;
+    z-index: var(--screen-dialog-z-index);
     background-color: var(--backdrop-bg-color);
   }
 
@@ -25,9 +27,11 @@
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 11;
+    z-index: calc(var(--screen-dialog-z-index) + 1);
+    box-shadow: var(--screen-box-shadow);
 
     &.bottom-sheet {
+      box-shadow: none;
       position: fixed;
       top: initial;
       margin: initial;
@@ -37,7 +41,6 @@
       max-width: 100dvh;
       padding-top: 30px;
       max-height: 95vh;
-      transition: transform 0.3s ease;
 
       .dialog-screen_content {
         border-radius: 1rem 1rem 0 0;
