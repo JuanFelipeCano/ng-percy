@@ -48,25 +48,25 @@
   --c-gray-dark: #333;
 
   --background: #fff;
-
-  width: fit-content;
-  display: block;
 }
 
 .date-picker {
-  $date-picker-max-width: 800px;
+  $date-picker-max-width: 100%;
   $date-picker-input-border-color: var(--c-gray-light);
   $date-picker-input-padding: .5rem;
   $date-picker-toggle-btn-size: 18px;
   $date-picker-toggle-btn-color: var(--c-gray-dark);
+  $date-picker-toggle-btn-active-color: var(--c-primary);
 
-  $date-picker-calendar-size: 310px;
+  $date-picker-calendar-size: 800px;
 
   $date-picker-button-border-color: var(--c-gray-light);
 
   $date-picker-spacing: 1.8rem;
   $calc-toggle-btn: calc($date-picker-spacing - $date-picker-toggle-btn-size) / 2;
 
+
+  &_toggle-btn,
   &_header-button,
   &_month-button,
   &_day,
@@ -84,15 +84,80 @@
     }
   }
 
+  &_inner {
+    position: relative;
+    width: 100%;
+    max-width: $date-picker-max-width;
+  }
+
+  &_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  &_input-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  &_input {
+    width: 100%;
+    padding:
+      $date-picker-input-padding
+      calc($date-picker-input-padding + $date-picker-spacing - $calc-toggle-btn)
+      $date-picker-input-padding
+      $date-picker-input-padding;
+    border-radius: .25rem;
+    font-size: 1rem;
+    border: 1px solid $date-picker-input-border-color;
+
+    &:focus, &-active {
+      @include focus-style;
+    }
+  }
+
+  &_toggle-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: $date-picker-spacing;
+    width: $date-picker-spacing;
+    right: calc($date-picker-input-padding - $calc-toggle-btn);
+    font-size: $date-picker-toggle-btn-size;
+    color: $date-picker-toggle-btn-color;
+
+    &-active {
+      color: var(--date-picker-toggle-btn-active-color);
+    }
+
+    &:focus, &:active {
+      box-shadow: none;
+      border: 0;
+    }
+  }
+
   &_calendar {
+    position: absolute;
     overflow: hidden;
+    top: 100%;
+    right: 0;
     border-radius: 4px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
     padding: 1.5rem;
     min-width: 310px;
+    z-index: 100;
     background-color: var(--background);
     max-width: $date-picker-max-width;
     width: $date-picker-calendar-size;
+  }
+
+  &_calendar-months {
+    z-index: 200;
   }
 
   &_header {
@@ -120,6 +185,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     height: $date-picker-spacing;
     width: $date-picker-spacing;
   }

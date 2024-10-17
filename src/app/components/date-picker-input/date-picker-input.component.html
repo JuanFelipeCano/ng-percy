@@ -1,0 +1,40 @@
+<div class="date-picker-input_wrapper">
+  <input
+    id="date-picker-input"
+    readonly
+    type="text"
+    class="date-picker-input_input"
+    placeholder="Date"
+    aria-label="Select a date"
+    [attr.aria-expanded]="isCalendarOpen"
+    [class.date-picker_input-active]="isCalendarOpen"
+    [value]="datePicker.formatedDate"
+    (click)="toggleCalendar()"
+  />
+  <button
+    class="date-picker-input_toggle-btn"
+    aria-label="Toggle calendar"
+    [class.date-picker_toggle-btn-active]="isCalendarOpen"
+    (click)="toggleCalendar()"
+  >
+    <ion-icon name="calendar-outline"></ion-icon>
+  </button>
+</div>
+
+<div class="date-picker-input_calendar">
+  @if (isCalendarOpen) {
+    <div
+      class="date-picker-input_overlay"
+      aria-hidden="true"
+      (click)="closeFromBackground()"
+    ></div>
+    <div class="date-picker-input_calendar-inner" [@slideInOut]>
+      <app-date-picker
+        [format]="format()"
+        [locale]="locale()"
+        [(value)]="date"
+        (onSelectedDate)="selectDate($event)"
+      />
+    </div>
+  }
+</div>

@@ -1,9 +1,8 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, forwardRef, input, model, OnInit, output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, model, OnInit, output } from '@angular/core';
 import { DateTime as Luxon, Info as LuxonInfo } from 'luxon';
-import { CalendarDay, DatePicker } from './models';
+import { CalendarDay, DatePicker, DatePickerConfig } from './models';
 
 @Component({
   selector: 'app-date-picker',
@@ -13,11 +12,6 @@ import { CalendarDay, DatePicker } from './models';
   styleUrl: './date-picker.component.scss',
   host: { 'class': 'date-picker' },
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => DatePickerComponent),
-    multi: true,
-  }],
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
@@ -30,20 +24,14 @@ import { CalendarDay, DatePicker } from './models';
     ])
   ],
 })
-export class DatePickerComponent implements ControlValueAccessor, OnInit {
+export class DatePickerComponent implements OnInit {
 
   private readonly defaultFormat = 'yyyy-MM-dd';
   private readonly defaultLocale = 'en-US';
   protected readonly today = new Date(Luxon.now().toISO());
 
-  public format = input<string>(this.defaultFormat);
-  public locale = input<string>(this.defaultLocale);
-  public date = model<Date>(this.today, { alias: 'value' });
-
-  public readonly onSelectedDate = output<DatePicker>();
-
-  public onChange = (_value: Date) => {};
-  public onTouched = () => {};
+  public config = model<DatePickerConfig>({ format: this.defaultFormat });
+  public onSelectedDate = output<DatePicker>();
 
   protected weekdays!: string[];
   protected months!: string[];
@@ -52,76 +40,33 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
   protected currentMonth!: number;
   protected currentYear!: number;
   protected calendarDays!: CalendarDay[];
+  protected isCalendarOpen!: boolean;
   protected areMonthsOpen!: boolean;
 
   constructor() {
+    this.isCalendarOpen = false;
     this.areMonthsOpen = false;
     this.datePicker = {
-      formatedDate: '',
+      visualDate: '',
       date: new Date()
     };
   }
 
   public ngOnInit(): void {
+    this.initConfigValues();
     this.initCurrentValues();
     this.setInitialDate();
     this.setWeekdaysAndMonths();
     this.updateCalendar();
   }
 
-  public writeValue(value: Date): void {
-    this.date.set(value);
+  protected toggleCalendar() {
+    if (this.config()?.disabled) return;
 
-    this.datePicker = {
-      date: value,
-      formatedDate: this.getFormatedDate(value),
-    };
-    this.onChange(value);
-    this.initCurrentValues();
-    this.updateCalendar();
-  }
-
-  public registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  public registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  public updateCalendar(): void {
-    this.calendarDays = [];
-    const firstDay = new Date(this.currentYear, this.currentMonth, 1);
-    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
-
-    // Add days from previous month
-    const prevMonthDays = (firstDay.getDay() + 6) % 7;
-    const prevMonth = new Date(this.currentYear, this.currentMonth, 0);
-    for (let i = prevMonthDays - 1; i >= 0; i--) {
-      this.calendarDays.unshift({
-        date: new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate() - i),
-        isFromAnotherMonth: true,
-      });
-    }
-
-    // Add days of current month
-    for (let i = 1; i <= lastDay.getDate(); i++) {
-      this.calendarDays.push({
-        date: new Date(this.currentYear, this.currentMonth, i),
-        isFromAnotherMonth: false,
-      });
-    }
-
-    // Add days from next month
-    const remainingDays = 7 - (this.calendarDays.length % 7);
-    if (remainingDays < 7) {
-      const nextMonth = new Date(this.currentYear, this.currentMonth + 1, 1);
-      for (let i = 0; i < remainingDays; i++) {
-        this.calendarDays.push({
-          date: new Date(nextMonth.getFullYear(), nextMonth.getMonth(), i + 1),
-          isFromAnotherMonth: true
-        });
-      }
+    this.isCalendarOpen = !this.isCalendarOpen;
+    this.areMonthsOpen = false;
+    if (this.isCalendarOpen) {
+      this.updateCalendar();
     }
   }
 
@@ -132,17 +77,19 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     }
   }
 
+  protected closeFromBackground(): void {
+    this.isCalendarOpen = false;
+  }
+
   protected selectDate(date: Date) {
-    this.date.set(date);
     this.datePicker = {
       date,
-      formatedDate: this.getFormatedDate(date),
+      visualDate: this.getVisualDate(date),
     };
 
-    this.onChange(date);
-    this.onTouched();
-
     this.onSelectedDate.emit(this.datePicker);
+
+    this.isCalendarOpen = false;
   }
 
   protected selectMonth(month: number) {
@@ -194,25 +141,71 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
       && this.currentYear === this.currentDate.getFullYear();
   }
 
+  private updateCalendar(): void {
+    this.calendarDays = [];
+    const firstDay = new Date(this.currentYear, this.currentMonth, 1);
+    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
+
+    // Add days from previous month
+    const prevMonthDays = firstDay.getDay();
+    const prevMonth = new Date(this.currentYear, this.currentMonth, 0);
+    for (let i = prevMonthDays - 1; i >= 0; i--) {
+      this.calendarDays.unshift({
+        date: new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate() - i),
+        isFromAnotherMonth: true,
+      });
+    }
+
+    // Add days of current month
+    for (let i = 1; i <= lastDay.getDate(); i++) {
+      this.calendarDays.push({
+        date: new Date(this.currentYear, this.currentMonth, i),
+        isFromAnotherMonth: false,
+      });
+    }
+
+    // Add days from next month
+    const remainingDays = 7 - (this.calendarDays.length % 7);
+    if (remainingDays < 7) {
+      const nextMonth = new Date(this.currentYear, this.currentMonth + 1, 1);
+      for (let i = 0; i < remainingDays; i++) {
+        this.calendarDays.push({
+          date: new Date(nextMonth.getFullYear(), nextMonth.getMonth(), i + 1),
+          isFromAnotherMonth: true
+        });
+      }
+    }
+  }
+
+  private initConfigValues(): void {
+    this.config.update((config) => ({ ...config, locale: (config.locale || this.defaultLocale) }));
+  }
+
   private initCurrentValues(): void {
-    this.currentDate = (this.date());
+    this.currentDate = (this.config()?.date || this.today);
     this.currentMonth = this.currentDate.getMonth();
     this.currentYear = this.currentDate.getFullYear();
   }
 
   private setInitialDate(): void {
-    this.datePicker = {
-      date: this.date(),
-      formatedDate: this.getFormatedDate(this.date()),
-    };
+    const config = this.config();
+
+    if (config?.date) {
+      this.datePicker = {
+        date: config.date,
+        visualDate: this.getVisualDate(config.date),
+      };
+    }
   }
 
-  private getFormatedDate(date: Date): string {
-    return Luxon.fromJSDate(date).setLocale(this.locale()).toFormat(this.format());
+  private getVisualDate(date: Date): string {
+    const config = this.config();
+
+    return Luxon.fromJSDate(date).setLocale(config?.locale!).toFormat(config.format);
   }
 
   private setWeekdaysAndMonths(): void {
-    this.weekdays = LuxonInfo.weekdays('long', { locale: this.locale() });
-    this.months = LuxonInfo.months('long', { locale: this.locale() });
+    this.weekdays = LuxonInfo.weekdays('long', { locale: this.config()?.locale });
+    this.months = LuxonInfo.months('long', { locale: this.config()?.locale });
   }
 }

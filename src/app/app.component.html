@@ -1,5 +1,25 @@
 <div class="container">
-  <app-date-picker [config]="{ format: 'DDD' }" />
+  <!-- @if (form) {
+    <form [formGroup]="form">
+
+      <input type="text" [formControl]="inputControl" />
+      <app-date-picker [formControl]="dateControl" />
+
+      <button type="button" (click)="submitForm()">Submit</button>
+    </form>
+  } -->
+
+  <app-date-picker-input format="DDD" />
+
+  <!-- @if (form) {
+    <form [formGroup]="form">
+
+      <input type="text" [formControl]="inputControl" />
+      <app-date-picker [formControl]="dateControl" />
+
+      <button type="button" (click)="submitForm()">Submit</button>
+    </form>
+  } -->
 </div>
 
 <router-outlet />
