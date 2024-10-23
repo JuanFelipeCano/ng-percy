@@ -1,0 +1,14 @@
+:root {
+  --percy-breakpoint-extra-small: 480px;
+  --percy-breakpoint-small:       640px;
+  --percy-breakpoint-medium:      768px;
+  --percy-breakpoint-large:       992px;
+  --percy-breakpoint-extra-large: 1248px;
+}
+
+// Percy breakpoints
+$extra-small: var(--percy-breakpoint-extra-small);
+$small:       var(--percy-breakpoint-small);
+$medium:      var(--percy-breakpoint-medium);
+$large:       var(--percy-breakpoint-large);
+$extra-large: var(--percy-breakpoint-extra-large);

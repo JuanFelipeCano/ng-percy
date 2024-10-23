@@ -1,0 +1,105 @@
+/**
+ * Colors
+ * @see https://www.realtimecolors.com/?colors=070808-f6f8f9-7aaae1-96bae4-72a5df&fonts=Inter-Inter#toolbar
+ */
+body,
+body.light {
+  --percy-text: #070808;
+  --percy-background: #f6f8f9;
+
+  --percy-bg-1: #eef0f1;
+  --percy-bg-2: #d9e5f2;
+  --percy-bg-3: #74a6df;
+
+  // Primary colors
+  --percy-primary: #7aaae1;
+  --percy-primary-contrast: #000;
+  --percy-primary-shade: #6b96c6;
+  --percy-primary-tint: #87b3e4;
+
+  // Secondary colors
+  --percy-secondary: #96bae4;
+  --percy-secondary-contrast: #000;
+  --percy-secondary-shade: #84a4c9;
+  --percy-secondary-tint: #a1c1e7;
+
+  // Accent colors
+  --percy-accent: #72a5df;
+  --percy-accent-contrast: #000;
+  --percy-accent-shade: #6491c4;
+  --percy-accent-tint: #80aee2;
+
+  // Tertiary colors
+  --percy-tertiary: #e17a7a;
+  --percy-tertiary-contrast: #000;
+  --percy-tertiary-shade: #c66b6b;
+  --percy-tertiary-tint: #e48787;
+}
+
+body.dark {
+  --percy-text: #f7f8f8;
+  --percy-background: #060809;
+
+  --percy-bg-1: #0e1011;
+  --percy-bg-2: #0c1926;
+  --percy-bg-3: #20518a;
+
+  // Primary colors
+  --percy-primary: #1e4e85;
+  --percy-primary-contrast: #fff;
+  --percy-primary-shade: #1a4575;
+  --percy-primary-tint: #356091;
+
+  // Secondary colors
+  --percy-secondary: #1b4069;
+  --percy-secondary-contrast: #fff;
+  --percy-secondary-shade: #18385c;
+  --percy-secondary-tint: #325378;
+
+  // Accent colors
+  --percy-accent: #20538d;
+  --percy-accent-contrast: #fff;
+  --percy-accent-shade: #1c497c;
+  --percy-accent-tint: #366498;
+
+  // Tertiary colors
+  --percy-tertiary: #851e1e;
+  --percy-tertiary-contrast: #000;
+  --percy-tertiary-shade: #751a1a;
+  --percy-tertiary-tint: #913535;
+}
+
+body {
+  background-color: var(--percy-background);
+  color: var(--percy-text);
+}
+
+
+
+
+/**
+ * Old way to implement colors
+
+  * :root {
+  *   --percy-color: #4A2A7B;
+  *   --percy-color-contrast: #fff;
+  *   --percy-color-shade: #41256c;
+  *   --percy-color-tint: #5c3f88;
+
+  *   --percy-color-base-dark: #070808;
+  *   --percy-color-base-light: #f6f8f9;
+  * }
+
+  * body,
+  * body.light {
+  *   --percy-background-color: var(--percy-color-base-light);
+  *   --percy-text-color: var(--percy-color-base-dark);
+  *   --percy-border-color: #e0e0e0;
+  * }
+
+  * body.dark {
+  *   --percy-background-color: var(--percy-color-base-dark);
+  *   --percy-text-color: var(--percy-color-base-light);
+  *   --percy-border-color: #000;
+  * }
+ */

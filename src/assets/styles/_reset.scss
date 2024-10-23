@@ -1,0 +1,94 @@
+// CSS Reset
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--percy-font-family);
+  font-weight: $font-regular;
+  min-height: 100dvh;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img, video, svg {
+  height: auto;
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+  font-family: var(--percy-font-family);
+  font-weight: $font-bold;
+}
+
+html {
+  font-size: 100%; /* 16px */
+}
+
+h1 {
+  font-size: $font-xxl;
+}
+
+h2 {
+  font-size: $font-xl;
+}
+
+h3 {
+  font-size: $font-lg;
+}
+
+h4 {
+  font-size: $font-md;
+}
+
+h5 {
+  font-size: $font-sm;
+}
+
+h6 {
+  font-size: $font-xs;
+}
+
+small {
+  font-size: $font-xs;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition: none;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@include screen-respond-to('medium') {
+  html {
+    font-size: 110%;
+  }
+}
+
+@include screen-respond-to('large') {
+  html {
+    font-size: 120%;
+  }
+}
+
+@include screen-respond-to('extra-large') {
+  html {
+    font-size: 130%;
+  }
+}
