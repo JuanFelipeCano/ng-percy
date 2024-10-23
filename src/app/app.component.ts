@@ -1,19 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DatePickerComponent, DialogScreenComponent } from './components';
-import { DialogScreenController } from './components/dialog-screen/dialog-screen.controller';
+import { DatePickerComponent } from './components';
 import { DatePickerConfig } from './components/date-picker/models';
+import { DialogScreenController } from './components/dialog-screen/dialog-screen.controller';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DatePickerComponent, DialogScreenComponent],
-  providers: [DialogScreenController],
+  imports: [ RouterOutlet ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  title = 'angular-components';
+export class AppComponent implements OnInit {
 
   constructor(
     // public modalService: ModalService
@@ -30,6 +28,25 @@ export class AppComponent {
       },
     }).subscribe((result) => {
       console.log('Resultado del modal:', result);
+      // this.dialogScreenController.close();
+    });
+  }
+
+  public ngOnInit(): void {
+    this.setTheme();
+    this.subscribeToThemeChange();
+  }
+
+  private setTheme(): void {
+    const colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark' : 'light';
+
+    document.querySelector('body')!.className = colorScheme;
+  }
+
+  private subscribeToThemeChange(): void {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      this.setTheme();
     });
   }
 }

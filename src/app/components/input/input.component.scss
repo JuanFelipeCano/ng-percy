@@ -1,0 +1,81 @@
+@import 'styles/global';
+
+// Variations Mixins
+@import './_input.mixins';
+
+// Variables
+$padding-vertical: .5rem;
+$padding-sides: .75rem;
+$margin-vertical: .25rem;
+
+:host.percy-input {
+  --color: inherit;
+  --background: var(--percy-bg-1);
+  --border: var(--percy-primary-tint);
+  --border-radius: .25rem;
+  --wrapper-margin-bottom: .75rem;
+
+  // To prevent margin collapse
+  display: flex;
+
+  // Variations
+  &.percy-input_label-floating {
+    @include floating-label-style;
+  }
+
+  &.percy-input_label-hidden {
+    @include hidden-label-style;
+  }
+
+  &.percy-input_icon {
+    @include icon-style;
+  }
+
+  &.percy-input_invalid {
+    @include invalid-style;
+  }
+}
+
+.percy-input {
+  &_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--wrapper-margin-bottom);
+  }
+
+  &_inner {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  &_field {
+    color: var(--color);
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    padding: $padding-vertical $padding-sides;
+    margin-top: $margin-vertical;
+
+    @include focus-style();
+
+    &:hover {
+      background-color: var(--percy-bg-2);
+    }
+
+    &[disabled],
+    &[readonly] {
+      opacity: .5;
+      cursor: initial;
+    }
+  }
+
+  &_label {
+    font-size: $font-sm;
+  }
+
+  &_message {
+    font-size: $font-sm;
+    color: var(--percy-primary-tint);
+  }
+}

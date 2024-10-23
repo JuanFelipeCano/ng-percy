@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+  --percy-font-family: 'Space Mono', sans-serif;
+
+  --percy-font-xs:    .625rem;  // 10px
+  --percy-font-sm:    .75rem;   // 12px
+  --percy-font-md:    1rem;     // 16px
+  --percy-font-lg:    1.25rem;  // 20px
+  --percy-font-xl:    1.5rem;   // 24px
+  --percy-font-xxl:   2rem;     // 32px
+  --percy-font-xxxl:  2.5rem;   // 40px
+
+  --percy-font-weight-thin:         100;
+  --percy-font-weight-extra-light:  200;
+  --percy-font-weight-light:        300;
+  --percy-font-weight-regular:      400;
+  --percy-font-weight-medium:       500;
+  --percy-font-weight-semi-bold:    600;
+  --percy-font-weight-bold:         700;
+  --percy-font-weight-extra-bold:   800;
+  --percy-font-weight-black:        900;
+}
+
+// Percy font sizes
+$font-xs:   var(--percy-font-xs);
+$font-sm:   var(--percy-font-sm);
+$font-md:   var(--percy-font-md);
+$font-lg:   var(--percy-font-lg);
+$font-xl:   var(--percy-font-xl);
+$font-xxl:  var(--percy-font-xxl);
+$font-xxxl: var(--percy-font-xxxl);
+
+// Percy font weights
+$font-thin:           var(--percy-font-weight-thin);
+$font-extra-light:    var(--percy-font-weight-extra-light);
+$font-light:          var(--percy-font-weight-light);
+$font-regular:        var(--percy-font-weight-regular);
+$font-medium:         var(--percy-font-weight-medium);
+$font-semi-bold:      var(--percy-font-weight-semi-bold);
+$font-bold:           var(--percy-font-weight-bold);
+$font-extra-bold:     var(--percy-font-weight-extra-bold);
+$font-black:          var(--percy-font-weight-black);
