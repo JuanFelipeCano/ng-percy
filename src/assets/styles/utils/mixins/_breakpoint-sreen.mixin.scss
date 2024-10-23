@@ -1,0 +1,42 @@
+/**
+ * Breakpoint mixin.
+ * Define the styles for different screen sizes.
+ * @param $breakpoint - Breakpoint name
+ *
+ * Variables: assets\styles\vars\_breakpoints.vars.scss
+ */
+@mixin screen-respond-to($breakpoint) {
+  @if not index('extra-small' 'small' 'medium' 'large' 'extra-large', $breakpoint) {
+    @error 'Invalid breakpoint: #{$breakpoint}.';
+  }
+
+  @else if $breakpoint == 'extra-small' {
+    @media screen and (min-width: $extra-small) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == 'small' {
+    @media screen and (min-width: $small) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == 'medium' {
+    @media screen and (min-width: $medium) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == 'large' {
+    @media screen and (min-width: $large) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == 'extra-large' {
+    @media screen and (min-width: $extra-large) {
+      @content;
+    }
+  }
+}

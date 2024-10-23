@@ -1,0 +1,16 @@
+@charset 'UTF-8';
+
+/**
+ * Visually hidden mixin.
+ * Hide an element visually but keep it accessible to screen readers.
+ */
+@mixin visuallyHidden() {
+  position: absolute;
+  overflow: hidden;
+  border: 0;
+  height: .1px;
+  width: .1px;
+  margin: -1px;
+  padding: 0;
+  clip: rect(0 0 0 0);
+}
