@@ -1,11 +1,27 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ComponentRef, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, HostListener, inject, model, OnInit, output, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ComponentRef,
+  CUSTOM_ELEMENTS_SCHEMA,
+  effect,
+  ElementRef,
+  HostListener,
+  inject,
+  model,
+  OnDestroy,
+  output,
+  Renderer2,
+  Type,
+  viewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { ScreenSizeDetectionService } from '../../services';
-import { DialogScreenOptions } from './models';
+import { DialogScreenRequiredOptions } from './models';
 
 const ANIMATION_TIME = 500;
-const BREAKPOINT = 640;
+const MOBILE_BREAKPOINT = 640;
 
 @Component({
   selector: 'app-dialog-screen',
@@ -14,7 +30,11 @@ const BREAKPOINT = 640;
   providers: [ ScreenSizeDetectionService ],
   templateUrl: './dialog-screen.component.html',
   styleUrl: './dialog-screen.component.scss',
-  host: { 'class': 'dialog-screen' },
+  host: {
+    'class': 'dialog-screen',
+    '[class.screen-modal]': '!isMobile',
+    '[class.screen-bottom-sheet]': 'isMobile',
+  },
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   animations: [
     trigger('dialog-screen-animation', [
@@ -22,10 +42,10 @@ const BREAKPOINT = 640;
       state('desktop', style({ opacity: 1 })),
       state('mobile', style({ transform: 'translateY(0)' })),
       transition('void => desktop', [
-        animate('300ms ease-out', style({ opacity: 1 })),
+        animate('200ms ease-out', style({ opacity: 1 })),
       ]),
       transition('desktop => void', [
-        animate('300ms ease-in', style({ opacity: 0 }))
+        animate('200ms ease-in', style({ opacity: 0 }))
       ]),
       transition('void => mobile', [
         style({ transform: 'translateY(100%)', opacity: 1 }),
@@ -37,20 +57,23 @@ const BREAKPOINT = 640;
     ])
   ]
 })
-export class DialogScreenComponent implements DialogScreenOptions, AfterViewInit {
+export class DialogScreenComponent implements DialogScreenRequiredOptions, AfterViewInit, OnDestroy {
 
-    @ViewChild('content')
-    public dialogContent!: ElementRef;
+  public readonly dialogContent = viewChild.required('content', { read: ViewContainerRef });
+  public readonly dialogContainer = viewChild.required('container', { read: ElementRef });
+  public readonly dragHandle = viewChild.required('dragHandle', { read: ElementRef });
 
-    @ViewChild('container', { read: ViewContainerRef })
-    public container!: ViewContainerRef;
+  public readonly title = model.required<string>();
+  public readonly component = model.required<Type<any>>();
+  public readonly componentProps = model<{ [key: string]: any }>();
+  public readonly closeFromBackground = model<boolean>(true);
+  public readonly hideCloseButton = model<boolean>(false);
+  public readonly hideTitle = model<boolean>(false);
 
-    @ViewChild('dragHandle')
-    public dragHandle!: ElementRef;
+  public readonly ariaDescribedBy = model<string>('');
+  public readonly closeButtonAriaLabel = model<string>('');
 
-  public component = model<any>();
-  public componentProps = model<any>();
-  public dismiss = output<any>();
+  public readonly dismiss = output<any>();
 
   public isMobile!: boolean;
   public isVisible!: boolean;
@@ -65,13 +88,13 @@ export class DialogScreenComponent implements DialogScreenOptions, AfterViewInit
 
   constructor(
   ) {
-    this.isMobile = document.body.getBoundingClientRect().width < BREAKPOINT;
+    this.isMobile = document.body.getBoundingClientRect().width < MOBILE_BREAKPOINT;
     this.currentTranslateY = 0;
     this.isDragging = false;
     this.isVisible = true;
 
     effect(() => {
-      this.isMobile = !this._screenSizeDetectionService.isGreaterOrEqualTo(BREAKPOINT);
+      this.isMobile = !this._screenSizeDetectionService.isGreaterOrEqualTo(MOBILE_BREAKPOINT);
     });
   }
 
@@ -79,15 +102,19 @@ export class DialogScreenComponent implements DialogScreenOptions, AfterViewInit
     this.initComponent();
   }
 
+  public ngOnDestroy(): void {
+    this.resetDragState();
+  }
+
   public close() {
     this.isVisible = false;
-    this.resetDragState();
     setTimeout(() => this.dismiss.emit(null), ANIMATION_TIME);
   }
 
   private initComponent() {
-    this.container.clear();
-    const componentRef: ComponentRef<any> = this.container.createComponent(this.component());
+    this.dialogContent().clear();
+    const componentRef: ComponentRef<any>
+      = this.dialogContent().createComponent(this.component());
 
     if (this.componentProps()) {
       Object.assign(componentRef.instance, this.componentProps());
@@ -104,22 +131,23 @@ export class DialogScreenComponent implements DialogScreenOptions, AfterViewInit
   }
 
   private trapFocus() {
-    const focusableElements = this.dialogContent.nativeElement.querySelectorAll(
+    const focusableElements = this.dialogContainer().nativeElement.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    const firstFocusableElement = focusableElements[0];
-    const lastFocusableElement = focusableElements[focusableElements.length - 1];
+    const firstFocusableElement = this.hideCloseButton() ? focusableElements[0] : focusableElements[1];
+    const firstInteractiveElement = focusableElements[0];
+    const lastInteractiveElement = focusableElements[focusableElements.length - 1];
 
     firstFocusableElement.focus();
 
-    this.dialogContent.nativeElement.addEventListener('keydown', (e: KeyboardEvent) => {
+    this.dialogContainer().nativeElement.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'Tab') {
-        if (e.shiftKey && document.activeElement === firstFocusableElement) {
+        if (e.shiftKey && document.activeElement === firstInteractiveElement) {
           e.preventDefault();
-          lastFocusableElement.focus();
-        } else if (!e.shiftKey && document.activeElement === lastFocusableElement) {
+          lastInteractiveElement.focus();
+        } else if (!e.shiftKey && document.activeElement === lastInteractiveElement) {
           e.preventDefault();
-          firstFocusableElement.focus();
+          firstInteractiveElement.focus();
         }
       }
     });
@@ -128,11 +156,11 @@ export class DialogScreenComponent implements DialogScreenOptions, AfterViewInit
   protected onTouchStart(event: TouchEvent) {
     if (!this.isMobile || !this.isVisible) return;
 
-    if (event.target === this.dragHandle.nativeElement) {
+    if (event.target === this.dragHandle().nativeElement) {
       this.isDragging = true;
       this.startY = event.touches[0].clientY;
       this.startTranslateY = this.currentTranslateY;
-      this._renderer.setStyle(this.dialogContent.nativeElement, 'transition', 'none');
+      this._renderer.setStyle(this.dialogContainer().nativeElement, 'transition', 'none');
       event.preventDefault();
     }
   }
@@ -143,7 +171,7 @@ export class DialogScreenComponent implements DialogScreenOptions, AfterViewInit
     const currentY = event.touches[0].clientY;
     const deltaY = currentY - this.startY;
     this.currentTranslateY = Math.max(this.startTranslateY + deltaY, 0);
-    this._renderer.setStyle(this.dialogContent.nativeElement, 'transform', `translateY(${this.currentTranslateY}px)`);
+    this._renderer.setStyle(this.dialogContainer().nativeElement, 'transform', `translateY(${this.currentTranslateY}px)`);
     event.preventDefault();
   }
 
@@ -151,9 +179,9 @@ export class DialogScreenComponent implements DialogScreenOptions, AfterViewInit
     if (!this.isMobile || !this.isVisible || !this.isDragging) return;
 
     this.isDragging = false;
-    this._renderer.removeStyle(this.dialogContent.nativeElement, 'transition');
+    this._renderer.removeStyle(this.dialogContainer().nativeElement, 'transition');
 
-    if (this.currentTranslateY > this.dialogContent.nativeElement.clientHeight * 0.8) {
+    if (this.currentTranslateY > this.dialogContainer().nativeElement.clientHeight * 0.8) {
       this.close();
     } else {
       this.resetPosition();
@@ -163,7 +191,7 @@ export class DialogScreenComponent implements DialogScreenOptions, AfterViewInit
 
   private resetPosition() {
     this.currentTranslateY = 0;
-    this._renderer.setStyle(this.dialogContent.nativeElement, 'transform', 'translateY(0)');
+    this._renderer.setStyle(this.dialogContainer().nativeElement, 'transform', 'translateY(0)');
   }
 
   private resetDragState() {
