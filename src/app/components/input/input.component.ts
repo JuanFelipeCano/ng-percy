@@ -7,7 +7,9 @@ type LabelStyle = 'start' | 'floating' | 'hidden';
 type InputType = 'text' | 'email' | 'password' | 'number';
 type PasswordIcon = 'eye-outline' | 'eye-off-outline';
 
-const boolValidation = (value: boolean | string) => (typeof value === 'string' && !value) ? value === '' : value;
+const boolValidation = (value: boolean | string) => (
+  (typeof value === 'string' && !value) ? value === '' : value
+);
 
 @Component({
   selector: 'app-input',
@@ -26,9 +28,9 @@ const boolValidation = (value: boolean | string) => (typeof value === 'string' &
     '[class.percy-input_label-start]': 'labelStyle() === "start"',
     '[class.percy-input_label-floating]': 'labelStyle() === "floating" && !iconLeft()',
     '[class.percy-input_label-hidden]': 'labelStyle() === "hidden"',
-    '[class.percy-input_icon]': 'iconLeft() || iconRight()',
+    '[class.percy-input_icon]': 'iconLeft() || iconRight() || type() === "password"',
     '[class.percy-input_icon-left]': 'iconLeft()',
-    '[class.percy-input_icon-right]': 'iconRight()',
+    '[class.percy-input_icon-right]': 'iconRight() || type() === "password"',
     '[class.percy-input_invalid]': 'invalid()',
   },
 })
