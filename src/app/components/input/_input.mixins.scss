@@ -61,7 +61,7 @@
   }
 
   .percy-input_label {
-    @include visuallyHidden;
+    @include visually-hidden;
   }
 
   &.percy-input_icon {
@@ -121,7 +121,10 @@
       @include focus-style();
 
       padding: calculateRem(4px);
-      border-radius: 50%;
+
+      &:focus {
+        border-radius: 50%;
+      }
     }
   }
 }

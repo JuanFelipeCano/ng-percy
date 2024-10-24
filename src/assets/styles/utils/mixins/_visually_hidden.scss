@@ -4,7 +4,7 @@
  * Visually hidden mixin.
  * Hide an element visually but keep it accessible to screen readers.
  */
-@mixin visuallyHidden() {
+@mixin visually-hidden() {
   position: absolute;
   overflow: hidden;
   border: 0;
