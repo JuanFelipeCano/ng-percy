@@ -1,0 +1,29 @@
+// Default button styles
+$button-icon-margin:  initial !default;
+$button-icon-color:   inherit !default;
+$button-icon-size:    24px !default;
+$button-icon-padding: 2px !default;
+
+/**
+ * Button icon mixin
+ * @param $size - Button icon size in px
+ * @param $color - Button icon color
+ * @param $padding - Button icon padding in px
+ * @param $margin - Button icon margin in px
+ */
+@mixin button-icon(
+  $size: $button-icon-size,
+  $color: $button-icon-color,
+  $padding: $button-icon-padding,
+  $margin: $button-icon-margin
+) {
+  @include clear-button-style();
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $button-icon-color;
+  font-size: calculateRem($size);
+  margin: calculateRem($button-icon-margin);
+  padding: calculateRem($button-icon-padding);
+}
