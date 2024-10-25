@@ -1,0 +1,68 @@
+@import 'styles/global';
+
+// Component Mixins
+@import './_dialog-screen.mixins';
+
+:host {
+  --overlay: rgba(0, 0, 0, 0.5);
+  --background: var(--percy-bg-2);
+
+  &.screen-modal {
+    @include modal-mode;
+  }
+
+  &.screen-bottom-sheet {
+    @include bottom-sheet-mode;
+  }
+}
+
+.dialog-screen {
+  &_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: var(--overlay);
+  }
+
+  &_wrapper {
+    z-index: 11;
+    position: fixed;
+    max-width: 100dvw;
+  }
+
+  &_inner {
+    overflow-y: visible;
+    height: auto;
+    max-width: 100%;
+    max-height: 90dvh;
+    padding: 1rem;
+    background-color: var(--background);
+  }
+
+  &_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &_title {
+    font-size: var(--percy-font-lg);
+  }
+
+  &_close-btn {
+    @include button-icon();
+    @include focus-style;
+
+    padding: 0;
+
+    &:focus {
+      border-radius: 50%;
+    }
+  }
+}

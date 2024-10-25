@@ -1,40 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DatePickerComponent, DatePickerInputComponent } from './components';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogScreenController } from './components/dialog-screen/dialog-screen.controller';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DatePickerComponent, FormsModule, ReactiveFormsModule, DatePickerInputComponent],
+  imports: [ RouterOutlet ],
+  providers: [ DialogScreenController ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'angular-components';
 
-  date = new Date(2024, 8, 1);
+  constructor(
+    public readonly _dialogScreenController: DialogScreenController
+  ) {
+  }
 
-  form!: FormGroup;
-  dateControl!: FormControl;
-  inputControl!: FormControl;
+  public ngOnInit(): void {
+    this.setTheme();
+    this.subscribeToThemeChange();
+  }
 
-  ngOnInit(): void {
-    this.dateControl = new FormControl(this.date);
-    this.inputControl = new FormControl('input');
+  private setTheme(): void {
+    const colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark' : 'light';
 
-    this.form = new FormGroup({
-      date: this.dateControl,
-      input: this.inputControl,
+    document.querySelector('body')!.className = colorScheme;
+  }
+
+  private subscribeToThemeChange(): void {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      this.setTheme();
     });
-  }
-
-  selected(value: any) {
-    console.log(value);
-    console.log(this.date);
-  }
-
-  submitForm() {
-    console.log(this.form.value);
   }
 }

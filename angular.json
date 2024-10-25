@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "percy",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
@@ -34,7 +34,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["./src/assets"]
+            }
           },
           "configurations": {
             "production": {
@@ -93,7 +96,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["./src/assets"]
+            }
           }
         }
       }

@@ -1,0 +1,42 @@
+$focus-type: 'border' !default;
+$focus-color: var(--percy-accent-tint) !default;
+$focus-box-shadow: 0 0 2px var(--percy-accent-shade) !default;
+$focus-width: 1px !default;
+$focus-style: solid !default;
+$focus-offset: 0 !default;
+
+/**
+ * Focus style mixin. Define the border or outline style of an element when it is focused.
+ * @param $type - Type of focus style
+ * @param $color - Color of focus style
+ * @param $box-shadow - Box shadow of focus style
+ * @param $width - Width of focus style
+ * @param $style - Style of focus style
+ * @param $offset - Offset of focus style
+ */
+@mixin focus-style(
+  $type: $focus-type,
+  $color: $focus-color,
+  $box-shadow: $focus-box-shadow,
+  $width: $focus-width,
+  $style: $focus-style,
+  $offset: $focus-offset
+) {
+  @if not index('border' 'outline', $type) {
+    @error 'Invalid type `#{$type}`. Valid types: `border` | `outline`.';
+  }
+
+  &:focus {
+    @if $type == 'border' {
+      outline: none;
+      border: 1px solid $color;
+      border-radius: 4px;
+    }
+    @else if $type == 'outline' {
+      outline: $width $style $color;
+      outline-offset: $offset;
+    }
+
+    box-shadow: $box-shadow;
+  }
+}

@@ -1,0 +1,75 @@
+<div class="percy-input_wrapper">
+  <div class="percy-input_inner">
+    <input
+      autocomplete="off"
+      class="percy-input_field"
+      [attr.aria-label]="label()"
+      [attr.aria-required]="required()"
+      [attr.aria-readonly]="readonly()"
+      [attr.aria-disabled]="disabled()"
+      [attr.aria-invalid]="invalid()"
+      [id]="id()"
+      [name]="name()"
+      [type]="_type()"
+      [value]="value()"
+      [placeholder]="placeholder()"
+      [readonly]="readonly()"
+      [disabled]="disabled()"
+      [required]="required()"
+      (click)="percyClick.emit($event)"
+      (focus)="percyFocus.emit($event)"
+      (blur)="percyBlur.emit($event)"
+      (change)="percyChange.emit($event)"
+      (input)="percyInput.emit($event)"
+    />
+    <label
+      class="percy-input_label"
+      [for]="id()"
+    >
+      {{ label() }}
+    </label>
+
+    @if (iconLeft()) {
+      <ng-container [ngTemplateOutlet]="LeftIcon"></ng-container>
+    }
+
+    @if (iconRight() && type() !== 'password') {
+      <ng-container [ngTemplateOutlet]="RightIcon"></ng-container>
+    }
+
+    @if (type() === 'password') {
+      <ng-container [ngTemplateOutlet]="PasswordButtonIcon"></ng-container>
+    }
+  </div>
+  <!-- TODO: Implement message directive -->
+  <span class="percy-input_message" [id]="id() + '-message'"></span>
+</div>
+
+<ng-template #LeftIcon>
+  <span
+    class="percy-input_icon-left-wrapper"
+    aria-hidden="true"
+  >
+    <ion-icon [name]="iconLeft()"></ion-icon>
+  </span>
+</ng-template>
+
+<ng-template #RightIcon>
+  <span
+    class="percy-input_icon-right-wrapper"
+    aria-hidden="true"
+  >
+    <ion-icon [name]="iconRight()"></ion-icon>
+  </span>
+</ng-template>
+
+<ng-template #PasswordButtonIcon>
+  <button
+    class="percy-input_icon-right-wrapper percy-input_icon-btn"
+    [attr.aria-label]="pwdButtonAriaLabel"
+    [disabled]="disabled()"
+    (click)="changeType()"
+  >
+    <ion-icon [name]="passwordIcon"></ion-icon>
+  </button>
+</ng-template>

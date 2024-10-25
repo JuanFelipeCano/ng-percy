@@ -1,0 +1,143 @@
+/**
+ * Floating label style
+ * Label is inside the input unless the input is focused
+ */
+@mixin floating-label-style {
+  $label-spacing: .75rem;
+
+  .percy-input_wrapper {
+    margin-top: calculateRem(18px);
+  }
+
+  .percy-input_inner {
+    position: relative;
+  }
+
+  .percy-input_field {
+    display: block;
+  }
+
+  .percy-input_label {
+    position: absolute;
+    pointer-events: none;
+    font-size: $font-md;
+    top:  50%;
+    transform: translateY(calc(-50% + 2px));
+    left: $padding-sides;
+    -webkit-transition: .3s ease all;
+       -moz-transition: .3s ease all;
+        -ms-transition: .3s ease all;
+         -o-transition: .3s ease all;
+            transition: .3s ease all;
+  }
+
+  .percy-input_field:is(:focus) ~ .percy-input_label,
+  .percy-input_field:not(:placeholder-shown) ~ .percy-input_label {
+    top: 0;
+    left: 0;
+    font-size: $font-sm;
+    transform: translateY(-100%);
+  }
+
+  .percy-input_field::placeholder {
+    opacity: 0;
+  }
+
+  &.percy-input_icon {
+    .percy-input_icon-left-wrapper,
+    .percy-input_icon-right-wrapper {
+      top: calculateRem(12px);
+    }
+  }
+}
+
+/**
+ * Hidden label style
+ * Label is hidden
+ */
+@mixin hidden-label-style {
+  .percy-input_wrapper {
+    margin-top: calculateRem(18px);
+  }
+
+  .percy-input_label {
+    @include visually-hidden;
+  }
+
+  &.percy-input_icon {
+    .percy-input_icon-left-wrapper,
+    .percy-input_icon-right-wrapper {
+      top: calculateRem(12px);
+    }
+
+    .percy-input_icon-btn {
+      top: calculateRem(10px);
+    }
+  }
+}
+
+/**
+  * Icon style
+  */
+@mixin icon-style {
+  $icon-size: calculateRem(20px);
+  $field-padding-sides-icon: calc($padding-sides + $icon-size + 8px);
+
+  .percy-input_inner {
+    position: relative;
+  }
+
+  .percy-input_icon-left-wrapper,
+  .percy-input_icon-right-wrapper {
+    display: flex;
+    color: inherit;
+    position: absolute;
+    padding: .25rem 0;
+    font-size: $icon-size;
+    top: calculateRem(28px);
+  }
+
+  &.percy-input_icon-left {
+    .percy-input_icon-left-wrapper {
+      left: $padding-sides;
+    }
+
+    .percy-input_field {
+      padding-left: $field-padding-sides-icon;
+    }
+  }
+
+  &.percy-input_icon-right {
+    .percy-input_icon-right-wrapper {
+      right: $padding-sides;
+    }
+
+    .percy-input_field {
+      padding-right: $field-padding-sides-icon;
+    }
+
+    .percy-input_icon-btn {
+      @include button-icon(20px);
+      @include focus-style();
+
+      padding: calculateRem(4px);
+
+      &:focus {
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+/**
+ * Invalid style
+ */
+@mixin invalid-style {
+  $box-shadow: 0 0 2px var(--percy-tertiary-shade);
+
+  .percy-input_field {
+    border-color: var(--percy-tertiary);
+
+    @include focus-style('border', var(--percy-tertiary-tint), $box-shadow);
+  }
+}

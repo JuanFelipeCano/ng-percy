@@ -1,0 +1,58 @@
+/**
+ * Dialog screen mixins
+ * It displays the dialog screen as a bottom shett
+ */
+@mixin bottom-sheet-mode {
+  .dialog-screen_wrapper {
+    top: initial;
+    margin: initial;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 95dvh;
+    transition: transform 0.3s ease;
+    padding-top: calculateRem(30px);
+  }
+
+  .dialog-screen_inner {
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .dialog-screen_header {
+    padding-top: 1rem;
+  }
+
+  .dialog-screen_drag-handle {
+    position: absolute;
+    cursor: grab;
+    top: 0;
+    left: 50%;
+    background-color: var(--percy-gray80);
+    transform: translateX(-50%);
+    width: calculateRem(40px);
+    height: calculateRem(5px);
+    border-radius: calculateRem(2.5px);
+  }
+}
+
+/**
+ * Dialog screen mixins
+ * It displays the dialog screen as a modal
+ */
+@mixin modal-mode {
+  .dialog-screen_wrapper {
+    max-height: 100%;
+    margin: 2rem;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .dialog-screen_inner {
+    border-radius: .5rem;
+  }
+
+  .dialog-screen_drag-handle {
+    @include visually-hidden;
+  }
+}
