@@ -1,3 +1,11 @@
 .visually-hidden {
-  @include visuallyHidden;
+  @include visually-hidden;
+}
+
+.clear-style {
+  @include clear-default-style;
+}
+
+.clear-button-style {
+  @include clear-button-style;
 }

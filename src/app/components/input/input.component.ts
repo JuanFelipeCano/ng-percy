@@ -1,16 +1,23 @@
-import { Component, computed, CUSTOM_ELEMENTS_SCHEMA, forwardRef, input, model, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  booleanAttribute,
+  Component,
+  computed,
+  CUSTOM_ELEMENTS_SCHEMA,
+  forwardRef,
+  input,
+  model,
+  output,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { randomId } from '../../utils';
-import { CommonModule } from '@angular/common';
 
 type LabelStyle = 'start' | 'floating' | 'hidden';
 type InputType = 'text' | 'email' | 'password' | 'number';
 type PasswordIcon = 'eye-outline' | 'eye-off-outline';
 
-const boolValidation = (value: boolean | string) => (typeof value === 'string' && !value) ? value === '' : value;
-
 @Component({
-  selector: 'app-input',
+  selector: 'percy-input',
   standalone: true,
   imports: [ CommonModule ],
   templateUrl: './input.component.html',
@@ -26,9 +33,9 @@ const boolValidation = (value: boolean | string) => (typeof value === 'string' &
     '[class.percy-input_label-start]': 'labelStyle() === "start"',
     '[class.percy-input_label-floating]': 'labelStyle() === "floating" && !iconLeft()',
     '[class.percy-input_label-hidden]': 'labelStyle() === "hidden"',
-    '[class.percy-input_icon]': 'iconLeft() || iconRight()',
+    '[class.percy-input_icon]': 'iconLeft() || iconRight() || type() === "password"',
     '[class.percy-input_icon-left]': 'iconLeft()',
-    '[class.percy-input_icon-right]': 'iconRight()',
+    '[class.percy-input_icon-right]': 'iconRight() || type() === "password"',
     '[class.percy-input_invalid]': 'invalid()',
   },
 })
@@ -42,12 +49,20 @@ export class InputComponent implements ControlValueAccessor {
   public readonly type = input<InputType>('text');
   public readonly iconLeft = input<string | null | undefined>(undefined, { alias: 'left-icon' });
   public readonly iconRight = input<string | null  | undefined>(undefined, { alias: 'right-icon' });
-  public readonly readonly = input(false, { transform: boolValidation });
-  public readonly disabled = input(false, { transform: boolValidation });
-  public readonly required = input(false, { transform: boolValidation });
-  public readonly invalid = input(false, { transform: boolValidation });
+  public readonly readonly = input(false, { transform: booleanAttribute });
+  public readonly disabled = input(false, { transform: booleanAttribute });
+  public readonly required = input(false, { transform: booleanAttribute });
+  public readonly invalid = input(false, { transform: booleanAttribute });
 
   public value = model<string | number | null | undefined>('');
+
+  /**
+   * A11y properties
+   */
+  public readonly a11yHiddenPwdAriaLabel
+    = input<string | null>(null, { alias: 'hidden-password-aria-label' });
+  public readonly a11yDisplayedPwdAriaLabel
+    = input<string | null>(null, { alias: 'displayed-password-aria-label' });
 
   public readonly percyClick = output<MouseEvent>();
   public readonly percyFocus = output<FocusEvent>();
@@ -65,6 +80,12 @@ export class InputComponent implements ControlValueAccessor {
   constructor() {
     this.passwordVisible = false;
     this.passwordIcon = 'eye-off-outline';
+  }
+
+  public get pwdButtonAriaLabel(): string | null {
+    return this.passwordVisible
+      ? this.a11yDisplayedPwdAriaLabel()
+      : this.a11yHiddenPwdAriaLabel();
   }
 
   public writeValue(value: any): void {

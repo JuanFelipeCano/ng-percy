@@ -66,6 +66,8 @@
 <ng-template #PasswordButtonIcon>
   <button
     class="percy-input_icon-right-wrapper percy-input_icon-btn"
+    [attr.aria-label]="pwdButtonAriaLabel"
+    [disabled]="disabled()"
     (click)="changeType()"
   >
     <ion-icon [name]="passwordIcon"></ion-icon>

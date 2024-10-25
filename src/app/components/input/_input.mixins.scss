@@ -61,7 +61,7 @@
   }
 
   .percy-input_label {
-    @include visuallyHidden;
+    @include visually-hidden;
   }
 
   &.percy-input_icon {
@@ -89,10 +89,12 @@
 
   .percy-input_icon-left-wrapper,
   .percy-input_icon-right-wrapper {
+    display: flex;
     color: inherit;
     position: absolute;
-    top: calculateRem(30px);
+    padding: .25rem 0;
     font-size: $icon-size;
+    top: calculateRem(28px);
   }
 
   &.percy-input_icon-left {
@@ -115,19 +117,14 @@
     }
 
     .percy-input_icon-btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      color: inherit;
-      padding: 0;
-      margin: 0;
+      @include button-icon(20px);
+      @include focus-style();
+
       padding: calculateRem(4px);
 
-      @include focus-style;
-      border-radius: 50%;
+      &:focus {
+        border-radius: 50%;
+      }
     }
   }
 }

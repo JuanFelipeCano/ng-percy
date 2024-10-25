@@ -8,7 +8,7 @@ $padding-vertical: .5rem;
 $padding-sides: .75rem;
 $margin-vertical: .25rem;
 
-:host.percy-input {
+:host {
   --color: inherit;
   --background: var(--percy-bg-1);
   --border: var(--percy-primary-tint);
@@ -58,10 +58,6 @@ $margin-vertical: .25rem;
     margin-top: $margin-vertical;
 
     @include focus-style();
-
-    &:hover {
-      background-color: var(--percy-bg-2);
-    }
 
     &[disabled],
     &[readonly] {

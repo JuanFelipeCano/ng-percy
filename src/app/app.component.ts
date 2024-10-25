@@ -1,14 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { DialogScreenController } from './components/dialog-screen/dialog-screen.controller';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [ RouterOutlet ],
+  providers: [ DialogScreenController ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
+
+  constructor(
+    public readonly _dialogScreenController: DialogScreenController
+  ) {
+  }
 
   public ngOnInit(): void {
     this.setTheme();
