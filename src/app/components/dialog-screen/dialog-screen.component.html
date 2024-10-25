@@ -1,5 +1,10 @@
 <div class="dialog-screen_overlay" *ngIf="isVisible" (click)="close()"></div>
+
 @if (isVisible) {
+  <ng-container [ngTemplateOutlet]="DialogScreen"></ng-container>
+}
+
+<ng-template #DialogScreen>
   <div
     class="dialog-screen_wrapper"
     [@dialog-screen-animation]="isMobile ? 'mobile' : 'desktop'"
@@ -9,17 +14,17 @@
       class="dialog-screen_inner"
       aria-modal="true"
       aria-labelledby="dialog-screen-title"
-      [attr.aria-describedby]="ariaDescribedBy()"
+      [attr.aria-describedby]="a11yAriaDescribedBy()"
       [attr.role]="'dialog'"
+      percyTrapFocus
       (click)="$event.stopPropagation()"
     >
-      <div
-        class="dialog-screen_header"
-        (touchstart)="onTouchStart($event)"
-        (touchmove)="onTouchMove($event)"
-        (touchend)="onTouchEnd($event)"
-      >
-        <span #dragHandle class="dialog-screen_drag-handle" aria-hidden="true"></span>
+      <div class="dialog-screen_header">
+        <span
+          class="dialog-screen_drag-handle"
+          aria-hidden="true"
+          percyDragGestures>
+        </span>
 
         <span class="dialog-screen_title-wrapper">
           <h1
@@ -34,7 +39,7 @@
         @if (!hideCloseButton()) {
           <button
             class="dialog-screen_close-btn"
-            [attr.aria-label]="closeButtonAriaLabel()"
+            [attr.aria-label]="a11yCloseButtonAriaLabel()"
             (click)="close()"
           >
             <ion-icon name="close-outline"></ion-icon>
@@ -42,9 +47,9 @@
         }
       </div>
 
-      <div class="dialog-screen_body">
+      <div class="dialog-screen_body focusable-interactive-content">
         <ng-container #content></ng-container>
       </div>
     </div>
   </div>
-}
+</ng-template>

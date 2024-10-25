@@ -1,4 +1,12 @@
-import { ApplicationRef, ComponentRef, EmbeddedViewRef, inject, Injectable, ModelSignal, ViewContainerRef } from '@angular/core';
+import {
+  ApplicationRef,
+  ComponentRef,
+  EmbeddedViewRef,
+  inject,
+  Injectable,
+  ModelSignal,
+  ViewContainerRef,
+} from '@angular/core';
 import { defer, Observable, Subject } from 'rxjs';
 import { DialogScreenComponent } from './dialog-screen.component';
 import { DialogScreenOptions } from './models';
@@ -6,7 +14,7 @@ import { DialogScreenOptions } from './models';
 @Injectable()
 export class DialogScreenController {
 
-  private dialogScreenRef!: ComponentRef<DialogScreenComponent> | null;
+  private dialogScreenRef!: ComponentRef<DialogScreenComponent<unknown>> | null;
   private subject!: Subject<unknown>;
 
   private readonly _viewContainerRef = inject(ViewContainerRef);
@@ -19,9 +27,10 @@ export class DialogScreenController {
    * The observable will emit the result of the dialog screen,
    * it can be passed to the `DialogScreenController.close` method.
    * @param options - Dialog screen options
+   * @generic T - Component props type
    * @returns Observable<unknown>
    */
-  public create(options: DialogScreenOptions): Observable<unknown> {
+  public create<T = unknown>(options: DialogScreenOptions<T>): Observable<unknown> {
     this.close();
 
     this.subject = new Subject();
@@ -51,13 +60,17 @@ export class DialogScreenController {
     }
   }
 
-  private setComponentProperties(options: DialogScreenOptions) {
+  /**
+   * @description Set the properties of the dialog screen
+   * @param options - Dialog screen options
+   */
+  private setComponentProperties<T = unknown>(options: DialogScreenOptions<T>) {
     if (!this.dialogScreenRef) return;
 
     const componentInstance = this.dialogScreenRef.instance;
 
     for (const key in options) {
-      const typedKey = key as keyof DialogScreenOptions;
+      const typedKey = key as keyof DialogScreenOptions<T>;
 
       if (typedKey in componentInstance) {
         const property = (componentInstance as any)[typedKey];
