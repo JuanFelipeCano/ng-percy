@@ -59,10 +59,6 @@ $margin-vertical: .25rem;
 
     @include focus-style();
 
-    &:hover {
-      background-color: var(--percy-accent-shade);
-    }
-
     &[disabled],
     &[readonly] {
       opacity: .5;
