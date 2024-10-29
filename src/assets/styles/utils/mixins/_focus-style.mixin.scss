@@ -28,9 +28,9 @@ $focus-offset: 0 !default;
 
   &:focus {
     @if $type == 'border' {
+      @include border-style($color, 6px, $box-shadow, $width, $style);
+
       outline: none;
-      border: 1px solid $color;
-      border-radius: 4px;
     }
     @else if $type == 'outline' {
       outline: $width $style $color;

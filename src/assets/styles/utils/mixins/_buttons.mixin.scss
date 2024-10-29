@@ -17,7 +17,7 @@ $button-icon-padding: 2px !default;
   $padding: $button-icon-padding,
   $margin: $button-icon-margin
 ) {
-  @include clear-button-style();
+  @include clear-button-style;
 
   display: flex;
   justify-content: center;
