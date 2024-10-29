@@ -13,9 +13,10 @@ import { sleep } from '../../utils';
 const EDITABLE_ELEMENTS = 'input:not([disabled]), textarea:not([disabled])';
 const NON_EDITABLE_ELEMENTS = 'button:not([disabled]), select:not([disabled]), [href]:not([disabled])';
 const NON_FOCUSABLE_ELEMENTS = '[tabindex="-1"]';
-const FOCUSABLE_ELEMENTS_SELECTOR = `${EDITABLE_ELEMENTS}, ${NON_EDITABLE_ELEMENTS}, ${NON_FOCUSABLE_ELEMENTS}`;
+const FOCUSABLE_ELEMENTS_SELECTOR = `${ EDITABLE_ELEMENTS }, ${ NON_EDITABLE_ELEMENTS }, ${ NON_FOCUSABLE_ELEMENTS }`;
 const VIEW_CHECKED_TIME = 100;
 
+// TODO: add documentation about focusable-interactive-content class
 @Directive({
   selector: '[percyTrapFocus]',
   standalone: true
@@ -61,6 +62,12 @@ export class TrapFocusDirective implements OnInit, AfterViewInit, AfterViewCheck
     await sleep(VIEW_CHECKED_TIME);
 
     const interactiveContent = this._elementRef.nativeElement.querySelector('.focusable-interactive-content');
+
+    if (!interactiveContent) throw new Error(
+      'Interactive content not found',
+      { cause: 'focusable-interactive-content class must be added to an element inside the component.' }
+    );
+
     const focusabeInteractiveContent = interactiveContent.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR);
     this.focusableInteractiveContentElements = Array.from(focusabeInteractiveContent);
 
