@@ -5,7 +5,7 @@
 
 :host {
   --overlay: rgba(0, 0, 0, 0.5);
-  --background: var(--percy-bg-2);
+  --background: var(--percy-bg-1);
 
   &.screen-modal {
     @include modal-mode;

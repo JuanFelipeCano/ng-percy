@@ -20,7 +20,8 @@ export class DragGesturesDirective implements OnDestroy {
   private currentTranslateY!: number;
   private isDragging!: boolean;
 
-  @Host() private readonly _dialogScreen = inject(DialogScreenComponent);
+  @Host()
+  private readonly _dialogScreen = inject(DialogScreenComponent);
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
   private readonly _renderer = inject(Renderer2);
 

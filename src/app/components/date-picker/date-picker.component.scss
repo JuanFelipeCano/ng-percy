@@ -1,153 +1,99 @@
-@mixin focus-style {
-  outline: none;
-  border: 1px solid var(--c-primary);
-  box-shadow: 0 0 2px var(--c-primary-dark);
-}
+@import 'styles/global';
 
-@mixin respond-to($breakpoint) {
-  @if not index('extra-small' 'small' 'medium' 'large' 'extra-large', $breakpoint) {
-    @error 'Invalid breakpoint: #{$breakpoint}.';
-  }
-
-  @else if $breakpoint == 'extra-small' {
-    @media (min-width: 480px) {
-      @content;
-    }
-  }
-
-  @else if $breakpoint == 'small' {
-    @media (min-width: 640px) {
-      @content;
-    }
-  }
-
-  @else if $breakpoint == 'medium' {
-    @media (min-width: 768px) {
-      @content;
-    }
-  }
-
-  @else if $breakpoint == 'large' {
-    @media (min-width: 992px) {
-      @content;
-    }
-  }
-
-  @else if $breakpoint == 'extra-large' {
-    @media (min-width: 1248px) {
-      @content;
-    }
-  }
-}
-
-:host.date-picker {
-  --c-primary: #8840FF;
-  --c-primary-dark: #6139A0;
-  --c-gray: #9C9D9F;
-  --c-gray-light: #ddd;
-  --c-gray-dark: #333;
-
-  --background: #fff;
-
-  width: fit-content;
-  display: block;
+:host {
+  --background: var(--percy-bg-2);
+  // --background: transparent;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
 }
 
 .date-picker {
-  $date-picker-max-width: 800px;
-  $date-picker-input-border-color: var(--c-gray-light);
-  $date-picker-input-padding: .5rem;
-  $date-picker-toggle-btn-size: 18px;
-  $date-picker-toggle-btn-color: var(--c-gray-dark);
-
-  $date-picker-calendar-size: 310px;
-
-  $date-picker-button-border-color: var(--c-gray-light);
-
-  $date-picker-spacing: 1.8rem;
-  $calc-toggle-btn: calc($date-picker-spacing - $date-picker-toggle-btn-size) / 2;
-
-  &_header-button,
-  &_month-button,
-  &_day,
-  &_month {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: inherit;
-    padding: 0;
-    margin: 0;
-    border-radius: 6px;
-
-    &:focus, &:hover {
-      @include focus-style;
-    }
-  }
-
-  &_calendar {
+  &_wrapper {
     overflow: hidden;
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
     padding: 1.5rem;
-    min-width: 310px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
     background-color: var(--background);
-    max-width: $date-picker-max-width;
-    width: $date-picker-calendar-size;
+    border-radius: calculateRem(4px);
+    min-width: calculateRem(320px);
+    // max-width: calculateRem(800px); for desktop
   }
 
   &_header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1rem;
   }
 
-  &_header-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: $date-picker-spacing;
-    height: $date-picker-spacing;
-    border: 1px solid $date-picker-button-border-color;
+  &_prev-month,
+  &_next-month,
+  &_display-months,
+  &_prev-year,
+  &_next-year,
+  &_hide-months {
+    @include button-icon;
+    @include focus-style;
+
+    &:hover {
+      @include border-style;
+    }
+  }
+
+  &_display-months,
+  &_hide-months {
+    border: none;
+    font-size: $font-md;
   }
 
   &_header-label {
     display: flex;
     align-items: center;
-    font-weight: 800;
+    font-weight: $font-bold;
   }
 
-  &_month-button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: $date-picker-spacing;
-    width: $date-picker-spacing;
+  &_header-label-month,
+  &_header-label-year {
+    font-size: $font-lg;
+    margin-right: calculateRem(8px);
   }
 
-  &_weekdays {
+  &_calendar-grid {
+    width: 100%;
+  }
+
+  &_calendar-grid-head tr,
+  &_calendar-grid-body tr {
     display: grid;
     place-items: center;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    font-weight: 500;
-    padding: 1.5rem 0 1rem 0;
-    color: var(--c-gray);
+    gap: calculateRem(10px);
   }
 
-  &_days {
-    display: grid;
-    place-items: center;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
+  &_calendar-grid-head tr {
+    margin-bottom: 1rem;
+    color: var(--percy-gray40); // TODO: make color accessible
+    font-weight: $font-medium;
+  }
+
+  &_calendar-grid-body tr {
+    font-weight: $font-semi-bold;
+    margin-bottom: calculateRem(10px);
   }
 
   &_day {
+    @include focus-style;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    width: $date-picker-spacing;
-    height: $date-picker-spacing;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    padding: .3rem;
+    border-radius: calculateRem(6px);
+
+    &:hover, &[tabindex="0"] {
+      @include border-style;
+    }
 
     &[aria-hidden='true'] {
       box-shadow: none;
@@ -156,15 +102,9 @@
     }
   }
 
-  &_today {
-    border: 1px solid var(--c-primary);
-    color: var(--c-primary);
-  }
-
   &_day-selected,
   &_month-selected {
-    background: var(--c-primary-dark);
-    color: #fff;
+    background-color: var(--percy-secondary);
   }
 
   &_months {
@@ -176,16 +116,26 @@
   }
 
   &_month {
+    @include focus-style;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
     padding: .5rem 1rem;
-  }
+    font-weight: $font-semi-bold;
+    border-radius: calculateRem(6px);
 
+    &:hover {
+      @include border-style;
+    }
+  }
+}
+
+/*
   @include respond-to('extra-small') {
-    &_calendar {
+    &_wrapper {
       max-width: 310px;
     }
   }
 }
+*/

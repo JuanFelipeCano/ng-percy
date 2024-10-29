@@ -62,7 +62,8 @@ export class DatePickerInputComponent extends ValueAccessor {
     }
   }
 
-  public selectDate(date: DatePicker): void {
+  // public selectDate(date: DatePicker): void {
+    public selectDate(date: any): void {
     this.date.set(date.date);
     this.datePicker = date;
     this.toggleCalendar();
