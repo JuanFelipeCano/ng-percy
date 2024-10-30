@@ -1,18 +1,19 @@
 import {
   AfterViewChecked,
-  AfterViewInit,
+  ChangeDetectorRef,
   Directive,
   ElementRef,
+  HostListener,
   inject,
   OnDestroy,
-  OnInit,
+  OnInit
 } from '@angular/core';
-import { KeyboardKeys } from '../../constants';
+import { KeyboardKeys, ONE, ZERO } from '../../constants';
 import { sleep } from '../../utils';
 
 const EDITABLE_ELEMENTS = 'input:not([disabled]), textarea:not([disabled])';
 const NON_EDITABLE_ELEMENTS = 'button:not([disabled]), select:not([disabled]), [href]:not([disabled])';
-const NON_FOCUSABLE_ELEMENTS = '[tabindex="-1"]';
+const NON_FOCUSABLE_ELEMENTS = '[tabindex="0"]';
 const FOCUSABLE_ELEMENTS_SELECTOR = `${ EDITABLE_ELEMENTS }, ${ NON_EDITABLE_ELEMENTS }, ${ NON_FOCUSABLE_ELEMENTS }`;
 const VIEW_CHECKED_TIME = 100;
 
@@ -21,14 +22,14 @@ const VIEW_CHECKED_TIME = 100;
   selector: '[percyTrapFocus]',
   standalone: true
 })
-export class TrapFocusDirective implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
+export class TrapFocusDirective implements OnInit, AfterViewChecked, OnDestroy {
 
   private lastFocusedElement!: HTMLElement | null;
   private focusableElements!: HTMLElement[];
   private focusableInteractiveContentElements!: HTMLElement[];
-  private lastQuantityFocusableElements = 0;
 
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
+  private readonly _detectorRef = inject(ChangeDetectorRef);
 
   constructor() {
     this.focusableElements = [];
@@ -36,30 +37,40 @@ export class TrapFocusDirective implements OnInit, AfterViewInit, AfterViewCheck
   }
 
   public ngOnInit(): void {
-    this.setLastFocusableElement();
-  }
-
-  public ngAfterViewInit(): void {
-    this.setFocusableElements();
+    this.setLastFocusedElement();
+    this.focusFirstInteractiveElement();
   }
 
   public ngAfterViewChecked(): void {
-    if (this.lastQuantityFocusableElements !== this.focusableInteractiveContentElements.length) {
-      this.setFocusableElements();
-    }
-
-    this.lastQuantityFocusableElements = this.focusableInteractiveContentElements.length;
+    this.setFocusableElements();
   }
 
   public ngOnDestroy(): void {
-    this.setFocusToLastFocusableElement();
+    this.setFocusToLastFocusedElement();
   }
 
-  private async setFocusableElements(): Promise<void> {
+  @HostListener('keydown', ['$event'])
+  public onKeyDown(event: KeyboardEvent): void {
+    if (event.key !== KeyboardKeys.TAB) return;
+
+    const [ _fe, _ie, firstFocusableElement, lastFocusableElement ] = this.getFocusableElements();
+
+    if (event.shiftKey && document.activeElement === firstFocusableElement) {
+      event.stopPropagation();
+      event.preventDefault();
+      lastFocusableElement.focus();
+    }
+
+    if (!event.shiftKey && document.activeElement === lastFocusableElement) {
+      event.stopPropagation();
+      event.preventDefault();
+      firstFocusableElement.focus();
+    }
+  }
+
+  private setFocusableElements(): void {
     const focusableElements = this._elementRef.nativeElement.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR);
     this.focusableElements = Array.from(focusableElements);
-
-    await sleep(VIEW_CHECKED_TIME);
 
     const interactiveContent = this._elementRef.nativeElement.querySelector('.focusable-interactive-content');
 
@@ -70,35 +81,31 @@ export class TrapFocusDirective implements OnInit, AfterViewInit, AfterViewCheck
 
     const focusabeInteractiveContent = interactiveContent.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR);
     this.focusableInteractiveContentElements = Array.from(focusabeInteractiveContent);
-
-    this.trapFocus();
   }
 
-  private async trapFocus() {
-    const focusableElements = this.focusableElements.concat(this.focusableInteractiveContentElements);
+  private async focusFirstInteractiveElement(): Promise<void> {
+    await sleep(VIEW_CHECKED_TIME);
 
-    if (focusableElements.length === 0) return;
+    this._detectorRef.detectChanges();
 
-    const firstInteractiveElement = this.focusableInteractiveContentElements[0];
-    const lastFocusableElement = focusableElements[focusableElements.length - 1];
-    const firstFocusableElement = this.focusableElements[0] || firstInteractiveElement;
+    const [ focusableElements, firstInteractiveElement, firstFocusableElement ] = this.getFocusableElements();
+
+    if (focusableElements.length === ZERO) return;
 
     firstInteractiveElement ? firstInteractiveElement.focus() : firstFocusableElement.focus();
-
-    this._elementRef.nativeElement.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === KeyboardKeys.TAB) {
-        if (e.shiftKey && document.activeElement === firstFocusableElement) {
-          e.preventDefault();
-          lastFocusableElement.focus();
-        } else if (!e.shiftKey && document.activeElement === lastFocusableElement) {
-          e.preventDefault();
-          firstFocusableElement.focus();
-        }
-      }
-    });
   }
 
-  private setLastFocusableElement(): void {
+  private getFocusableElements(): Array<any> {
+    const focusableElements = this.focusableElements.concat(this.focusableInteractiveContentElements);
+
+    const firstInteractiveElement = this.focusableInteractiveContentElements[ZERO];
+    const lastFocusableElement = focusableElements[focusableElements.length - ONE];
+    const firstFocusableElement = this.focusableElements[ZERO] || firstInteractiveElement;
+
+    return [ focusableElements, firstInteractiveElement, firstFocusableElement, lastFocusableElement ];
+  }
+
+  private setLastFocusedElement(): void {
     let activeElement =
       typeof document !== 'undefined' && document
         ? (document.activeElement as HTMLElement | null)
@@ -116,7 +123,7 @@ export class TrapFocusDirective implements OnInit, AfterViewInit, AfterViewCheck
     this.lastFocusedElement = activeElement;
   }
 
-  private setFocusToLastFocusableElement(): void {
+  private setFocusToLastFocusedElement(): void {
     if (this.lastFocusedElement) {
       this.lastFocusedElement.focus();
     }
