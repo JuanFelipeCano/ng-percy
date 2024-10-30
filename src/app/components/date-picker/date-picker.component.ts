@@ -4,12 +4,14 @@ import {
   ChangeDetectorRef,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
+  ElementRef,
   forwardRef,
   inject,
   input,
   model,
   OnInit,
-  output
+  output,
+  viewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateTime as Luxon, Info as LuxonInfo } from 'luxon';
@@ -44,6 +46,10 @@ import { CalendarDay, DatePicker } from './models';
   ],
 })
 export class DatePickerComponent implements ControlValueAccessor, OnInit {
+
+  public displayMonthsBtn = viewChild('DisplayMonthsBtn', { read: ElementRef });
+  public hideMonthsBtn = viewChild('HideMonthsBtn', { read: ElementRef });
+
 
   public readonly attributeDateFormat = 'yyyy-MM-dd';
   protected readonly today = new Date(Luxon.now().toISO());
@@ -163,13 +169,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
       }
     }
 
-    const focusableElements = document.querySelector('.date-picker_body')?.querySelectorAll('td[tabindex="0"]');
-
-    focusableElements?.forEach((element: Element) => {
-      element.setAttribute('tabindex', INACTIVE_TAB_INDEX);
-    });
-
-    this._detectorRef.detectChanges();
+    this.updateTabIndexes();
   }
 
   public isDaySelected(day: CalendarDay): boolean {
@@ -183,7 +183,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
       && this.currentYear === this.currentDate.getFullYear();
   }
 
-  public selectDate(date: Date) {
+  public selectDate(date: Date): void {
     this.value.set(date);
     this.setDatePicker(date);
 
@@ -193,13 +193,13 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     this.onSelectedDate.emit(this.datePicker);
   }
 
-  public selectMonth(month: number) {
+  public selectMonth(month: number): void {
     this.currentMonth = month;
     this.updateCalendar();
     this.toggleMonths()
   }
 
-  public previousMonth() {
+  public previousMonth(): void {
     if (this.currentMonth === ZERO) {
       this.currentMonth = ELEVEN;
       this.currentYear--;
@@ -210,7 +210,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     this.updateCalendar();
   }
 
-  public nextMonth() {
+  public nextMonth(): void {
     if (this.currentMonth === ELEVEN) {
       this.currentMonth = ZERO;
       this.currentYear++;
@@ -221,22 +221,22 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     this.updateCalendar();
   }
 
-  protected toggleMonths() {
+  protected toggleMonths(): void {
     this.areMonthsOpen = !this.areMonthsOpen;
+
     if (this.areMonthsOpen) {
       this.updateCalendar();
     }
 
-    this._detectorRef.detectChanges();
-    (document.querySelector('.date-picker_body')?.querySelector('[tabindex="0"]') as HTMLElement)?.focus();
+    this.setToggleMonthsBtnFocus();
   }
 
-  protected previousYear() {
+  protected previousYear(): void {
     this.currentYear--;
     this.updateCalendar();
   }
 
-  protected nextYear() {
+  protected nextYear(): void {
     this.currentYear++;
     this.updateCalendar();
   }
@@ -265,5 +265,21 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
       date: value,
       formatedDate: this.getFormatedDate(value),
     };
+  }
+
+  private updateTabIndexes(): void {
+    const focusableElements = document.querySelector('.date-picker_body')?.querySelectorAll('td[tabindex="0"]');
+
+    focusableElements?.forEach((element: Element) => {
+      element.setAttribute('tabindex', INACTIVE_TAB_INDEX);
+    });
+
+    this._detectorRef.detectChanges();
+  }
+
+  private setToggleMonthsBtnFocus(): void {
+    this._detectorRef.detectChanges();
+    const focusableElement = this.areMonthsOpen ? this.hideMonthsBtn() : this.displayMonthsBtn();
+    focusableElement!.nativeElement.focus();
   }
 }

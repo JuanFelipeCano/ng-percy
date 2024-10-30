@@ -1,20 +1,19 @@
 @import 'styles/global';
 
 :host {
-  --background: var(--percy-bg-2);
-  // --background: transparent;
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  // --background: var(--percy-bg-2);
+  --background: transparent;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, .15); // TODO: make box-shadow accessible
 }
 
 .date-picker {
   &_wrapper {
     overflow: hidden;
     padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    box-shadow: var(--box-shadow);
     background-color: var(--background);
     border-radius: calculateRem(4px);
     min-width: calculateRem(320px);
-    // max-width: calculateRem(800px); for desktop
   }
 
   &_header {

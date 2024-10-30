@@ -1,4 +1,4 @@
-<div class="date-picker_wrapper"  #PickerBody>
+<div class="date-picker_wrapper">
   @switch (areMonthsOpen) {
     @case (true) {
       <ng-container [ngTemplateOutlet]="CalendarMonths"></ng-container>
@@ -27,6 +27,7 @@
         </h2>
 
         <button
+          #DisplayMonthsBtn
           type="button"
           class="date-picker_display-months"
           [attr.aria-label]="a11yDisplayMonthsAriaLabel()"
@@ -101,7 +102,9 @@
         <h2 id="year-heading-id" class="date-picker_header-label-year" aria-live="polite">
           {{ currentYear }}
         </h2>
+
         <button
+          #HideMonthsBtn
           type="button"
           class="date-picker_hide-months"
           [attr.aria-label]="a11yHideMonthsAriaLabel()"
