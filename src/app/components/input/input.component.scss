@@ -10,7 +10,7 @@ $margin-vertical: .25rem;
 
 :host {
   --color: inherit;
-  --background: var(--percy-bg-1);
+  --background: transparent;
   --border: var(--percy-primary-tint);
   --border-radius: .25rem;
   --wrapper-margin-bottom: .75rem;

@@ -42,7 +42,7 @@ type PasswordIcon = 'eye-outline' | 'eye-off-outline';
 export class InputComponent implements ControlValueAccessor {
 
   public readonly label = input.required<string>();
-  public readonly id = input<string>(randomId('percy-id'), { alias: 'inputId' });
+  public readonly id = input<string>(randomId('percy-id'), { alias: 'input-id' });
   public readonly name = input<string>(this.id());
   public readonly placeholder = input<string>('');
   public readonly labelStyle = input<LabelStyle>('start', { alias: 'label-style' });

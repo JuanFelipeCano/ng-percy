@@ -1,21 +1,42 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, model, OnInit, output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  ElementRef,
+  forwardRef,
+  inject,
+  input,
+  model,
+  OnInit,
+  output,
+  viewChild
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateTime as Luxon, Info as LuxonInfo } from 'luxon';
-import { CalendarDay, DatePicker, DatePickerConfig } from './models';
+import { ELEVEN, INACTIVE_TAB_INDEX, ONE, SEVEN, SIX, ZERO } from '../../constants';
+import { A11yCalendarDirective } from './a11y-calendar.directive';
+import { A11yMonthsDirective } from './a11y-months.directive';
+import { CalendarDay, DatePicker } from './models';
 
 @Component({
-  selector: 'app-date-picker',
+  selector: 'percy-date-picker',
   standalone: true,
-  imports: [ CommonModule ],
+  imports: [ CommonModule, A11yCalendarDirective, A11yMonthsDirective ],
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.scss',
   host: { 'class': 'date-picker' },
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => DatePickerComponent),
+    multi: true,
+  }],
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
-        style({ transform: 'translateY(-5%)', opacity: 0 }),
+        style({ transform: 'translateY(-5%)', opacity: ZERO }),
         animate('200ms ease-out', style({ transform: 'translateY(0)', opacity: 1 }))
       ]),
       transition(':leave', [
@@ -24,83 +45,163 @@ import { CalendarDay, DatePicker, DatePickerConfig } from './models';
     ])
   ],
 })
-export class DatePickerComponent implements OnInit {
+export class DatePickerComponent implements ControlValueAccessor, OnInit {
 
+  public displayMonthsBtn = viewChild('DisplayMonthsBtn', { read: ElementRef });
+  public hideMonthsBtn = viewChild('HideMonthsBtn', { read: ElementRef });
+
+
+  public readonly attributeDateFormat = 'yyyy-MM-dd';
+  protected readonly today = new Date(Luxon.now().toISO());
   private readonly defaultFormat = 'yyyy-MM-dd';
   private readonly defaultLocale = 'en-US';
-  protected readonly today = new Date(Luxon.now().toISO());
 
-  public config = model<DatePickerConfig>({ format: this.defaultFormat });
-  public onSelectedDate = output<DatePicker>();
+  public format = input<string>(this.defaultFormat);
+  public locale = input<string>(this.defaultLocale);
+  public value = model<Date>(this.today);
 
+  /**
+   * A11y properties
+   */
+  public readonly a11yPrevMonthAriaLabel
+    = input<string | null>(null, { alias: 'prev-month-aria-label' });
+  public readonly a11yNextMonthAriaLabel
+    = input<string | null>(null, { alias: 'next-month-aria-label' });
+  public readonly a11yDisplayMonthsAriaLabel
+    = input<string | null>(null, { alias: 'display-months-aria-label' });
+  public readonly a11yPreYearAriaLabel
+  = input<string | null>(null, { alias: 'prev-year-aria-label' });
+  public readonly a11yNexYearAriaLabel
+    = input<string | null>(null, { alias: 'next-year-aria-label' });
+  public readonly a11yHideMonthsAriaLabel
+    = input<string | null>(null, { alias: 'hide-months-aria-label' });
+
+  public readonly onSelectedDate = output<DatePicker>();
+
+  private readonly _detectorRef = inject(ChangeDetectorRef);
+
+  public onChange = (_value: Date) => {};
+  public onTouched = () => {};
+
+  public currentMonth!: number;
+  public currentYear!: number;
+  public datePicker!: DatePicker;
   protected weekdays!: string[];
   protected months!: string[];
-  protected datePicker!: DatePicker;
   protected currentDate!: Date;
-  protected currentMonth!: number;
-  protected currentYear!: number;
   protected calendarDays!: CalendarDay[];
-  protected isCalendarOpen!: boolean;
   protected areMonthsOpen!: boolean;
 
   constructor() {
-    this.isCalendarOpen = false;
+    this.calendarDays = [];
     this.areMonthsOpen = false;
     this.datePicker = {
-      visualDate: '',
+      formatedDate: '',
       date: new Date()
     };
   }
 
+  public get calendarWeeks(): CalendarDay[][] {
+    const weeks: CalendarDay[][] = [];
+
+    for (let i = ZERO; i < this.calendarDays.length; i += SEVEN) {
+      weeks.push(this.calendarDays.slice(i, i + SEVEN));
+    }
+
+    return weeks;
+  }
+
   public ngOnInit(): void {
-    this.initConfigValues();
     this.initCurrentValues();
     this.setInitialDate();
     this.setWeekdaysAndMonths();
     this.updateCalendar();
   }
 
-  protected toggleCalendar() {
-    if (this.config()?.disabled) return;
+  public writeValue(value: Date): void {
+    this.value.set(value);
+    this.setDatePicker(value);
+    this.onChange(value);
+    this.initCurrentValues();
+    this.updateCalendar();
+  }
 
-    this.isCalendarOpen = !this.isCalendarOpen;
-    this.areMonthsOpen = false;
-    if (this.isCalendarOpen) {
-      this.updateCalendar();
+  public registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  public updateCalendar(): void {
+    this.calendarDays = [];
+    const firstDay = new Date(this.currentYear, this.currentMonth, ONE);
+    const lastDay = new Date(this.currentYear, this.currentMonth + ONE, ZERO);
+
+    // Add days from previous month
+    const prevMonthDays = (firstDay.getDay() + SIX) % SEVEN;
+    const prevMonth = new Date(this.currentYear, this.currentMonth, ZERO);
+    for (let i = prevMonthDays - ONE; i >= ZERO; i--) {
+      this.calendarDays.unshift({
+        date: new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate() - i),
+        isFromAnotherMonth: true,
+      });
     }
-  }
 
-  protected toggleMonths() {
-    this.areMonthsOpen = !this.areMonthsOpen;
-    if (this.areMonthsOpen) {
-      this.updateCalendar();
+    // Add days of current month
+    for (let i = ONE; i <= lastDay.getDate(); i++) {
+      this.calendarDays.push({
+        date: new Date(this.currentYear, this.currentMonth, i),
+        isFromAnotherMonth: false,
+      });
     }
+
+    // Add days from next month
+    const remainingDays = SEVEN - (this.calendarDays.length % SEVEN);
+    if (remainingDays < SEVEN) {
+      const nextMonth = new Date(this.currentYear, this.currentMonth + ONE, ONE);
+      for (let i = ZERO; i < remainingDays; i++) {
+        this.calendarDays.push({
+          date: new Date(nextMonth.getFullYear(), nextMonth.getMonth(), i + ONE),
+          isFromAnotherMonth: true
+        });
+      }
+    }
+
+    this.updateTabIndexes();
   }
 
-  protected closeFromBackground(): void {
-    this.isCalendarOpen = false;
+  public isDaySelected(day: CalendarDay): boolean {
+    return !day.isFromAnotherMonth
+      && (this.datePicker.date
+      && day.date.toLocaleDateString() === this.datePicker.date.toLocaleDateString());
   }
 
-  protected selectDate(date: Date) {
-    this.datePicker = {
-      date,
-      visualDate: this.getVisualDate(date),
-    };
+  public isMonthSelected(month: number): boolean {
+    return month === this.currentMonth
+      && this.currentYear === this.currentDate.getFullYear();
+  }
+
+  public selectDate(date: Date): void {
+    this.value.set(date);
+    this.setDatePicker(date);
+
+    this.onChange(date);
+    this.onTouched();
 
     this.onSelectedDate.emit(this.datePicker);
-
-    this.isCalendarOpen = false;
   }
 
-  protected selectMonth(month: number) {
+  public selectMonth(month: number): void {
     this.currentMonth = month;
     this.updateCalendar();
     this.toggleMonths()
   }
 
-  protected previousMonth() {
-    if (this.currentMonth === 0) {
-      this.currentMonth = 11;
+  public previousMonth(): void {
+    if (this.currentMonth === ZERO) {
+      this.currentMonth = ELEVEN;
       this.currentYear--;
     } else {
       this.currentMonth--;
@@ -109,9 +210,9 @@ export class DatePickerComponent implements OnInit {
     this.updateCalendar();
   }
 
-  protected nextMonth() {
-    if (this.currentMonth === 11) {
-      this.currentMonth = 0;
+  public nextMonth(): void {
+    if (this.currentMonth === ELEVEN) {
+      this.currentMonth = ZERO;
       this.currentYear++;
     } else {
       this.currentMonth++;
@@ -120,92 +221,65 @@ export class DatePickerComponent implements OnInit {
     this.updateCalendar();
   }
 
-  protected previousYear() {
+  protected toggleMonths(): void {
+    this.areMonthsOpen = !this.areMonthsOpen;
+
+    if (this.areMonthsOpen) {
+      this.updateCalendar();
+    }
+
+    this.setToggleMonthsBtnFocus();
+  }
+
+  protected previousYear(): void {
     this.currentYear--;
     this.updateCalendar();
   }
 
-  protected nextYear() {
+  protected nextYear(): void {
     this.currentYear++;
     this.updateCalendar();
   }
 
-  protected isDaySelected(day: CalendarDay): boolean {
-    return !day.isFromAnotherMonth
-      && (this.datePicker.date
-      && day.date.toLocaleDateString() === this.datePicker.date.toLocaleDateString());
-  }
-
-  protected isMonthSelected(month: number): boolean {
-    return month === this.currentMonth
-      && this.currentYear === this.currentDate.getFullYear();
-  }
-
-  private updateCalendar(): void {
-    this.calendarDays = [];
-    const firstDay = new Date(this.currentYear, this.currentMonth, 1);
-    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
-
-    // Add days from previous month
-    const prevMonthDays = firstDay.getDay();
-    const prevMonth = new Date(this.currentYear, this.currentMonth, 0);
-    for (let i = prevMonthDays - 1; i >= 0; i--) {
-      this.calendarDays.unshift({
-        date: new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate() - i),
-        isFromAnotherMonth: true,
-      });
-    }
-
-    // Add days of current month
-    for (let i = 1; i <= lastDay.getDate(); i++) {
-      this.calendarDays.push({
-        date: new Date(this.currentYear, this.currentMonth, i),
-        isFromAnotherMonth: false,
-      });
-    }
-
-    // Add days from next month
-    const remainingDays = 7 - (this.calendarDays.length % 7);
-    if (remainingDays < 7) {
-      const nextMonth = new Date(this.currentYear, this.currentMonth + 1, 1);
-      for (let i = 0; i < remainingDays; i++) {
-        this.calendarDays.push({
-          date: new Date(nextMonth.getFullYear(), nextMonth.getMonth(), i + 1),
-          isFromAnotherMonth: true
-        });
-      }
-    }
-  }
-
-  private initConfigValues(): void {
-    this.config.update((config) => ({ ...config, locale: (config.locale || this.defaultLocale) }));
-  }
-
   private initCurrentValues(): void {
-    this.currentDate = (this.config()?.date || this.today);
+    this.currentDate = this.value();
     this.currentMonth = this.currentDate.getMonth();
     this.currentYear = this.currentDate.getFullYear();
   }
 
   private setInitialDate(): void {
-    const config = this.config();
-
-    if (config?.date) {
-      this.datePicker = {
-        date: config.date,
-        visualDate: this.getVisualDate(config.date),
-      };
-    }
+    this.setDatePicker(this.value());
   }
 
-  private getVisualDate(date: Date): string {
-    const config = this.config();
-
-    return Luxon.fromJSDate(date).setLocale(config?.locale!).toFormat(config.format);
+  private getFormatedDate(date: Date): string {
+    return Luxon.fromJSDate(date).setLocale(this.locale()).toFormat(this.format());
   }
 
   private setWeekdaysAndMonths(): void {
-    this.weekdays = LuxonInfo.weekdays('long', { locale: this.config()?.locale });
-    this.months = LuxonInfo.months('long', { locale: this.config()?.locale });
+    this.weekdays = LuxonInfo.weekdays('long', { locale: this.locale() });
+    this.months = LuxonInfo.months('long', { locale: this.locale() });
+  }
+
+  private setDatePicker(value: Date): void {
+    this.datePicker = {
+      date: value,
+      formatedDate: this.getFormatedDate(value),
+    };
+  }
+
+  private updateTabIndexes(): void {
+    const focusableElements = document.querySelector('.date-picker_body')?.querySelectorAll('td[tabindex="0"]');
+
+    focusableElements?.forEach((element: Element) => {
+      element.setAttribute('tabindex', INACTIVE_TAB_INDEX);
+    });
+
+    this._detectorRef.detectChanges();
+  }
+
+  private setToggleMonthsBtnFocus(): void {
+    this._detectorRef.detectChanges();
+    const focusableElement = this.areMonthsOpen ? this.hideMonthsBtn() : this.displayMonthsBtn();
+    focusableElement!.nativeElement.focus();
   }
 }

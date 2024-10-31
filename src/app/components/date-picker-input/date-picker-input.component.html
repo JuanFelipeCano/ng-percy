@@ -1,0 +1,41 @@
+<percy-input
+  readonly
+  right-icon="calendar-outline"
+  [value]="datePicker.formatedDate"
+  [id]="id()"
+  [name]="name()"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  (percyClick)="toggleCalendar()"
+/>
+
+@if (isCalendarOpen) {
+  <div class="date-picker-input_calendar" percyTrapFocus>
+    <div
+      class="date-picker-input_overlay"
+      aria-hidden="true"
+      (click)="closeFromBackground()"
+    ></div>
+
+    <div
+      class="date-picker-input_calendar-inner focusable-interactive-content"
+      aria-modal="true"
+      [attr.role]="'dialog'"
+      [attr.aria-label]="label()"
+      [@slideInOut]
+    >
+      <percy-date-picker
+        [format]="format()"
+        [locale]="locale()"
+        [value]="value()"
+        [prev-month-aria-label]="a11yPrevMonthAriaLabel()"
+        [next-month-aria-label]="a11yNextMonthAriaLabel()"
+        [display-months-aria-label]="a11yDisplayMonthsAriaLabel()"
+        [prev-year-aria-label]="a11yPreYearAriaLabel()"
+        [next-year-aria-label]="a11yNexYearAriaLabel()"
+        [hide-months-aria-label]="a11yHideMonthsAriaLabel()"
+        (onSelectedDate)="selectDate($event)"
+      />
+    </div>
+  </div>
+}

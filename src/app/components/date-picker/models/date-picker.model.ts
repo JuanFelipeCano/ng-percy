@@ -1,4 +1,4 @@
 export interface DatePicker {
-  visualDate: string;
+  formatedDate: string;
   date: Date;
 }
