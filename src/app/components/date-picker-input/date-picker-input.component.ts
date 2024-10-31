@@ -1,14 +1,26 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, input, model, ViewChild } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  HostListener,
+  input,
+  model,
+  OnInit,
+  output,
+  ViewChild,
+} from '@angular/core';
 import { DateTime as Luxon } from 'luxon';
-import { DatePicker } from '../date-picker/models';
+import { KeyboardKeys } from '../../constants';
+import { TrapFocusDirective } from '../../directives';
+import { randomId } from '../../utils';
 import { DatePickerComponent } from '../date-picker/date-picker.component';
-import { ValueAccessor } from './value-accesor';
+import { DatePicker } from '../date-picker/models';
+import { InputComponent } from '../input/input.component';
 
 @Component({
-  selector: 'app-date-picker-input',
+  selector: 'percy-date-picker-input',
   standalone: true,
-  imports: [ DatePickerComponent ],
+  imports: [ DatePickerComponent, InputComponent, TrapFocusDirective ],
   templateUrl: './date-picker-input.component.html',
   styleUrl: './date-picker-input.component.scss',
   host: { 'class': 'date-picker-input' },
@@ -25,7 +37,7 @@ import { ValueAccessor } from './value-accesor';
     ]),
   ],
 })
-export class DatePickerInputComponent extends ValueAccessor {
+export class DatePickerInputComponent implements OnInit {
 
   @ViewChild(DatePickerComponent) public datePickerComponent!: DatePickerComponent;
 
@@ -33,23 +45,67 @@ export class DatePickerInputComponent extends ValueAccessor {
   private readonly defaultLocale = 'en-US';
   protected readonly today = new Date(Luxon.now().toISO());
 
+  public readonly label = input.required<string>();
+  public readonly id = input<string>(randomId('percy-id'), { alias: 'picker-id' });
+  public readonly name = input<string>(this.id());
+  public readonly placeholder = input<string>('');
+
   public format = input<string>(this.defaultFormat);
   public locale = input<string>(this.defaultLocale);
-  public override disabled = model<boolean>(false);
+  public disabled = model<boolean>(false);
   public closeFromOutside = input<boolean>(true);
-  public date = model<Date>(this.today, { alias: 'value' });
+  public value = model<Date>(this.today);
+
+  /**
+   * A11y properties
+   */
+  public readonly a11yPrevMonthAriaLabel
+    = input<string | null>(null, { alias: 'prev-month-aria-label' });
+  public readonly a11yNextMonthAriaLabel
+    = input<string | null>(null, { alias: 'next-month-aria-label' });
+  public readonly a11yDisplayMonthsAriaLabel
+    = input<string | null>(null, { alias: 'display-months-aria-label' });
+  public readonly a11yPreYearAriaLabel
+  = input<string | null>(null, { alias: 'prev-year-aria-label' });
+  public readonly a11yNexYearAriaLabel
+    = input<string | null>(null, { alias: 'next-year-aria-label' });
+  public readonly a11yHideMonthsAriaLabel
+    = input<string | null>(null, { alias: 'hide-months-aria-label' });
+
+  public readonly onSelectedDate = output<DatePicker>();
 
   protected isCalendarOpen!: boolean;
   protected datePicker!: DatePicker;
 
   constructor() {
-    super();
-
     this.isCalendarOpen = false;
     this.datePicker = {
       formatedDate: '',
       date: new Date()
     };
+  }
+
+  public ngOnInit(): void {
+    this.setInitialDate(this.value());
+  }
+
+  @HostListener('keydown', ['$event'])
+  public onKeyDown(event: KeyboardEvent): void {
+    if ([KeyboardKeys.ESCAPE, KeyboardKeys.ESC].includes(event.key as KeyboardKeys)) return;
+
+    this.closeFromBackground();
+  }
+
+  protected selectDate(date: DatePicker): void {
+    this.value.set(date.date);
+    this.datePicker = date;
+    this.toggleCalendar();
+  }
+
+  protected closeFromBackground(): void {
+    if (!this.closeFromOutside()) return;
+
+    this.toggleCalendar();
   }
 
   protected toggleCalendar(): void {
@@ -62,16 +118,14 @@ export class DatePickerInputComponent extends ValueAccessor {
     }
   }
 
-  // public selectDate(date: DatePicker): void {
-    public selectDate(date: any): void {
-    this.date.set(date.date);
-    this.datePicker = date;
-    this.toggleCalendar();
+  private setInitialDate(value: Date): void {
+    this.datePicker = {
+      date: value,
+      formatedDate: this.getFormatedDate(value),
+    };
   }
 
-  public closeFromBackground(): void {
-    if (!this.closeFromOutside()) return;
-
-    this.toggleCalendar();
+  private getFormatedDate(date: Date): string {
+    return Luxon.fromJSDate(date).setLocale(this.locale()).toFormat(this.format());
   }
 }

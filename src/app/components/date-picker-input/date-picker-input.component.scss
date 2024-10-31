@@ -1,91 +1,8 @@
-@mixin focus-style {
-  outline: none;
-  border: 1px solid var(--c-primary);
-  box-shadow: 0 0 2px var(--c-primary-dark);
-}
-
-@mixin reset-button {
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  color: inherit;
-  padding: 0;
-  margin: 0;
-  border-radius: 6px;
-
-  &:focus, &:hover {
-    @include focus-style;
-  }
-}
-
-:host.date-picker-input {
-  --c-primary: #8840FF;
-  --c-primary-dark: #6139A0;
-  --c-gray: #9C9D9F;
-  --c-gray-light: #ddd;
-  --c-gray-dark: #333;
-
-  --background: #fff;
-}
+@import 'styles/global';
 
 .date-picker-input {
-  $date-picker-max-width: 100%;
-  $date-picker-input-border-color: var(--c-gray-light);
-  $date-picker-input-padding: .5rem;
-  $date-picker-toggle-btn-size: 18px;
-  $date-picker-toggle-btn-color: var(--c-gray-dark);
-  $date-picker-toggle-btn-active-color: var(--c-primary);
-
-  $date-picker-calendar-size: 800px;
-
-  $date-picker-button-border-color: var(--c-gray-light);
-
-  $date-picker-spacing: 1.8rem;
-  $calc-toggle-btn: calc($date-picker-spacing - $date-picker-toggle-btn-size) / 2;
-
-  &_wrapper {
-    display: flex;
-    align-items: center;
+  &_calendar {
     position: relative;
-  }
-
-  &_input {
-    width: 100%;
-    padding:
-      $date-picker-input-padding
-      calc($date-picker-input-padding + $date-picker-spacing - $calc-toggle-btn)
-      $date-picker-input-padding
-      $date-picker-input-padding;
-    border-radius: .25rem;
-    font-size: 1rem;
-    border: 1px solid $date-picker-input-border-color;
-
-    &:focus, &-active {
-      @include focus-style;
-    }
-  }
-
-  &_toggle-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    height: $date-picker-spacing;
-    width: $date-picker-spacing;
-    right: calc($date-picker-input-padding - $calc-toggle-btn);
-    font-size: $date-picker-toggle-btn-size;
-    color: $date-picker-toggle-btn-color;
-
-    @include reset-button;
-
-    &-active {
-      color: var(--date-picker-toggle-btn-active-color);
-    }
-
-    &:focus, &:active {
-      box-shadow: none;
-      border: 0;
-    }
   }
 
   &_overlay {
@@ -94,13 +11,19 @@
     left: 0;
     right: 0;
     bottom: 0;
-  }
-
-  &_calendar {
-    position: relative;
+    z-index: 9;
   }
 
   &_calendar-inner {
     position: absolute;
+    right: 0;
+    z-index: 10;
+    background-color: var(--percy-bg-1);
+  }
+}
+
+::ng-deep .percy-input_field {
+  &[readonly] {
+    opacity: initial !important;
   }
 }

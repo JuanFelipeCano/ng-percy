@@ -77,6 +77,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     = input<string | null>(null, { alias: 'hide-months-aria-label' });
 
   public readonly onSelectedDate = output<DatePicker>();
+
   private readonly _detectorRef = inject(ChangeDetectorRef);
 
   public onChange = (_value: Date) => {};
@@ -103,7 +104,6 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
   public get calendarWeeks(): CalendarDay[][] {
     const weeks: CalendarDay[][] = [];
 
-    // console.log(this.calendarDays);
     for (let i = ZERO; i < this.calendarDays.length; i += SEVEN) {
       weeks.push(this.calendarDays.slice(i, i + SEVEN));
     }
