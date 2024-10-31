@@ -17,6 +17,11 @@ import { DatePickerComponent } from '../date-picker/date-picker.component';
 import { DatePicker } from '../date-picker/models';
 import { InputComponent } from '../input/input.component';
 
+/**
+ * DatePickerInputComponent
+ * @see https://moment.github.io/luxon/#/formatting?id=table-of-tokens for date format
+ * @description It is a wrapper for the DatePickerComponent.
+ */
 @Component({
   selector: 'percy-date-picker-input',
   standalone: true,
