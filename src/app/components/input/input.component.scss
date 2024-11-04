@@ -57,7 +57,7 @@ $margin-vertical: .25rem;
     padding: $padding-vertical $padding-sides;
     margin-top: $margin-vertical;
 
-    @include focus-style();
+    @include focus-style;
 
     &[disabled],
     &[readonly] {
