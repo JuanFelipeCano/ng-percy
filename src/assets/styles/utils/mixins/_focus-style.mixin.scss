@@ -1,7 +1,7 @@
-$focus-type: 'border' !default;
+$focus-type: 'with-focus' !default;
 $focus-color: var(--percy-accent-tint) !default;
-$focus-box-shadow: 0 0 2px var(--percy-accent-shade) !default;
-$focus-width: 1px !default;
+$focus-box-shadow: 0 0 4px var(--percy-accent-shade) !default;
+$focus-width: 1.5px !default;
 $focus-style: solid !default;
 $focus-offset: 0 !default;
 
@@ -22,21 +22,24 @@ $focus-offset: 0 !default;
   $style: $focus-style,
   $offset: $focus-offset
 ) {
-  @if not index('border' 'outline', $type) {
-    @error 'Invalid type `#{$type}`. Valid types: `border` | `outline`.';
+  @if not index('without-focus' 'with-focus', $type) {
+    @error 'Invalid type `#{$type}`. Valid types: `without-focus` | `with-focus`.';
   }
 
-  &:focus {
-    @if $type == 'border' {
-      @include border-style($color, 6px, $box-shadow, $width, $style);
-
-      outline: none;
-    }
-    @else if $type == 'outline' {
-      outline: $width $style $color;
-      outline-offset: $offset;
-    }
-
+  @if $type == 'without-focus' {
+    outline: $width $style $color;
+    outline-offset: $offset;
     box-shadow: $box-shadow;
   }
+
+  @else if $type == 'with-focus' {
+    &:focus {
+      outline: $width $style $color;
+      outline-offset: $offset;
+      box-shadow: $box-shadow;
+    }
+  }
+
+
+
 }

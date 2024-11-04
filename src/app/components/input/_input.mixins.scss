@@ -118,7 +118,7 @@
 
     .percy-input_icon-btn {
       @include button-icon(20px);
-      @include focus-style();
+      @include focus-style;
 
       padding: calculateRem(4px);
 
@@ -138,6 +138,6 @@
   .percy-input_field {
     border-color: var(--percy-tertiary);
 
-    @include focus-style('border', var(--percy-tertiary-tint), $box-shadow);
+    @include focus-style('with-focus', var(--percy-tertiary-tint), $box-shadow);
   }
 }
