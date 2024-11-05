@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DialogScreenController } from './components/dialog-screen/dialog-screen.controller';
+import { DialogScreenController, ToggleComponent } from 'percy';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ RouterOutlet ],
+  imports: [RouterOutlet, ToggleComponent],
   providers: [ DialogScreenController ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -18,20 +18,23 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.setTheme();
-    this.subscribeToThemeChange();
-  }
-
-  private setTheme(): void {
-    const colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark' : 'light';
-
-    document.querySelector('body')!.className = colorScheme;
-  }
-
-  private subscribeToThemeChange(): void {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      this.setTheme();
+    this._dialogScreenController.create({
+      title: 'Test',
+      component: ToggleComponent,
+      componentProps: {
+        label: signal('Test'),
+        id: signal('test'),
+        name: signal('test'),
+        showLabel: signal(true),
+        readonly: signal(false),
+        disabled: signal(false),
+        required: signal(false),
+        invalid: signal(false),
+        checked: signal(false),
+      },
+      closeFromBackground: true,
+      hideCloseButton: false,
+      hideTitle: false,
     });
   }
 }
