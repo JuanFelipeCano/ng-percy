@@ -1,0 +1,140 @@
+@import '../../../../assets/styles/global';
+
+:host {
+  // --background: var(--percy-bg-2);
+  --background: transparent;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, .15); // TODO: make box-shadow accessible
+}
+
+.date-picker {
+  &_wrapper {
+    overflow: hidden;
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    background-color: var(--background);
+    border-radius: calculateRem(4px);
+    min-width: calculateRem(320px);
+  }
+
+  &_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  &_prev-month,
+  &_next-month,
+  &_display-months,
+  &_prev-year,
+  &_next-year,
+  &_hide-months {
+    @include button-icon;
+    @include focus-style;
+
+    &:hover {
+      @include border-style;
+    }
+  }
+
+  &_display-months,
+  &_hide-months {
+    border: none;
+    font-size: $font-md;
+  }
+
+  &_header-label {
+    display: flex;
+    align-items: center;
+    font-weight: $font-bold;
+  }
+
+  &_header-label-month,
+  &_header-label-year {
+    font-size: $font-lg;
+    margin-right: calculateRem(8px);
+  }
+
+  &_calendar-grid {
+    width: 100%;
+  }
+
+  &_calendar-grid-head tr,
+  &_calendar-grid-body tr {
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(7, 1fr);
+    gap: calculateRem(10px);
+  }
+
+  &_calendar-grid-head tr {
+    margin-bottom: 1rem;
+    color: var(--percy-gray40); // TODO: make color accessible
+    font-weight: $font-medium;
+  }
+
+  &_calendar-grid-body tr {
+    font-weight: $font-semi-bold;
+    margin-bottom: calculateRem(10px);
+  }
+
+  &_day {
+    @include focus-style;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    padding: .3rem;
+    border-radius: calculateRem(6px);
+
+    &:hover, &[tabindex="0"] {
+      @include border-style;
+    }
+
+    &[aria-hidden='true'] {
+      box-shadow: none;
+      cursor: initial;
+      border: 0;
+    }
+  }
+
+  &_day-selected,
+  &_month-selected {
+    background-color: var(--percy-secondary);
+  }
+
+  &_months {
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 1.5rem;
+  }
+
+  &_month {
+    @include focus-style;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem 1rem;
+    font-weight: $font-semi-bold;
+    border-radius: calculateRem(6px);
+
+    &:hover {
+      @include border-style;
+    }
+  }
+}
+
+/*
+  @include respond-to('extra-small') {
+    &_wrapper {
+      max-width: 310px;
+    }
+  }
+}
+*/

@@ -1,6 +1,12 @@
 {
   "name": "percy",
   "version": "0.0.1",
+  "exports": {
+    ".": {
+      "sass": "./src/assets/styles/_global.scss",
+      "style": ["./src/assets/styles/_global.scss", "./src/assets/styles/_reset.scss"]
+    }
+  },
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0"

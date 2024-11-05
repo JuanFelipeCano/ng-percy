@@ -1,0 +1,145 @@
+<div class="date-picker_wrapper">
+  @switch (areMonthsOpen) {
+    @case (true) {
+      <ng-container [ngTemplateOutlet]="CalendarMonths"></ng-container>
+    }
+    @default {
+      <ng-container [ngTemplateOutlet]="CalendarDays"></ng-container>
+    }
+  }
+</div>
+
+<ng-template #CalendarDays>
+  <div class="date-picker_calendar" aria-labelledby="month-year-heading-id">
+    <div class="date-picker_header">
+      <button
+        type="button"
+        class="date-picker_prev-month"
+        [attr.aria-label]="a11yPrevMonthAriaLabel()"
+        (click)="previousMonth()"
+      >
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+
+      <div class="date-picker_header-label">
+        <h2 id="month-year-heading-id" class="date-picker_header-label-month" aria-live="polite">
+          {{ months[currentMonth] | titlecase }} {{ currentYear }}
+        </h2>
+
+        <button
+          #DisplayMonthsBtn
+          type="button"
+          class="date-picker_display-months"
+          [attr.aria-label]="a11yDisplayMonthsAriaLabel()"
+          (click)="toggleMonths()"
+        >
+          <ion-icon name="chevron-down-outline"></ion-icon>
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="date-picker_next-month"
+        [attr.aria-label]="a11yNextMonthAriaLabel()"
+        (click)="nextMonth()"
+      >
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+    </div>
+
+    <div class="date-picker_body">
+      <table class="date-picker_calendar-grid" aria-labelledby="month-year-heading-id" [attr.role]="'grid'">
+        <thead class="date-picker_calendar-grid-head">
+          <tr>
+            @for (weekday of weekdays; track $index) {
+              <th scope="col" [abbr]="weekday">
+                {{ weekday | titlecase | slice: 0 : 3 }}
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody class="date-picker_calendar-grid-body">
+          @for (week of calendarWeeks; track $index) {
+            <tr>
+              @for (day of week; track $index) {
+                @if (!day.isFromAnotherMonth) {
+                  <td
+                    class="date-picker_day"
+                    percyA11yCalendar [calendarDay]="day"
+                    [attr.role]="isDaySelected(day) ? 'gridcell' : null"
+                    [attr.aria-selected]="isDaySelected(day)"
+                    [attr.data-date]="day.date | date: attributeDateFormat"
+                    [class.date-picker_day-selected]="isDaySelected(day)"
+                    [class.date-picker_today]="day.date.toLocaleDateString() === today.toLocaleDateString()"
+                    (click)="selectDate(day.date)"
+                  >
+                      <span class="date-picker_day-label">{{ day.date | date:'dd' }}</span>
+                  </td>
+                } @else {
+                  <td [attr.aria-hidden]="day.isFromAnotherMonth"></td>
+                }
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #CalendarMonths>
+  <div class="date-picker_calendar-months" aria-labelledby="year-heading-id">
+    <div class="date-picker_header">
+      <button
+        type="button"
+        class="date-picker_prev-year"
+        [attr.aria-label]="a11yPreYearAriaLabel()"
+        (click)="previousYear()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+
+      <div class="date-picker_header-label">
+        <h2 id="year-heading-id" class="date-picker_header-label-year" aria-live="polite">
+          {{ currentYear }}
+        </h2>
+
+        <button
+          #HideMonthsBtn
+          type="button"
+          class="date-picker_hide-months"
+          [attr.aria-label]="a11yHideMonthsAriaLabel()"
+          (click)="toggleMonths()">
+          <ion-icon name="chevron-up-outline"></ion-icon>
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="date-picker_next-year"
+        [attr.aria-label]="a11yNexYearAriaLabel()"
+        (click)="nextYear()">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+    </div>
+
+    <div class="date-picker_body">
+      <div class="date-picker_months" aria-labelledby="year-heading-id" [attr.role]="'grid'">
+        @for (month of months; track $index) {
+          <div class="date-picker_month-wrapper">
+            <span
+              class="date-picker_month"
+              percyA11yMonths [month]="$index"
+              [attr.role]="isMonthSelected($index) ? 'gridcell' : null"
+              [attr.aria-selected]="isMonthSelected($index)"
+              [attr.data-month]="currentYear + '-' + $index"
+              [class.date-picker_month-selected]="isMonthSelected($index)"
+              (click)="selectMonth($index)"
+            >
+              <span class="date-picker_month-label">{{ month | slice: 0 : 3 }}</span>
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</ng-template>
