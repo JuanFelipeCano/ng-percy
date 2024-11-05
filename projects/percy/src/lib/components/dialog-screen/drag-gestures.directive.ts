@@ -8,6 +8,7 @@ import {
   Renderer2,
 } from '@angular/core';
 import { DialogScreenComponent } from './dialog-screen.component';
+import { ZERO } from '../../constants';
 
 @Directive({
   selector: '[percyDragGestures]',
@@ -44,7 +45,7 @@ export class DragGesturesDirective implements OnDestroy {
 
     if (event.target === this._elementRef.nativeElement) {
       this.isDragging = true;
-      this.startY = event.touches[0].clientY;
+      this.startY = event.touches[ZERO].clientY;
       this.startTranslateY = this.currentTranslateY;
 
       this._renderer.setStyle(
@@ -63,9 +64,9 @@ export class DragGesturesDirective implements OnDestroy {
       !this.isDragging
     ) return;
 
-    const currentY = event.touches[0].clientY;
+    const currentY = event.touches[ZERO].clientY;
     const deltaY = currentY - this.startY;
-    this.currentTranslateY = Math.max(this.startTranslateY + deltaY, 0);
+    this.currentTranslateY = Math.max(this.startTranslateY + deltaY, ZERO);
 
     this._renderer.setStyle(
       this.dialogContainerElement, 'transform', `translateY(${ this.currentTranslateY }px)`
@@ -95,7 +96,7 @@ export class DragGesturesDirective implements OnDestroy {
   }
 
   private resetPosition() {
-    this.currentTranslateY = 0;
+    this.currentTranslateY = ZERO;
 
     this._renderer.setStyle(
       this.dialogContainerElement, 'transform', 'translateY(0)'
@@ -104,8 +105,8 @@ export class DragGesturesDirective implements OnDestroy {
 
   private resetDragState() {
     this.isDragging = false;
-    this.currentTranslateY = 0;
-    this.startY = 0;
-    this.startTranslateY = 0;
+    this.currentTranslateY = ZERO;
+    this.startY = ZERO;
+    this.startTranslateY = ZERO;
   }
 }

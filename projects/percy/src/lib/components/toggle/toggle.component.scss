@@ -1,4 +1,4 @@
-@import 'styles/global';
+@import '../../../assets/styles/global';
 
 :host {
   --inactive-background: var(--percy-gray80);
@@ -12,6 +12,7 @@
   &_wrapper {
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
   }
 
   &_inner {

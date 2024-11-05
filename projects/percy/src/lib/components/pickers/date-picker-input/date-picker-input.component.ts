@@ -10,12 +10,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DateTime as Luxon } from 'luxon';
-import { KeyboardKeys } from '../../constants';
-import { TrapFocusDirective } from '../../directives';
-import { randomId } from '../../utils';
+import { KeyboardKeys } from '../../../constants';
+import { TrapFocusDirective } from '../../../directives';
+import { randomId } from '../../../utils';
+import { InputComponent } from '../../input/input.component';
 import { DatePickerComponent } from '../date-picker/date-picker.component';
 import { DatePicker } from '../date-picker/models';
-import { InputComponent } from '../input/input.component';
 
 /**
  * DatePickerInputComponent

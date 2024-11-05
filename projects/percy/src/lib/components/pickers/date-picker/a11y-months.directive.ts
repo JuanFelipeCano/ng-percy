@@ -15,7 +15,7 @@ import {
   THREE,
   TWO,
   ZERO,
-} from '../../constants';
+} from '../../../constants';
 import { DatePickerComponent } from './date-picker.component';
 
 @Directive({

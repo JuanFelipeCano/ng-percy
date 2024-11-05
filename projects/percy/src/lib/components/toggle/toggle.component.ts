@@ -1,6 +1,6 @@
 import { booleanAttribute, Component, HostListener, input, model, output } from '@angular/core';
-import { randomId } from '../../utils';
 import { KeyboardKeys } from '../../constants';
+import { randomId } from '../../utils';
 
 @Component({
   selector: 'percy-toggle',
