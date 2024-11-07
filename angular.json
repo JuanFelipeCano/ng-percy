@@ -108,7 +108,12 @@
       "projectType": "library",
       "root": "projects/percy",
       "sourceRoot": "projects/percy/src",
-      "prefix": "lib",
+      "prefix": "percy",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
