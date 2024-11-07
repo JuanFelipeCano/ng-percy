@@ -26,4 +26,5 @@ $button-icon-padding: 2px !default;
   font-size: calculateRem($size);
   margin: calculateRem($button-icon-margin);
   padding: calculateRem($button-icon-padding);
+  border-radius: calculateRem(6px);
 }

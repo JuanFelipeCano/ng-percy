@@ -13,7 +13,7 @@ $margin-vertical: .25rem;
   --background: transparent;
   --border: var(--percy-primary-tint);
   --border-radius: .25rem;
-  --wrapper-margin-bottom: .75rem;
+  --margin-bottom: .75rem;
 
   // To prevent margin collapse
   display: flex;
@@ -41,7 +41,7 @@ $margin-vertical: .25rem;
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-bottom: var(--wrapper-margin-bottom);
+    margin-bottom: var(--margin-bottom);
   }
 
   &_inner {
