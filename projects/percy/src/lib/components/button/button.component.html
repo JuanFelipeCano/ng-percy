@@ -1,0 +1,18 @@
+<button
+  class="percy-button_wrapper"
+  [type]="type()"
+  [disabled]="disabled()"
+  (click)="percyClick.emit($event)"
+  (focus)="percyFocus.emit($event)"
+  (blur)="percyBlur.emit($event)"
+>
+  <span [class.visually-hidden]="onlyIcon()" class="percy-button_label">
+    {{ label() }}
+  </span>
+
+  @if (icon()) {
+    <span class="percy-button_icon-wrapper">
+      <ion-icon aria-hidden="true" [name]="icon()"></ion-icon>
+    </span>
+  }
+</button>

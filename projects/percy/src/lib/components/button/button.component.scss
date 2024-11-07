@@ -1,0 +1,142 @@
+@import '../../../assets/styles/global';
+
+:host {
+  --margin-bottom: .75rem;
+
+  display: block;
+
+  // Variations
+  &.percy-button_filled {
+    .percy-button_wrapper {
+      background-color: var(--percy-primary);
+      color: var(--percy-text);
+
+      &:hover {
+        background-color: var(--percy-primary-tint);
+      }
+    }
+  }
+
+  &.percy-button_ghosted {
+    .percy-button_wrapper {
+      background-color: transparent;
+      border: 1px solid var(--percy-primary);
+      color: var(--percy-primary);
+
+      &:hover {
+        background-color: var(--percy-primary-tint);
+        color: var(--percy-text);
+      }
+    }
+  }
+
+  &.percy-button_linked {
+    .percy-button_wrapper {
+      background-color: transparent;
+      text-decoration: underline;
+      border: 0;
+      color: var(--percy-primary);
+
+      &:hover {
+        color: var(--percy-primary-tint);
+      }
+    }
+  }
+
+  &.percy-button_cleaned {
+    .percy-button_wrapper {
+      background-color: transparent;
+      border: 0;
+      color: var(--percy-primary);
+
+      &:hover {
+        color: var(--percy-primary-tint);
+      }
+    }
+  }
+
+  &.percy-button_small {
+    .percy-button_wrapper {
+      padding: calculateRem(8px) calculateRem(14px);
+      font-size: $font-sm;
+    }
+  }
+
+  &.percy-button_medium {
+    .percy-button_wrapper {
+      padding: calculateRem(10px) calculateRem(16px);
+      font-size: $font-md;
+    }
+  }
+
+  &.percy-button_large {
+    .percy-button_wrapper {
+      padding: calculateRem(14px) calculateRem(20px);
+      font-size: $font-lg;
+    }
+  }
+
+  &.percy-button_icon-left {
+    .percy-button_wrapper {
+      flex-direction: row-reverse;
+    }
+  }
+
+  &.percy-button_icon-right {
+    .percy-button_wrapper {
+      flex-direction: row;
+    }
+  }
+
+  &.percy-button_circle {
+    .percy-button_wrapper {
+      border-radius: calculateRem(24px);
+    }
+  }
+
+  &.percy-button_round {
+    .percy-button_wrapper {
+      border-radius: .25rem;
+    }
+  }
+
+  &.percy-button_square {
+    .percy-button_wrapper {
+      border-radius: 0;
+    }
+  }
+
+  &.percy-button_full {
+    .percy-button_wrapper {
+      width: 100%;
+    }
+  }
+
+  &.percy-button_block {
+    .percy-button_wrapper {
+      width: auto;
+    }
+  }
+}
+
+.percy-button {
+  &_wrapper {
+    @include clear-default-style;
+    @include focus-style;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    gap: calculateRem(8px);
+    margin-bottom: var(--margin-bottom);
+
+    &[disabled] {
+      opacity: .5;
+    }
+  }
+
+  &_icon-wrapper {
+    display: flex;
+  }
+}

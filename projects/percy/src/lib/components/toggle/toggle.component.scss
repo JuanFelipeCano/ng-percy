@@ -4,6 +4,7 @@
   --inactive-background: var(--percy-gray80);
   --active-background: var(--percy-accent);
   --indicator-color: var(--percy-gray100);
+  --margin-bottom: .75rem;
 }
 
 .percy-toggle {
@@ -13,6 +14,7 @@
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+    margin-bottom: var(--margin-bottom);
   }
 
   &_inner {

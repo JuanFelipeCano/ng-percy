@@ -1,4 +1,8 @@
-<label class="percy-toggle_wrapper" [for]="id()">
+<label
+  class="percy-toggle_wrapper"
+  [for]="id()"
+  [style.display]="showLabel() ? 'flex' : 'inline-flex'"
+>
   <span class="percy-toggle_label" [class.visually-hidden]="!showLabel()">
     {{ label() }}
   </span>

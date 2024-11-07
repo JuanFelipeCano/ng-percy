@@ -1,5 +1,6 @@
 import {
   AfterViewChecked,
+  AfterViewInit,
   ChangeDetectorRef,
   Directive,
   ElementRef,
@@ -13,8 +14,8 @@ import { sleep } from '../../utils';
 
 const EDITABLE_ELEMENTS = 'input:not([disabled]), textarea:not([disabled])';
 const NON_EDITABLE_ELEMENTS = 'button:not([disabled]), select:not([disabled]), [href]:not([disabled])';
-const NON_FOCUSABLE_ELEMENTS = '[tabindex="0"]';
-const FOCUSABLE_ELEMENTS_SELECTOR = `${ EDITABLE_ELEMENTS }, ${ NON_EDITABLE_ELEMENTS }, ${ NON_FOCUSABLE_ELEMENTS }`;
+const FOCUSABLE_ELEMENTS = '[tabindex="0"]';
+const FOCUSABLE_ELEMENTS_SELECTOR = `${ EDITABLE_ELEMENTS }, ${ NON_EDITABLE_ELEMENTS }, ${ FOCUSABLE_ELEMENTS }`;
 const VIEW_CHECKED_TIME = 100;
 
 // TODO: add documentation about focusable-interactive-content class
@@ -22,7 +23,7 @@ const VIEW_CHECKED_TIME = 100;
   selector: '[percyTrapFocus]',
   standalone: true
 })
-export class TrapFocusDirective implements OnInit, AfterViewChecked, OnDestroy {
+export class TrapFocusDirective implements AfterViewInit, AfterViewChecked, OnDestroy {
 
   private lastFocusedElement!: HTMLElement | null;
   private focusableElements!: HTMLElement[];
@@ -36,7 +37,7 @@ export class TrapFocusDirective implements OnInit, AfterViewChecked, OnDestroy {
     this.focusableInteractiveContentElements = [];
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
     this.setLastFocusedElement();
     this.focusFirstInteractiveElement();
   }
