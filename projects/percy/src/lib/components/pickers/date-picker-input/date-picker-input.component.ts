@@ -16,6 +16,7 @@ import { randomId } from '../../../utils';
 import { InputComponent } from '../../input/input.component';
 import { DatePickerComponent } from '../date-picker/date-picker.component';
 import { DatePicker } from '../date-picker/models';
+import { PickerShape } from '../types';
 
 /**
  * DatePickerInputComponent
@@ -54,6 +55,7 @@ export class DatePickerInputComponent implements OnInit {
   public readonly id = input<string>(randomId('percy-id'), { alias: 'picker-id' });
   public readonly name = input<string>(this.id());
   public readonly placeholder = input<string>('');
+  public readonly shape = input<PickerShape>('round');
 
   public format = input<string>(this.defaultFormat);
   public locale = input<string>(this.defaultLocale);

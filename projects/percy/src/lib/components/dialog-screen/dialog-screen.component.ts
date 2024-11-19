@@ -63,7 +63,7 @@ export class DialogScreenComponent<T> implements DialogScreenRequiredOptions<T>,
 
   public isMobile!: boolean;
   public isVisible!: boolean;
-  private destroyed$ = new Subject<void>();
+  private readonly destroyed$ = new Subject<void>();
 
   private readonly _screenSizeDetectionService = inject(ScreenSizeDetectionService);
 

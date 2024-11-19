@@ -2,6 +2,9 @@ import { booleanAttribute, Component, HostListener, input, model, output } from 
 import { KeyboardKeys } from '../../constants';
 import { randomId } from '../../utils';
 
+type ToggleSize = 'small' | 'medium' | 'large';
+type ToggleShape = 'round' | 'square' | 'circle';
+
 @Component({
   selector: 'percy-toggle',
   standalone: true,
@@ -20,6 +23,8 @@ export class ToggleComponent {
   public readonly disabled = input(false, { transform: booleanAttribute });
   public readonly required = input(false, { transform: booleanAttribute });
   public readonly invalid = input(false, { transform: booleanAttribute });
+  public readonly size = input<ToggleSize>('medium');
+  public readonly shape = input<ToggleShape>('circle');
 
   public readonly checked = model<boolean | string>(false);
 

@@ -2,14 +2,17 @@
  * Dialog screen mixins
  * It displays the dialog screen as a bottom shett
  */
-@mixin bottom-sheet-mode {
+ @mixin bottom-sheet-mode {
+  $header-height: calculateRem(45px);
+
   .dialog-screen_wrapper {
     top: initial;
     margin: initial;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    max-height: 95dvh;
+    max-width: 100dvw;
     transition: transform 0.3s ease;
     padding-top: calculateRem(30px);
   }
@@ -19,13 +22,18 @@
   }
 
   .dialog-screen_header {
-    padding-top: 1rem;
+    padding: 2rem 1rem;
+    height: $header-height;
+  }
+
+  .dialog-screen_body-wrapper {
+    max-height: calc(#{$inner-max-height} - #{$header-height});
   }
 
   .dialog-screen_drag-handle {
     position: absolute;
     cursor: grab;
-    top: 0;
+    top: 1rem;
     left: 50%;
     background-color: var(--percy-gray80);
     transform: translateX(-50%);
@@ -40,16 +48,24 @@
  * It displays the dialog screen as a modal
  */
 @mixin modal-mode {
+  $header-height: calculateRem(62px);
+
   .dialog-screen_wrapper {
-    max-height: 100%;
+    max-height: calc(100dvh - 4rem);
+    max-width: calc(100dvw - 4rem);
     margin: 2rem;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 
   .dialog-screen_inner {
     border-radius: .5rem;
+  }
+
+  .dialog-screen_header {
+    padding: 1rem;
+  }
+
+  .dialog-screen_body-wrapper {
+    max-height: calc(100dvh - 4rem - #{$header-height});
   }
 
   .dialog-screen_drag-handle {

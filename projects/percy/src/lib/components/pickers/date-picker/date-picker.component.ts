@@ -19,6 +19,7 @@ import { ELEVEN, INACTIVE_TAB_INDEX, ONE, SEVEN, SIX, ZERO } from '../../../cons
 import { A11yCalendarDirective } from './a11y-calendar.directive';
 import { A11yMonthsDirective } from './a11y-months.directive';
 import { CalendarDay, DatePicker } from './models';
+import { PickerShape } from '../types';
 
 @Component({
   selector: 'percy-date-picker',
@@ -59,6 +60,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
   public format = input<string>(this.defaultFormat);
   public locale = input<string>(this.defaultLocale);
   public value = model<Date>(this.today);
+  public readonly shape = input<PickerShape>('circle');
 
   /**
    * A11y properties

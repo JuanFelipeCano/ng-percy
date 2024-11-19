@@ -26,7 +26,7 @@ function setPercyTheme(): () => Promise<void> {
         const colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches
           ? 'dark' : 'light';
 
-        document.querySelector('body')!.className = colorScheme;
+        document.querySelector('body')!.className = 'light';
       }
 
       setTheme();
