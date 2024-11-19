@@ -1,6 +1,7 @@
 import { booleanAttribute, Component, HostListener, input, model, output } from '@angular/core';
 import { KeyboardKeys } from '../../constants';
 import { randomId } from '../../utils';
+import { ControlValueAccessor } from '@angular/forms';
 
 type ToggleSize = 'small' | 'medium' | 'large';
 type ToggleShape = 'round' | 'square' | 'circle';
@@ -13,7 +14,7 @@ type ToggleShape = 'round' | 'square' | 'circle';
   styleUrl: './toggle.component.scss',
   host: { 'class': 'percy-toggle' },
 })
-export class ToggleComponent {
+export class ToggleComponent implements ControlValueAccessor {
 
   public readonly label = input.required<string>();
   public readonly id = input<string>(randomId('percy-id'), { alias: 'toggle-id' });
@@ -32,6 +33,23 @@ export class ToggleComponent {
   public readonly percyFocus = output<FocusEvent>();
   public readonly percyBlur = output<FocusEvent>();
   public readonly percyChange = output<boolean>();
+
+  public onChange = (_value: any) => {};
+  public onTouched = () => {};
+
+  public writeValue(value: any): void {
+    this.checked.set(value);
+
+    this.onChange(value);
+  }
+
+  public registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
 
   public toggleChange($event: Event): void {
     this.percyChange.emit(($event.target as HTMLInputElement).checked);
