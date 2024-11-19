@@ -141,3 +141,21 @@
     @include focus-style('with-focus', var(--percy-tertiary-tint), $box-shadow);
   }
 }
+
+@mixin input-round {
+  .percy-input_field {
+    border-radius: .25rem;
+  }
+}
+
+@mixin input-square {
+  .percy-input_field {
+    border-radius: 0;
+  }
+}
+
+@mixin input-circle {
+  .percy-input_field {
+    border-radius: calculateRem(24px);
+  }
+}

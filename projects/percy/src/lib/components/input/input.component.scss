@@ -12,7 +12,6 @@ $margin-vertical: .25rem;
   --color: inherit;
   --background: transparent;
   --border: var(--percy-primary-tint);
-  --border-radius: .25rem;
   --margin-bottom: .75rem;
 
   // To prevent margin collapse
@@ -34,6 +33,18 @@ $margin-vertical: .25rem;
   &.percy-input_invalid {
     @include invalid-style;
   }
+
+  &.percy-input_round {
+    @include input-round;
+  }
+
+  &.percy-input_square {
+    @include input-square;
+  }
+
+  &.percy-input_circle {
+    @include input-circle;
+  }
 }
 
 .percy-input {
@@ -53,7 +64,6 @@ $margin-vertical: .25rem;
     color: var(--color);
     background-color: var(--background);
     border: 1px solid var(--border);
-    border-radius: var(--border-radius);
     padding: $padding-vertical $padding-sides;
     margin-top: $margin-vertical;
 

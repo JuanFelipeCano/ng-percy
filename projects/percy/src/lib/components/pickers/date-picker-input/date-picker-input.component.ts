@@ -16,6 +16,8 @@ import { randomId } from '../../../utils';
 import { InputComponent } from '../../input/input.component';
 import { DatePickerComponent } from '../date-picker/date-picker.component';
 import { DatePicker } from '../date-picker/models';
+import { PickerShape } from '../types';
+import { ControlValueAccessor } from '@angular/forms';
 
 /**
  * DatePickerInputComponent
@@ -42,7 +44,7 @@ import { DatePicker } from '../date-picker/models';
     ]),
   ],
 })
-export class DatePickerInputComponent implements OnInit {
+export class DatePickerInputComponent implements OnInit, ControlValueAccessor {
 
   @ViewChild(DatePickerComponent) public datePickerComponent!: DatePickerComponent;
 
@@ -54,6 +56,7 @@ export class DatePickerInputComponent implements OnInit {
   public readonly id = input<string>(randomId('percy-id'), { alias: 'picker-id' });
   public readonly name = input<string>(this.id());
   public readonly placeholder = input<string>('');
+  public readonly shape = input<PickerShape>('round');
 
   public format = input<string>(this.defaultFormat);
   public locale = input<string>(this.defaultLocale);
@@ -82,6 +85,9 @@ export class DatePickerInputComponent implements OnInit {
   protected isCalendarOpen!: boolean;
   protected datePicker!: DatePicker;
 
+  public onChange = (_value: Date) => {};
+  public onTouched = () => {};
+
   constructor() {
     this.isCalendarOpen = false;
     this.datePicker = {
@@ -92,6 +98,20 @@ export class DatePickerInputComponent implements OnInit {
 
   public ngOnInit(): void {
     this.setInitialDate(this.value());
+  }
+
+  public writeValue(value: Date): void {
+    this.value.set(value);
+    this.onChange(value);
+    this.setInitialDate(this.value());
+  }
+
+  public registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
   @HostListener('keydown', ['$event'])

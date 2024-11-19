@@ -1,8 +1,8 @@
-<div class="dialog-screen_overlay" *ngIf="isVisible" (click)="close()"></div>
-
-@if (isVisible) {
-  <ng-container [ngTemplateOutlet]="DialogScreen"></ng-container>
-}
+<div class="dialog-screen_overlay" *ngIf="isVisible" (click)="close()">
+  @if (isVisible) {
+    <ng-container [ngTemplateOutlet]="DialogScreen"></ng-container>
+  }
+</div>
 
 <ng-template #DialogScreen>
   <div
@@ -47,8 +47,10 @@
         }
       </div>
 
-      <div class="dialog-screen_body focusable-interactive-content">
-        <ng-container #content></ng-container>
+      <div class="dialog-screen_body-wrapper">
+        <div class="dialog-screen_body focusable-interactive-content">
+          <ng-container #content></ng-container>
+        </div>
       </div>
     </div>
   </div>

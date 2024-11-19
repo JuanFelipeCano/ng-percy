@@ -15,6 +15,7 @@ import { randomId } from '../../utils';
 type LabelStyle = 'start' | 'floating' | 'hidden';
 type InputType = 'text' | 'email' | 'password' | 'number';
 type PasswordIcon = 'eye-outline' | 'eye-off-outline';
+type InputShape = 'round' | 'square' | 'circle';
 
 @Component({
   selector: 'percy-input',
@@ -37,6 +38,9 @@ type PasswordIcon = 'eye-outline' | 'eye-off-outline';
     '[class.percy-input_icon-left]': 'iconLeft()',
     '[class.percy-input_icon-right]': 'iconRight() || type() === "password"',
     '[class.percy-input_invalid]': 'invalid()',
+    '[class.percy-input_round]': 'shape() === "round"',
+    '[class.percy-input_square]': 'shape() === "square"',
+    '[class.percy-input_circle]': 'shape() === "circle"',
   },
 })
 export class InputComponent implements ControlValueAccessor {
@@ -53,6 +57,7 @@ export class InputComponent implements ControlValueAccessor {
   public readonly disabled = input(false, { transform: booleanAttribute });
   public readonly required = input(false, { transform: booleanAttribute });
   public readonly invalid = input(false, { transform: booleanAttribute });
+  public readonly shape = input<InputShape>('round');
 
   public value = model<string | number | null | undefined>('');
 

@@ -129,7 +129,7 @@
     justify-content: center;
     cursor: pointer;
     gap: calculateRem(8px);
-    margin-bottom: var(--margin-bottom);
+    margin: 0 0 var(--margin-bottom);
 
     &[disabled] {
       opacity: .5;
