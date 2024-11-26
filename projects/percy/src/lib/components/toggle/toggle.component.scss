@@ -5,11 +5,55 @@
   --active-background: var(--percy-accent);
   --indicator-color: var(--percy-gray100);
   --margin-bottom: .75rem;
+
+  &.percy-toggle_round {
+    $border-radius: calculateRem(3px);
+
+    .percy-toggle_slider {
+      border-radius: $border-radius;
+
+      &::before {
+        border-radius: calculateRem(2px);
+      }
+    }
+
+    .percy-toggle_field:focus-visible + .percy-toggle_slider {
+      border-radius: $border-radius;
+    }
+  }
+
+  &.percy-toggle_square {
+    .percy-toggle_slider {
+      border-radius: 0;
+
+      &::before {
+        border-radius: 0;
+      }
+    }
+
+    .percy-toggle_field:focus-visible + .percy-toggle_slider {
+      border-radius: 0;
+    }
+  }
+
+  &.percy-toggle_circle {
+    $border-radius: calculateRem(24px);
+
+    .percy-toggle_slider {
+      border-radius: $border-radius;
+
+      &::before {
+        border-radius: 50%;
+      }
+    }
+
+    .percy-toggle_field:focus-visible + .percy-toggle_slider {
+      border-radius: $border-radius;
+    }
+  }
 }
 
 .percy-toggle {
-  $border-radius: calculateRem(20px);
-
   &_wrapper {
     display: flex;
     justify-content: space-between;
@@ -36,7 +80,6 @@
     right: 0;
     bottom: 0;
     background-color: var(--inactive-background);
-    border-radius: $border-radius;
     transition: ease-out .1s;
 
     &::before {
@@ -47,7 +90,6 @@
       width: 26px;
       height: 26px;
       background-color: var(--indicator-color);
-      border-radius: 50%;
       transition: .14s ease-in-out
     }
   }
@@ -75,8 +117,6 @@
 
     &:focus-visible + .percy-toggle_slider {
       @include focus-style('without-focus');
-      border-radius: $border-radius;
     }
-
   }
 }

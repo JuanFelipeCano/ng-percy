@@ -1,34 +1,47 @@
-import { booleanAttribute, Component, HostListener, input, model, output } from '@angular/core';
+import {
+  AfterViewInit,
+  booleanAttribute,
+  Component,
+  ElementRef,
+  HostListener,
+  input,
+  model,
+  output,
+  viewChild,
+} from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
 import { KeyboardKeys } from '../../constants';
 import { randomId } from '../../utils';
-import { ControlValueAccessor } from '@angular/forms';
 
-type ToggleShape = 'round' | 'square' | 'circle';
+type CheckboxShape = 'round' | 'square' | 'circle';
 
 @Component({
-  selector: 'percy-toggle',
+  selector: 'percy-checkbox',
   standalone: true,
   imports: [],
-  templateUrl: './toggle.component.html',
-  styleUrl: './toggle.component.scss',
+  templateUrl: './checkbox.component.html',
+  styleUrl: './checkbox.component.scss',
   host: {
-    'class': 'percy-toggle',
-    '[class.percy-toggle_round]': 'shape() === "round"',
-    '[class.percy-toggle_square]': 'shape() === "square"',
-    '[class.percy-toggle_circle]': 'shape() === "circle"',
+    'class': 'percy-checkbox',
+    '[class.percy-checkbox_round]': 'shape() === "round"',
+    '[class.percy-checkbox_square]': 'shape() === "square"',
+    '[class.percy-checkbox_circle]': 'shape() === "circle"',
   },
 })
-export class ToggleComponent implements ControlValueAccessor {
+export class PercyCheckboxComponent implements AfterViewInit, ControlValueAccessor {
+
+  public readonly checkbox = viewChild.required('checkbox', { read: ElementRef<HTMLElement> });
 
   public readonly label = input.required<string>();
-  public readonly id = input<string>(randomId('percy-id'), { alias: 'toggle-id' });
+  public readonly id = input<string>(randomId('percy-id'), { alias: 'checkbox-id' });
   public readonly name = input<string>(this.id());
-  public readonly showLabel = input(false, { alias: 'show-label', transform: booleanAttribute });
+  public readonly showLabel = input(true, { alias: 'show-label', transform: booleanAttribute });
   public readonly readonly = input(false, { transform: booleanAttribute });
   public readonly disabled = input(false, { transform: booleanAttribute });
+  public readonly indeterminate = input(false, { transform: booleanAttribute });
   public readonly required = input(null, { transform: booleanAttribute });
   public readonly invalid = input(null, { transform: booleanAttribute });
-  public readonly shape = input<ToggleShape>('circle');
+  public readonly shape = input<CheckboxShape>('round');
 
   public readonly checked = model<boolean | string>(false);
 
@@ -36,6 +49,10 @@ export class ToggleComponent implements ControlValueAccessor {
   public readonly percyFocus = output<FocusEvent>();
   public readonly percyBlur = output<FocusEvent>();
   public readonly percyChange = output<boolean>();
+
+  public ngAfterViewInit(): void {
+    this.checkbox().nativeElement.indeterminate = this.indeterminate();
+  }
 
   public onChange = (_value: any) => {};
   public onTouched = () => {};
@@ -54,7 +71,7 @@ export class ToggleComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  public toggleChange($event: Event): void {
+  public checkboxChange($event: Event): void {
     this.percyChange.emit(($event.target as HTMLInputElement).checked);
   }
 
@@ -70,6 +87,9 @@ export class ToggleComponent implements ControlValueAccessor {
   }
 
   private setChecked(): void {
+    console.log(this.disabled());
+    if (this.disabled() || this.readonly()) return;
+
     this.checked.set(!this.checked());
     this.percyChange.emit(this.checked() as boolean);
   }
