@@ -3,7 +3,6 @@ import { KeyboardKeys } from '../../constants';
 import { randomId } from '../../utils';
 import { ControlValueAccessor } from '@angular/forms';
 
-type ToggleSize = 'small' | 'medium' | 'large';
 type ToggleShape = 'round' | 'square' | 'circle';
 
 @Component({
@@ -12,7 +11,12 @@ type ToggleShape = 'round' | 'square' | 'circle';
   imports: [],
   templateUrl: './toggle.component.html',
   styleUrl: './toggle.component.scss',
-  host: { 'class': 'percy-toggle' },
+  host: {
+    'class': 'percy-toggle',
+    '[class.percy-toggle_round]': 'shape() === "round"',
+    '[class.percy-toggle_square]': 'shape() === "square"',
+    '[class.percy-toggle_circle]': 'shape() === "circle"',
+  },
 })
 export class ToggleComponent implements ControlValueAccessor {
 
@@ -22,9 +26,8 @@ export class ToggleComponent implements ControlValueAccessor {
   public readonly showLabel = input(false, { alias: 'show-label', transform: booleanAttribute });
   public readonly readonly = input(false, { transform: booleanAttribute });
   public readonly disabled = input(false, { transform: booleanAttribute });
-  public readonly required = input(false, { transform: booleanAttribute });
-  public readonly invalid = input(false, { transform: booleanAttribute });
-  public readonly size = input<ToggleSize>('medium');
+  public readonly required = input(null, { transform: booleanAttribute });
+  public readonly invalid = input(null, { transform: booleanAttribute });
   public readonly shape = input<ToggleShape>('circle');
 
   public readonly checked = model<boolean | string>(false);
@@ -57,7 +60,9 @@ export class ToggleComponent implements ControlValueAccessor {
 
   @HostListener('keydown', ['$event'])
   public onKeyDown(event: KeyboardEvent): void {
-    if ([KeyboardKeys.SPACE, KeyboardKeys.ENTER].includes(event.key as KeyboardKeys)) {
+    if (event.key === KeyboardKeys.SPACE) {
+      if (this.disabled() || this.readonly()) return;
+
       this.setChecked();
       event.stopPropagation();
       event.preventDefault();
