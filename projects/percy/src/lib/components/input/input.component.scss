@@ -77,11 +77,11 @@ $margin-vertical: .25rem;
   }
 
   &_label {
-    font-size: $font-sm;
+    font-size: $font-xs;
   }
 
   &_message {
-    font-size: $font-sm;
+    font-size: $font-xs;
     color: var(--percy-primary-tint);
   }
 }

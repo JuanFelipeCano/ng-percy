@@ -54,15 +54,15 @@ h4 {
 }
 
 h5 {
-  font-size: $font-sm;
+  font-size: $font-xs;
 }
 
 h6 {
-  font-size: $font-xs;
+  font-size: $font-xxs;
 }
 
 small {
-  font-size: $font-xs;
+  font-size: $font-xxs;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -75,20 +75,20 @@ small {
   }
 }
 
-@include screen-respond-to('medium') {
-  html {
-    font-size: 110%;
-  }
-}
+// @include screen-respond-to('medium') {
+//   html {
+//     font-size: 110%;
+//   }
+// }
 
-@include screen-respond-to('large') {
-  html {
-    font-size: 120%;
-  }
-}
+// @include screen-respond-to('large') {
+//   html {
+//     font-size: 120%;
+//   }
+// }
 
-@include screen-respond-to('extra-large') {
-  html {
-    font-size: 130%;
-  }
-}
+// @include screen-respond-to('extra-large') {
+//   html {
+//     font-size: 130%;
+//   }
+// }

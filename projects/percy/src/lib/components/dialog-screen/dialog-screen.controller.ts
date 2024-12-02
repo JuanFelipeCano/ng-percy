@@ -8,6 +8,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { defer, Observable, Subject } from 'rxjs';
+import { ZERO } from '../../constants';
 import { DialogScreenComponent } from './dialog-screen.component';
 import { DialogScreenOptions } from './models';
 
@@ -40,7 +41,7 @@ export class DialogScreenController {
 
       this.setComponentProperties(options);
 
-      document.body.appendChild((this.dialogScreenRef.hostView as EmbeddedViewRef<unknown>).rootNodes[0]);
+      document.body.appendChild((this.dialogScreenRef.hostView as EmbeddedViewRef<unknown>).rootNodes[ZERO]);
 
       return this.subject.asObservable();
     });

@@ -7,6 +7,7 @@ import {
   model,
   OnInit,
   output,
+  viewChild,
   ViewChild,
 } from '@angular/core';
 import { DateTime as Luxon } from 'luxon';
@@ -46,7 +47,7 @@ import { ControlValueAccessor } from '@angular/forms';
 })
 export class DatePickerInputComponent implements OnInit, ControlValueAccessor {
 
-  @ViewChild(DatePickerComponent) public datePickerComponent!: DatePickerComponent;
+  public datePickerComponent = viewChild.required(DatePickerComponent);
 
   private readonly defaultFormat = 'yyyy-MM-dd';
   private readonly defaultLocale = 'en-US';
@@ -139,7 +140,7 @@ export class DatePickerInputComponent implements OnInit, ControlValueAccessor {
     this.isCalendarOpen = !this.isCalendarOpen;
 
     if (this.isCalendarOpen && this.datePickerComponent) {
-      this.datePickerComponent.updateCalendar();
+      this.datePickerComponent().updateCalendar();
     }
   }
 

@@ -3,8 +3,9 @@
 :root {
   --percy-font-family: 'Space Mono', sans-serif;
 
-  --percy-font-xs:    .625rem;  // 10px
-  --percy-font-sm:    .75rem;   // 12px
+  --percy-font-xxs:   .625rem;  // 10px
+  --percy-font-xs:    .75rem;   // 12px
+  --percy-font-sm:    .875rem;  // 14px
   --percy-font-md:    1rem;     // 16px
   --percy-font-lg:    1.25rem;  // 20px
   --percy-font-xl:    1.5rem;   // 24px
@@ -23,6 +24,7 @@
 }
 
 // Percy font sizes
+$font-xxs:   var(--percy-font-xxs);
 $font-xs:   var(--percy-font-xs);
 $font-sm:   var(--percy-font-sm);
 $font-md:   var(--percy-font-md);

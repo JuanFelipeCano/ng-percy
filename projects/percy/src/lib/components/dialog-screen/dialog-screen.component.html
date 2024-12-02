@@ -1,8 +1,8 @@
-<div class="dialog-screen_overlay" *ngIf="isVisible" (click)="close()">
-  @if (isVisible) {
+@if (isVisible) {
+  <div class="dialog-screen_overlay" (click)="close()">
     <ng-container [ngTemplateOutlet]="DialogScreen"></ng-container>
-  }
-</div>
+  </div>
+}
 
 <ng-template #DialogScreen>
   <div
@@ -42,7 +42,7 @@
             [attr.aria-label]="a11yCloseButtonAriaLabel()"
             (click)="close()"
           >
-            <ion-icon name="close-outline"></ion-icon>
+            <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
           </button>
         }
       </div>
