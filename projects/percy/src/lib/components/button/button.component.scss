@@ -3,7 +3,7 @@
 :host {
   --margin-bottom: .75rem;
 
-  display: block;
+  display: contents;
 
   // Variations
   &.percy-button_filled {
@@ -58,7 +58,7 @@
   &.percy-button_small {
     .percy-button_wrapper {
       padding: calculateRem(8px) calculateRem(14px);
-      font-size: $font-sm;
+      font-size: $font-xs;
     }
   }
 

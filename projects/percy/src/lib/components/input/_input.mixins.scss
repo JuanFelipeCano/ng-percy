@@ -35,7 +35,7 @@
   .percy-input_field:not(:placeholder-shown) ~ .percy-input_label {
     top: 0;
     left: 0;
-    font-size: $font-sm;
+    font-size: $font-xs;
     transform: translateY(-100%);
   }
 

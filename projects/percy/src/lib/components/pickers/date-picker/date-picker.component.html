@@ -18,7 +18,7 @@
         [attr.aria-label]="a11yPrevMonthAriaLabel()"
         (click)="previousMonth()"
       >
-        <ion-icon name="chevron-back-outline"></ion-icon>
+        <ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon>
       </button>
 
       <div class="date-picker_header-label">
@@ -33,7 +33,7 @@
           [attr.aria-label]="a11yDisplayMonthsAriaLabel()"
           (click)="toggleMonths()"
         >
-          <ion-icon name="chevron-down-outline"></ion-icon>
+          <ion-icon name="chevron-down-outline" aria-hidden="true"></ion-icon>
         </button>
       </div>
 
@@ -43,7 +43,7 @@
         [attr.aria-label]="a11yNextMonthAriaLabel()"
         (click)="nextMonth()"
       >
-        <ion-icon name="chevron-forward-outline"></ion-icon>
+        <ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon>
       </button>
     </div>
 
@@ -95,7 +95,7 @@
         class="date-picker_prev-year"
         [attr.aria-label]="a11yPreYearAriaLabel()"
         (click)="previousYear()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
+        <ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon>
       </button>
 
       <div class="date-picker_header-label">
@@ -109,7 +109,7 @@
           class="date-picker_hide-months"
           [attr.aria-label]="a11yHideMonthsAriaLabel()"
           (click)="toggleMonths()">
-          <ion-icon name="chevron-up-outline"></ion-icon>
+          <ion-icon name="chevron-up-outline" aria-hidden="true"></ion-icon>
         </button>
       </div>
 
@@ -118,7 +118,7 @@
         class="date-picker_next-year"
         [attr.aria-label]="a11yNexYearAriaLabel()"
         (click)="nextYear()">
-        <ion-icon name="chevron-forward-outline"></ion-icon>
+        <ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon>
       </button>
     </div>
 

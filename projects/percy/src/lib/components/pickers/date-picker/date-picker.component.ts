@@ -51,7 +51,6 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
   public displayMonthsBtn = viewChild('DisplayMonthsBtn', { read: ElementRef });
   public hideMonthsBtn = viewChild('HideMonthsBtn', { read: ElementRef });
 
-
   public readonly attributeDateFormat = 'yyyy-MM-dd';
   protected readonly today = new Date(Luxon.now().toISO());
   private readonly defaultFormat = 'yyyy-MM-dd';
