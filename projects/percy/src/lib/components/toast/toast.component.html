@@ -1,0 +1,30 @@
+@if (isVisible) {
+  <div
+    class="percy-toast_alert"
+    role="alert"
+    [@toast-animation]="animationDirection"
+  >
+    @if (_icon()) {
+      <span class="percy-toast_icon-wrapper" aria-hidden="true">
+        <ion-icon [name]="_icon()"></ion-icon>
+      </span>
+    }
+
+    <div class="percy-toast_message-wrapper">
+      <span class="percy-toast_message">
+        @if (a11yTypeDescription()) {
+          <span class="visually-hidden">
+            {{ a11yTypeDescription() }}.
+          </span>
+        }
+        {{ message() }}
+      </span>
+
+      @if (description()) {
+        <p class="percy-toast_description">
+          {{ description() }}
+        </p>
+      }
+    </div>
+  </div>
+}
