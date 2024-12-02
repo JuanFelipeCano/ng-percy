@@ -59,6 +59,23 @@ body.light {
   --percy-tertiary-contrast: #000;
   --percy-tertiary-shade: #c66b6b;
   --percy-tertiary-tint: #e48787;
+
+  // Alert colors
+  --percy-success-bg: hsl(143, 85%, 96%);
+  --percy-success-border: hsl(145, 92%, 91%);
+  --percy-success-text: hsl(140, 100%, 27%);
+
+  --percy-info-bg: hsl(208, 100%, 97%);
+  --percy-info-border: hsl(221, 91%, 91%);
+  --percy-info-text: hsl(210, 92%, 45%);
+
+  --percy-warning-bg: hsl(49, 100%, 97%);
+  --percy-warning-border: hsl(49, 91%, 91%);
+  --percy-warning-text: hsl(31, 92%, 45%);
+
+  --percy-error-bg: hsl(359, 100%, 97%);
+  --percy-error-border: hsl(359, 100%, 94%);
+  --percy-error-text: hsl(360, 100%, 45%);
 }
 
 body.dark {
@@ -92,6 +109,23 @@ body.dark {
   --percy-tertiary-contrast: #000;
   --percy-tertiary-shade: #751a1a;
   --percy-tertiary-tint: #913535;
+
+  // Alert colors
+  --percy-success-bg: hsl(150, 100%, 6%);
+  --percy-success-border: hsl(147, 100%, 12%);
+  --percy-success-text: hsl(150, 86%, 65%);
+
+  --percy-info-bg: hsl(215, 100%, 6%);
+  --percy-info-border: hsl(223, 100%, 12%);
+  --percy-info-text: hsl(216, 87%, 65%);
+
+  --percy-warning-bg: hsl(64, 100%, 6%);
+  --percy-warning-border: hsl(60, 100%, 12%);
+  --percy-warning-text: hsl(46, 87%, 65%);
+
+  --percy-error-bg: hsl(358, 76%, 10%);
+  --percy-error-border: hsl(357, 89%, 16%);
+  --percy-error-text: hsl(358, 100%, 81%);
 }
 
 body {

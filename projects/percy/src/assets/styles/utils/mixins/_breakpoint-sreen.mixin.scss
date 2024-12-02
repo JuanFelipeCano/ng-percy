@@ -11,31 +11,31 @@
   }
 
   @else if $breakpoint == 'extra-small' {
-    @media screen and (min-width: $extra-small) {
+    @media screen and (min-width: $percy-breakpoint-extra-small) {
       @content;
     }
   }
 
   @else if $breakpoint == 'small' {
-    @media screen and (min-width: $small) {
+    @media screen and (min-width: $percy-breakpoint-small) {
       @content;
     }
   }
 
   @else if $breakpoint == 'medium' {
-    @media screen and (min-width: $medium) {
+    @media screen and (min-width: $percy-breakpoint-medium) {
       @content;
     }
   }
 
   @else if $breakpoint == 'large' {
-    @media screen and (min-width: $large) {
+    @media screen and (min-width: $percy-breakpoint-large) {
       @content;
     }
   }
 
   @else if $breakpoint == 'extra-large' {
-    @media screen and (min-width: $extra-large) {
+    @media screen and (min-width: $percy-breakpoint-extra-large) {
       @content;
     }
   }
