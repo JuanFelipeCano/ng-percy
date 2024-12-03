@@ -1,0 +1,13 @@
+<div class="percy-dropdown_wrapper">
+  <div class="percy-dropdown_inner">
+    <ng-content select="[dropdown-header]"></ng-content>
+  </div>
+
+  <div class="percy-dropdown_content-wrapper">
+    @if (isOpen()) {
+      <div class="percy-dropdown_content" @slideInOut>
+        <ng-content select="[dropdown-content]"></ng-content>
+      </div>
+    }
+  </div>
+</div>
