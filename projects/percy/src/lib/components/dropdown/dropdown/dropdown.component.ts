@@ -1,4 +1,4 @@
-import { booleanAttribute, Component, input } from '@angular/core';
+import { booleanAttribute, Component, input, output } from '@angular/core';
 import { ShapeBase } from '../../../types';
 import { animate, style, transition, trigger } from '@angular/animations';
 
@@ -33,4 +33,13 @@ export class PercyDropdownComponent {
   public readonly isOpen = input(false, { alias: 'is-open', transform: booleanAttribute });
   public readonly shape = input<DropdownShape>('round');
 
+  /**
+   * A11y properties
+   */
+  public readonly a11yRole = input<string | null>(null, { alias: 'a11y-role' });
+  public readonly a11yAriaLabelledBy = input<string | null>(null, { alias: 'a11y-aria-labelledby' });
+  public readonly a11yAriaControls = input<string | null>(null, { alias: 'a11y-aria-controls' });
+  public readonly a11yAriaHasPopup = input<string | null>(null, { alias: 'a11y-aria-haspopup' });
+  public readonly a11yAriaActiveDescendant = input<string | null>(null, { alias: 'a11y-aria-activedescendant' });
+  public readonly a11yTabIndex = input<string>('0', { alias: 'a11y-tabindex' });
 }
