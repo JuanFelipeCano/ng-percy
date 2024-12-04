@@ -1,0 +1,86 @@
+@import '../../../../../assets/styles/global';
+
+:host {
+  --min-height: auto;
+  --max-height: 100px;
+
+  display: contents;
+
+  percy-dropdown {
+    // --min-height: var(--min-height);
+    // --max-height: 100px;
+    --padding: .5rem;
+  }
+
+  &.percy-dropdown-list_round {
+    .percy-dropdown-list_header {
+      border-radius: .25rem;
+    }
+  }
+
+  &.percy-dropdown-list_square {
+    .percy-dropdown-list_header {
+      border-radius: 0;
+    }
+  }
+
+  &.percy-dropdown-list_circle {
+    .percy-dropdown-list_header {
+      border-radius: calculateRem(24px);
+    }
+  }
+
+  &.percy-dropdown-list_disabled {
+    .percy-dropdown-list_header {
+      cursor: initial;
+      opacity: .5;
+      pointer-events: none;
+    }
+  }
+}
+
+.percy-dropdown-list {
+  &_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    gap: 1rem;
+    border: 1px solid var(--percy-primary-tint);
+    border-radius: calculateRem(3px);
+    padding: calculateRem(8px) calculateRem(12px);
+  }
+
+  &_icon {
+    display: flex;
+  }
+
+  &_list {
+    list-style-type: none;
+  }
+
+  &_header--right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &_clear-btn {
+    @include button-icon(12px);
+    @include focus-style;
+  }
+}
+
+.percy-badge {
+  display: flex;
+  background-color: var(--percy-primary);
+  padding: 1px .2rem 2px .5rem;
+  gap: .2rem;
+  font-size: $font-xs;
+  font-weight: $font-medium;
+  border-radius: calculateRem(24px);
+}
+
+.percy-badge_left-content {
+  align-content: center;
+}

@@ -1,6 +1,6 @@
-import { booleanAttribute, Component, input, output } from '@angular/core';
-import { ShapeBase } from '../../../types';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { booleanAttribute, Component, input } from '@angular/core';
+import { ShapeBase } from '../../../types';
 
 type DropdownShape = ShapeBase;
 

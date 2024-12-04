@@ -1,0 +1,64 @@
+<div class="percy-dropdown-list_wrapper">
+  <percy-dropdown
+    [is-open]="isOpen"
+    [a11y-aria-labelledby]="id() + '-label'"
+    a11y-role="combobox"
+    [shape]="shape()"
+  >
+    <ng-container dropdown-header>
+      <div class="percy-dropdown-list_header" (click)="toggleDropdown()">
+        <span class="percy-dropdown-list_label" [id]="id() + '-label'">
+          @if (multiple() || counter === 0) {
+            {{ label() }}
+          } @else {
+            {{ selectedOptionText }}
+          }
+        </span>
+
+        <span class="percy-dropdown-list_header--right">
+          @if (multiple() && counter > 0) {
+            <span class="percy-badge">
+              <span class="percy-badge_label">
+                {{ counter }}
+
+                @if (a11yBadgeAriaLabel()) {
+                  <span class="visually-hidden">{{ a11yBadgeAriaLabel() }}</span>
+                }
+              </span>
+
+              <span class="percy-badge_left-content">
+                <button
+                  class="percy-dropdown-list_clear-btn"
+                  [attr.aria-label]="a11yClearButtonAriaLabel()"
+                  (click)="clearAll()"
+                >
+                  <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+                </button>
+              </span>
+            </span>
+          }
+
+          <span class="percy-dropdown-list_icon" aria-hidden="true">
+            <ion-icon [name]="isOpen ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+          </span>
+        </span>
+      </div>
+    </ng-container>
+
+    <ng-container dropdown-content>
+      <div class="percy-dropdown-list_content">
+        <ul class="percy-dropdown-list_list" [attr.role]="'listbox'">
+          @for (option of _options(); track $index) {
+            <percy-option-item
+              [option]="option"
+              [selected]="!!option.selected"
+              [disabled]="!!option.disabled"
+              [shape]="shape()"
+              (onSelected)="selectOption($event)"
+            />
+          }
+        </ul>
+      </div>
+    </ng-container>
+  </percy-dropdown>
+</div>
