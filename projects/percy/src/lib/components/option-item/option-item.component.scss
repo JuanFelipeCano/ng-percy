@@ -1,0 +1,55 @@
+@import '../../../assets/styles/global';
+
+:host {
+  --border: transparent;
+
+  &.percy-option-item_round {
+    .percy-option-item_wrapper {
+      border-radius: .25rem;
+    }
+  }
+
+  &.percy-option-item_square {
+    .percy-option-item_wrapper {
+      border-radius: 0;
+    }
+  }
+
+  &.percy-option-item_circle {
+    .percy-option-item_wrapper {
+      border-radius: calculateRem(24px);
+    }
+  }
+
+  &.percy-option-item_selected {
+    .percy-option-item_wrapper {
+      position: relative;
+      padding-right: 2rem;
+
+      &::after {
+        content: '';
+        position: absolute;
+        display: inline-block;
+        right: .5rem;
+        width: calculateRem(6px);
+        height: calculateRem(12px);
+        margin: calculateRem(3px) calculateRem(7px);
+        border-bottom: 2px solid var(--percy-text);
+        border-right: 2px solid var(--percy-text);
+        transform: rotate(45deg);
+        transition: transform 200ms;
+      }
+    }
+  }
+}
+
+.percy-option-item {
+  &_wrapper {
+    border-bottom: 1px solid var(--border);
+    padding: .5rem;
+
+    &:hover {
+      background-color: var(--percy-accent-tint);
+    }
+  }
+}
