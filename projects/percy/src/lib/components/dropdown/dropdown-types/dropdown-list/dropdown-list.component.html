@@ -1,64 +1,77 @@
 <div class="percy-dropdown-list_wrapper">
   <percy-dropdown
     [is-open]="isOpen"
-    [a11y-aria-labelledby]="id() + '-label'"
-    a11y-role="combobox"
     [shape]="shape()"
+    a11y-role="combobox"
   >
     <ng-container dropdown-header>
-      <div class="percy-dropdown-list_header" (click)="toggleDropdown()">
-        <span class="percy-dropdown-list_label" [id]="id() + '-label'">
-          @if (multiple() || counter === 0) {
-            {{ label() }}
-          } @else {
-            {{ selectedOptionText }}
-          }
-        </span>
-
-        <span class="percy-dropdown-list_header--right">
-          @if (multiple() && counter > 0) {
-            <span class="percy-badge">
-              <span class="percy-badge_label">
-                {{ counter }}
-
-                @if (a11yBadgeAriaLabel()) {
-                  <span class="visually-hidden">{{ a11yBadgeAriaLabel() }}</span>
-                }
-              </span>
-
-              <span class="percy-badge_left-content">
-                <button
-                  class="percy-dropdown-list_clear-btn"
-                  [attr.aria-label]="a11yClearButtonAriaLabel()"
-                  (click)="clearAll()"
-                >
-                  <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
-                </button>
-              </span>
-            </span>
-          }
-
-          <span class="percy-dropdown-list_icon" aria-hidden="true">
-            <ion-icon [name]="isOpen ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
-          </span>
-        </span>
-      </div>
+      <ng-container [ngTemplateOutlet]="DropdownHeader"></ng-container>
     </ng-container>
 
     <ng-container dropdown-content>
-      <div class="percy-dropdown-list_content">
-        <ul class="percy-dropdown-list_list" [attr.role]="'listbox'">
-          @for (option of _options(); track $index) {
-            <percy-option-item
-              [option]="option"
-              [selected]="!!option.selected"
-              [disabled]="!!option.disabled"
-              [shape]="shape()"
-              (onSelected)="selectOption($event)"
-            />
-          }
-        </ul>
-      </div>
+      <ng-container [ngTemplateOutlet]="DropdownContent"></ng-container>
     </ng-container>
   </percy-dropdown>
+
+  @if (multiple() && counter > 0) {
+    <span class="percy-badge">
+      <span class="percy-badge_label">
+        {{ counter }}
+      </span>
+
+      <span class="percy-badge_left-content">
+        <button
+          class="percy-dropdown-list_clear-btn"
+          [attr.aria-label]="a11yClearButtonAriaLabel()"
+          (click)="clearAll()"
+        >
+          <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        </button>
+      </span>
+    </span>
+  }
+</div>
+
+<ng-template #DropdownHeader>
+  <div class="percy-dropdown-list_header" (click)="toggleDropdown()">
+    <span class="percy-dropdown-list_label" [id]="labelId">
+      @if (multiple() || counter === 0) {
+        {{ label() }}
+      } @else {
+        {{ selectedOptionText }}
+      }
+    </span>
+
+    @if (a11yBadgeAriaLabel()) {
+      <span class="visually-hidden">{{ counter }} {{ a11yBadgeAriaLabel() }}</span>
+    }
+
+    <span class="percy-dropdown-list_header--right">
+      <span class="percy-dropdown-list_icon" aria-hidden="true">
+        <ion-icon [name]="isOpen ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+      </span>
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #DropdownContent>
+  <div class="percy-dropdown-list_content">
+    <ul class="percy-dropdown-list_list" [attr.role]="'listbox'">
+      @for (option of _options(); track $index) {
+        <percy-option-item
+          [option]="option"
+          [selected]="!!option.selected"
+          [disabled]="!!option.disabled"
+          [shape]="shape()"
+          [focused]="focusedOption?.value === option.value"
+          (onSelected)="selectOption($event)"
+        />
+      }
+    </ul>
+  </div>
+</ng-template>
+
+<div class="a11y-messages visually-hidden">
+  <span aria-live="polite" class="percy-dropdown-list_a11y-focused-option-text">{{ a11yFocusedOptionText }}</span>
+  <span aria-live="polite" class="percy-dropdown-list_a11y-selected-option-text">{{ a11ySelectedOptionText }}</span>
 </div>

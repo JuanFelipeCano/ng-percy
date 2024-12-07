@@ -2,15 +2,12 @@
 
 :host {
   --min-height: auto;
-  --max-height: 100px;
+  --max-height: 12.5rem;
+
+  --dropdown-list-min-height: var(--min-height);
+  --dropdown-list-max-height: var(--max-height);
 
   display: contents;
-
-  percy-dropdown {
-    // --min-height: var(--min-height);
-    // --max-height: 100px;
-    --padding: .5rem;
-  }
 
   &.percy-dropdown-list_round {
     .percy-dropdown-list_header {
@@ -40,6 +37,10 @@
 }
 
 .percy-dropdown-list {
+  &_wrapper {
+    position: relative;
+  }
+
   &_header {
     display: flex;
     justify-content: space-between;
@@ -48,7 +49,7 @@
     gap: 1rem;
     border: 1px solid var(--percy-primary-tint);
     border-radius: calculateRem(3px);
-    padding: calculateRem(8px) calculateRem(12px);
+    padding: calculateRem(10px) calculateRem(12px);
   }
 
   &_icon {
@@ -73,14 +74,23 @@
 
 .percy-badge {
   display: flex;
+  position: absolute;
   background-color: var(--percy-primary);
   padding: 1px .2rem 2px .5rem;
   gap: .2rem;
+  right: 2.5rem;
   font-size: $font-xs;
   font-weight: $font-medium;
   border-radius: calculateRem(24px);
+  top: calculateRem(13px);
 }
 
 .percy-badge_left-content {
   align-content: center;
+}
+
+percy-dropdown {
+  --min-height: var(--dropdown-list-min-height);
+  --max-height: var(--dropdown-list-max-height);
+  --padding: .5rem;
 }
