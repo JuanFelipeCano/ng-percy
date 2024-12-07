@@ -21,7 +21,8 @@ const VIEW_CHECKED_TIME = 100;
 // TODO: add documentation about focusable-interactive-content class
 @Directive({
   selector: '[percyTrapFocus]',
-  standalone: true
+  standalone: true,
+  providers: [ FocusService ],
 })
 export class TrapFocusDirective implements AfterViewInit, AfterViewChecked, OnDestroy {
 

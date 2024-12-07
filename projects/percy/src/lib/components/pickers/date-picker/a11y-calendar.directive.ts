@@ -1,6 +1,7 @@
 import { AfterViewChecked, Directive, ElementRef, Host, HostListener, inject, input } from '@angular/core';
 import { DateTime as Luxon } from 'luxon';
-import { ACTIVE_TAB_INDEX, INACTIVE_TAB_INDEX, KeyboardKeys, ONE, SEVEN, SIX, ZERO } from '../../../constants';
+import { ACTIVE_TAB_INDEX, INACTIVE_TAB_INDEX, KeyboardKeys, ONE, SEVEN, SIX, TAB_INDEX, ZERO } from '../../../constants';
+import { KeyboardExecutorService } from '../../../services';
 import { DatePickerComponent } from './date-picker.component';
 import { CalendarDay } from './models';
 
@@ -9,7 +10,8 @@ const ONE_WEEK = SEVEN;
 
 @Directive({
   selector: '[percyA11yCalendar]',
-  standalone: true
+  standalone: true,
+  providers: [ KeyboardExecutorService ],
 })
 export class A11yCalendarDirective implements AfterViewChecked {
 
@@ -18,6 +20,7 @@ export class A11yCalendarDirective implements AfterViewChecked {
   @Host()
   private readonly _datePicker = inject(DatePickerComponent);
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
+  private readonly _keyboardExecutor = inject(KeyboardExecutorService);
 
   public ngAfterViewChecked(): void {
     this.setTabIndex();
@@ -42,13 +45,7 @@ export class A11yCalendarDirective implements AfterViewChecked {
       [KeyboardKeys.PAGE_DOWN]: () => this._datePicker.nextMonth(),
     };
 
-    const callback = KeysMapper[event.code as keyof typeof KeysMapper];
-
-    if (!callback) return;
-
-    callback();
-    event.stopPropagation();
-    event.preventDefault();
+    this._keyboardExecutor.execute(KeysMapper, event);
   }
 
   private moveFocusToFirstDayOfWeek(): void {
@@ -88,13 +85,13 @@ export class A11yCalendarDirective implements AfterViewChecked {
     const element = this.getElementFromDataDateAttribute(date);
     element?.focus();
 
-    element?.setAttribute('tabindex', ACTIVE_TAB_INDEX);
+    element?.setAttribute(TAB_INDEX, ACTIVE_TAB_INDEX);
   }
 
   private unFocusDay(): void {
     const element = this.getElementFromDataDateAttribute(this.calendarDay().date);
 
-    element?.setAttribute('tabindex', INACTIVE_TAB_INDEX);
+    element?.setAttribute(TAB_INDEX, INACTIVE_TAB_INDEX);
   }
 
   private getElementFromDataDateAttribute(date: Date): HTMLElement | null {
@@ -107,7 +104,7 @@ export class A11yCalendarDirective implements AfterViewChecked {
 
   private setTabIndex(): void {
     this._elementRef.nativeElement.setAttribute(
-      'tabindex',
+      TAB_INDEX,
       this.calendarDay().date.getDate() === this._datePicker.datePicker.date.getDate() ? ACTIVE_TAB_INDEX : INACTIVE_TAB_INDEX
     );
   }

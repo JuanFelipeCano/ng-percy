@@ -11,16 +11,19 @@ import {
   ONE,
   SEVEN,
   SIX,
+  TAB_INDEX,
   TEN,
   THREE,
   TWO,
   ZERO,
 } from '../../../constants';
+import { KeyboardExecutorService } from '../../../services';
 import { DatePickerComponent } from './date-picker.component';
 
 @Directive({
   selector: '[percyA11yMonths]',
-  standalone: true
+  standalone: true,
+  providers: [ KeyboardExecutorService ],
 })
 export class A11yMonthsDirective implements AfterViewChecked {
 
@@ -32,6 +35,7 @@ export class A11yMonthsDirective implements AfterViewChecked {
   @Host()
   private readonly _datePicker = inject(DatePickerComponent);
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
+  private readonly _keyboardExecutor = inject(KeyboardExecutorService);
 
   public ngAfterViewChecked(): void {
     this.setTabIndex();
@@ -54,13 +58,7 @@ export class A11yMonthsDirective implements AfterViewChecked {
       [KeyboardKeys.END]: () => this.moveFocusToFirstOrLastMonth(TWO),
     };
 
-    const callback = KeysMapper[event.code as keyof typeof KeysMapper];
-
-    if (!callback) return;
-
-    callback();
-    event.stopPropagation();
-    event.preventDefault();
+    this._keyboardExecutor.execute(KeysMapper, event);
   }
 
   private moveFocusToFirstOrLastMonth(position: number): void {
@@ -93,13 +91,13 @@ export class A11yMonthsDirective implements AfterViewChecked {
     const element = this.getElementFromDataMonthAttribute(moonth);
     element?.focus();
 
-    element?.setAttribute('tabindex', ACTIVE_TAB_INDEX);
+    element?.setAttribute(TAB_INDEX, ACTIVE_TAB_INDEX);
   }
 
   private unFocusMonth(): void {
     const element = this.getElementFromDataMonthAttribute(this.month());
 
-    element?.setAttribute('tabindex', INACTIVE_TAB_INDEX);
+    element?.setAttribute(TAB_INDEX, INACTIVE_TAB_INDEX);
   }
 
   private getElementFromDataMonthAttribute(month: number): HTMLElement | null {
@@ -112,7 +110,7 @@ export class A11yMonthsDirective implements AfterViewChecked {
 
   private setTabIndex(): void {
     this._elementRef.nativeElement.setAttribute(
-      'tabindex',
+      TAB_INDEX,
       this.month() === this._datePicker.currentMonth ? ACTIVE_TAB_INDEX : INACTIVE_TAB_INDEX
     );
   }
