@@ -41,6 +41,25 @@
       }
     }
   }
+
+  &.percy-option-item_disabled {
+    .percy-option-item_wrapper {
+      cursor: initial;
+      opacity: .5;
+      pointer-events: none;
+
+      &:hover {
+        background-color: initial;
+      }
+    }
+  }
+
+  &.percy-option-item_focused {
+    .percy-option-item_wrapper {
+      background-color: var(--percy-accent-tint);
+      border-color: var(--percy-accent-tint);
+    }
+  }
 }
 
 .percy-option-item {
