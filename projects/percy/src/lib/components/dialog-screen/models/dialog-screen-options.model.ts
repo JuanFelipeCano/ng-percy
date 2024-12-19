@@ -1,7 +1,7 @@
 import { ModelSignal, Type } from '@angular/core';
 
 /**
- * @name DialogScreenOptions
+ * @name PercyDialogScreenOptions
  * @description Defines the options for the dialog screen
  * @param title - Title of the dialog
  * @param component - Component to be displayed in the dialog
@@ -15,7 +15,7 @@ import { ModelSignal, Type } from '@angular/core';
  * Although the title is required, the property hideTitle can be used to hide the title.
  * It is required because of the accesibility. The dialog screen will use the title as the aria-labelledby attribute.
  */
-export interface DialogScreenOptions<T> {
+export interface PercyDialogScreenOptions<T> {
   title: string;
   component: Type<any>;
   componentProps?: T | { [key: string]: any };
@@ -29,11 +29,11 @@ export interface DialogScreenOptions<T> {
 }
 
 /**
- * @name DialogScreenRequiredOptions
+ * @name PercyDialogScreenRequiredOptions
  * @description It constains required options to be implemented in the dialog screen.
  * The typos are ModelSignals of the types defined in the DialogScreenOptions interface.
  */
-export interface DialogScreenRequiredOptions<T> {
+export interface PercyDialogScreenRequiredOptions<T> {
   title: ModelSignal<string>;
   component:  ModelSignal<Type<any>>;
   componentProps: ModelSignal< T | { [key: string]: any; } | undefined>;

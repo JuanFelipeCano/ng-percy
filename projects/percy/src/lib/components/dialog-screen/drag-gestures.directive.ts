@@ -7,14 +7,14 @@ import {
   OnDestroy,
   Renderer2,
 } from '@angular/core';
-import { DialogScreenComponent } from './dialog-screen.component';
 import { ZERO } from '../../constants';
+import { PercyDialogScreenComponent } from './dialog-screen.component';
 
 @Directive({
   selector: '[percyDragGestures]',
-  standalone: true
+  standalone: true,
 })
-export class DragGesturesDirective implements OnDestroy {
+export class PercyDragGesturesDirective implements OnDestroy {
 
   private startY!: number;
   private startTranslateY!: number;
@@ -22,7 +22,7 @@ export class DragGesturesDirective implements OnDestroy {
   private isDragging!: boolean;
 
   @Host()
-  private readonly _dialogScreen = inject(DialogScreenComponent);
+  private readonly _dialogScreen = inject(PercyDialogScreenComponent);
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
   private readonly _renderer = inject(Renderer2);
 
