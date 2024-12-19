@@ -1,0 +1,13 @@
+<li
+  class="percy-option-item_wrapper"
+  [attr.role]="'option'"
+  [attr.aria-selected]="selected()"
+  [attr.aria-disabled]="disabled()"
+  (click)="selectOption()"
+>
+  <span
+    class="percy-option-item_label"
+  >
+    {{ option().text }}
+  </span>
+</li>

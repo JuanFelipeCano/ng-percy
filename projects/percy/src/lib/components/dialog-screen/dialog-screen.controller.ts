@@ -37,6 +37,8 @@ export class DialogScreenController {
     this.subject = new Subject();
 
     return defer(() => {
+      document.body.style.overflow = 'hidden';
+
       this.dialogScreenRef = this._viewContainerRef.createComponent(DialogScreenComponent);
 
       this.setComponentProperties(options);
@@ -53,6 +55,8 @@ export class DialogScreenController {
    */
   public close<T = unknown>(result?: T) {
     if (this.dialogScreenRef) {
+      document.body.style.overflow = 'auto';
+
       this.subject.next(result);
       this.subject.complete();
       this._appRef.detachView(this.dialogScreenRef.hostView);

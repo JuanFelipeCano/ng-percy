@@ -7,9 +7,9 @@ import {
   HostListener,
   inject,
   OnDestroy,
-  OnInit
 } from '@angular/core';
 import { KeyboardKeys, ONE, ZERO } from '../../constants';
+import { FocusService } from '../../services';
 import { sleep } from '../../utils';
 
 const EDITABLE_ELEMENTS = 'input:not([disabled]), textarea:not([disabled])';
@@ -21,16 +21,17 @@ const VIEW_CHECKED_TIME = 100;
 // TODO: add documentation about focusable-interactive-content class
 @Directive({
   selector: '[percyTrapFocus]',
-  standalone: true
+  standalone: true,
+  providers: [ FocusService ],
 })
 export class TrapFocusDirective implements AfterViewInit, AfterViewChecked, OnDestroy {
 
-  private lastFocusedElement!: HTMLElement | null;
   private focusableElements!: HTMLElement[];
   private focusableInteractiveContentElements!: HTMLElement[];
 
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
   private readonly _detectorRef = inject(ChangeDetectorRef);
+  private readonly _focusService = inject(FocusService);
 
   constructor() {
     this.focusableElements = [];
@@ -38,7 +39,7 @@ export class TrapFocusDirective implements AfterViewInit, AfterViewChecked, OnDe
   }
 
   public ngAfterViewInit(): void {
-    this.setLastFocusedElement();
+    this._focusService.setLastFocusedElement();
     this.focusFirstInteractiveElement();
   }
 
@@ -47,7 +48,7 @@ export class TrapFocusDirective implements AfterViewInit, AfterViewChecked, OnDe
   }
 
   public ngOnDestroy(): void {
-    this.setFocusToLastFocusedElement();
+    this._focusService.setFocusToLastFocusedElement();
   }
 
   @HostListener('keydown', ['$event'])
@@ -104,29 +105,5 @@ export class TrapFocusDirective implements AfterViewInit, AfterViewChecked, OnDe
     const firstFocusableElement = this.focusableElements[ZERO] || firstInteractiveElement;
 
     return [ focusableElements, firstInteractiveElement, firstFocusableElement, lastFocusableElement ];
-  }
-
-  private setLastFocusedElement(): void {
-    let activeElement =
-      typeof document !== 'undefined' && document
-        ? (document.activeElement as HTMLElement | null)
-        : null;
-
-    while (activeElement?.shadowRoot) {
-      const newActiveElement = activeElement.shadowRoot.activeElement as HTMLElement | null;
-      if (newActiveElement === activeElement) {
-        break;
-      } else {
-        activeElement = newActiveElement;
-      }
-    }
-
-    this.lastFocusedElement = activeElement;
-  }
-
-  private setFocusToLastFocusedElement(): void {
-    if (this.lastFocusedElement) {
-      this.lastFocusedElement.focus();
-    }
   }
 }

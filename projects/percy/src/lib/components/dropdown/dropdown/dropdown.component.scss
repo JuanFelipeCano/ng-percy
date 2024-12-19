@@ -1,0 +1,67 @@
+@import '../../../../assets/styles/global';
+
+:host {
+  --background: var(--percy-background);
+  --border: transparent;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  --margin-bottom: 0;
+  --gap: 1rem;
+  --min-height: auto;
+  --max-height: 12.5rem;
+  --padding: .75rem;
+
+  display: contents;
+
+  &.percy-dropdown_round {
+    .percy-dropdown_content,
+    .percy-dropdown_inner {
+      border-radius: .25rem;
+    }
+  }
+
+  &.percy-dropdown_square {
+    .percy-dropdown_content,
+    .percy-dropdown_inner {
+      border-radius: 0;
+    }
+  }
+
+  &.percy-dropdown_circle {
+    .percy-dropdown_content,
+    .percy-dropdown_inner {
+      border-radius: calculateRem(24px);
+    }
+  }
+}
+
+.percy-dropdown {
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+
+  &_inner {
+    @include focus-style;
+  }
+
+  &_content-wrapper {
+    position: relative;
+    margin-bottom: var(--margin-bottom);
+  }
+
+  &_content {
+    position: absolute;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: var(--padding);
+    min-height: var(--min-height);
+    max-height: var(--max-height);
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    box-shadow: var(--box-shadow);
+  }
+}

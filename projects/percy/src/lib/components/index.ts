@@ -8,3 +8,6 @@ export * from './button/button.component';
 export * from './checkbox/checkbox.component';
 export * from './toast/toast.component';
 export * from './toast/toast.controller';
+export * from './dropdown/dropdown/dropdown.component';
+export * from './dropdown/dropdown-types/dropdown-list/dropdown-list.component';
+export * from './option-item/option-item.component';
