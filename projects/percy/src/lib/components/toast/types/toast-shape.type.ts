@@ -1,3 +1,3 @@
-import { ShapeBase } from '../../../types';
+import { PercyShapeBase } from '../../../types';
 
-export type ToastShape = ShapeBase;
+export type PercyToastShape = PercyShapeBase;
