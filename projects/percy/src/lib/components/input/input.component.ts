@@ -10,12 +10,13 @@ import {
   output,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { PercyShapeBase } from '../../types';
 import { randomId } from '../../utils';
 
 type LabelStyle = 'start' | 'floating' | 'hidden';
 type InputType = 'text' | 'email' | 'password' | 'number';
 type PasswordIcon = 'eye-outline' | 'eye-off-outline';
-type InputShape = 'round' | 'square' | 'circle';
+type InputShape = PercyShapeBase;
 
 @Component({
   selector: 'percy-input',
@@ -26,7 +27,7 @@ type InputShape = 'round' | 'square' | 'circle';
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => InputComponent),
+    useExisting: forwardRef(() => PercyInputComponent),
     multi: true,
   }],
   host: {
@@ -43,7 +44,7 @@ type InputShape = 'round' | 'square' | 'circle';
     '[class.percy-input_circle]': 'shape() === "circle"',
   },
 })
-export class InputComponent implements ControlValueAccessor {
+export class PercyInputComponent implements ControlValueAccessor {
 
   public readonly label = input.required<string>();
   public readonly id = input<string>(randomId('percy-id'), { alias: 'input-id' });
