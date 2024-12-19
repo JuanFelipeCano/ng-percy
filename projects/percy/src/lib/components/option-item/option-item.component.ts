@@ -1,8 +1,8 @@
 import { booleanAttribute, ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { PercyDropdownListOption } from '../../../public-api';
-import { ShapeBase } from '../../types';
+import { PercyShapeBase } from '../../types';
+import { PercyDropdownListOption } from '../dropdown';
 
-type OptionItemShape = ShapeBase;
+type OptionItemShape = PercyShapeBase;
 
 @Component({
   selector: 'percy-option-item',
@@ -31,7 +31,7 @@ export class PercyOptionItemComponent {
   public readonly focused = input(false, { transform: booleanAttribute });
   public readonly shape = input<OptionItemShape>('round');
 
-  public readonly onSelected = output<PercyDropdownListOption>();
+  public readonly percySelected = output<PercyDropdownListOption>();
 
   public selectOption(): void {
     if (this.disabled()) return;
@@ -41,6 +41,6 @@ export class PercyOptionItemComponent {
       selected: !this.option().selected,
     };
 
-    this.onSelected.emit(option);
+    this.percySelected.emit(option);
   }
 }
