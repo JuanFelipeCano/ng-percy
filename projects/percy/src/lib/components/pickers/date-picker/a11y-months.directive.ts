@@ -18,14 +18,14 @@ import {
   ZERO,
 } from '../../../constants';
 import { KeyboardExecutorService } from '../../../services';
-import { DatePickerComponent } from './date-picker.component';
+import { PercyDatePickerComponent } from './date-picker.component';
 
 @Directive({
   selector: '[percyA11yMonths]',
   standalone: true,
   providers: [ KeyboardExecutorService ],
 })
-export class A11yMonthsDirective implements AfterViewChecked {
+export class PercyA11yMonthsDirective implements AfterViewChecked {
 
   /**
    * Month index
@@ -33,7 +33,7 @@ export class A11yMonthsDirective implements AfterViewChecked {
   public readonly month = input.required<number>();
 
   @Host()
-  private readonly _datePicker = inject(DatePickerComponent);
+  private readonly _datePicker = inject(PercyDatePickerComponent);
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
   private readonly _keyboardExecutor = inject(KeyboardExecutorService);
 

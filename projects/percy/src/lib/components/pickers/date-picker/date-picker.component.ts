@@ -17,21 +17,21 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateTime as Luxon, Info as LuxonInfo } from 'luxon';
 import { ELEVEN, INACTIVE_TAB_INDEX, ONE, SEVEN, SIX, TAB_INDEX, ZERO } from '../../../constants';
 import { PickerShape } from '../types';
-import { A11yCalendarDirective } from './a11y-calendar.directive';
-import { A11yMonthsDirective } from './a11y-months.directive';
-import { CalendarDay, DatePicker } from './models';
+import { PercyA11yCalendarDirective } from './a11y-calendar.directive';
+import { PercyA11yMonthsDirective } from './a11y-months.directive';
+import { PercyCalendarDay, PercyDatePicker } from '../models';
 
 @Component({
   selector: 'percy-date-picker',
   standalone: true,
-  imports: [ CommonModule, A11yCalendarDirective, A11yMonthsDirective ],
+  imports: [ CommonModule, PercyA11yCalendarDirective, PercyA11yMonthsDirective ],
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.scss',
   host: { 'class': 'date-picker' },
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => DatePickerComponent),
+    useExisting: forwardRef(() => PercyDatePickerComponent),
     multi: true,
   }],
   animations: [
@@ -46,7 +46,7 @@ import { CalendarDay, DatePicker } from './models';
     ])
   ],
 })
-export class DatePickerComponent implements ControlValueAccessor, OnInit {
+export class PercyDatePickerComponent implements ControlValueAccessor, OnInit {
 
   public displayMonthsBtn = viewChild('DisplayMonthsBtn', { read: ElementRef });
   public hideMonthsBtn = viewChild('HideMonthsBtn', { read: ElementRef });
@@ -77,7 +77,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
   public readonly a11yHideMonthsAriaLabel
     = input<string | null>(null, { alias: 'hide-months-aria-label' });
 
-  public readonly onSelectedDate = output<DatePicker>();
+  public readonly percySelected = output<PercyDatePicker>();
 
   private readonly _detectorRef = inject(ChangeDetectorRef);
 
@@ -86,11 +86,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
 
   public currentMonth!: number;
   public currentYear!: number;
-  public datePicker!: DatePicker;
+  public datePicker!: PercyDatePicker;
   protected weekdays!: string[];
   protected months!: string[];
   protected currentDate!: Date;
-  protected calendarDays!: CalendarDay[];
+  protected calendarDays!: PercyCalendarDay[];
   protected areMonthsOpen!: boolean;
 
   constructor() {
@@ -102,8 +102,8 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     };
   }
 
-  public get calendarWeeks(): CalendarDay[][] {
-    const weeks: CalendarDay[][] = [];
+  public get calendarWeeks(): PercyCalendarDay[][] {
+    const weeks: PercyCalendarDay[][] = [];
 
     for (let i = ZERO; i < this.calendarDays.length; i += SEVEN) {
       weeks.push(this.calendarDays.slice(i, i + SEVEN));
@@ -173,7 +173,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     this.updateTabIndexes();
   }
 
-  public isDaySelected(day: CalendarDay): boolean {
+  public isDaySelected(day: PercyCalendarDay): boolean {
     return !day.isFromAnotherMonth
       && (this.datePicker.date
       && day.date.toLocaleDateString() === this.datePicker.date.toLocaleDateString());
@@ -191,7 +191,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     this.onChange(date);
     this.onTouched();
 
-    this.onSelectedDate.emit(this.datePicker);
+    this.percySelected.emit(this.datePicker);
   }
 
   public selectMonth(month: number): void {

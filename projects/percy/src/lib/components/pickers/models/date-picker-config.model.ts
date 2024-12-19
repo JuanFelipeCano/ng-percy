@@ -8,7 +8,7 @@
  * @param maxDate - Maximum date
  * @param disabledDates - Disabled dates
  */
-export interface DatePickerConfig {
+export interface PercyDatePickerConfig {
   format: string;
   date?: Date;
   locale?: string;
