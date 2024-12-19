@@ -1,1 +1,1 @@
-export type ShapeBase = 'round' | 'square' | 'circle';
+export type PercyShapeBase = 'round' | 'square' | 'circle';
