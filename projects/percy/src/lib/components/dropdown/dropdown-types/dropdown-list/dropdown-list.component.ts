@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   booleanAttribute,
   Component,
@@ -8,22 +9,15 @@ import {
   input,
   OnInit,
   output,
-  Signal,
+  Signal
 } from '@angular/core';
+import { KeyboardKeys, ONE, TEN, ZERO } from '../../../../constants';
+import { PercyDropdownListOption } from '../../../../models';
+import { FocusService, KeyboardExecutorService } from '../../../../services';
 import { ShapeBase } from '../../../../types';
 import { randomId, sleep } from '../../../../utils';
 import { PercyOptionItemComponent } from '../../../option-item/option-item.component';
 import { PercyDropdownComponent } from '../../dropdown/dropdown.component';
-import { FocusService, KeyboardExecutorService } from '../../../../services';
-import { KeyboardKeys, ONE, TEN, ZERO } from '../../../../constants';
-import { CommonModule } from '@angular/common';
-
-export interface DropdownListOption {
-  value: string;
-  text: string;
-  disabled?: boolean;
-  selected?: boolean;
-}
 
 type DropdownListShape = ShapeBase;
 
@@ -47,7 +41,7 @@ export class PercyDropdownListComponent implements OnInit {
 
   public readonly label = input.required<string>();
   public readonly id = input<string>(randomId('percy-id'), { alias: 'percy-id' });
-  public readonly options = input<DropdownListOption[]>([]);
+  public readonly options = input<PercyDropdownListOption[]>([]);
   public readonly shape = input<DropdownListShape>('round');
   public readonly multiple = input(false, { transform: booleanAttribute });
   public readonly disabled = input(false, { transform: booleanAttribute });
@@ -61,14 +55,14 @@ export class PercyDropdownListComponent implements OnInit {
   public readonly a11yNotSelectedText = input<string | null>(null, { alias: 'a11y-not-selected-text' });
   public readonly a11yOfText = input<string | null>(null, { alias: 'a11y-of-text' });
 
-  public readonly percyChange = output<DropdownListOption | DropdownListOption[]>();
+  public readonly percyChange = output<PercyDropdownListOption | PercyDropdownListOption[]>();
 
   protected isOpen!: boolean;
-  protected _options!: Signal<DropdownListOption[]>;
+  protected _options!: Signal<PercyDropdownListOption[]>;
   protected counter!: number;
-  protected selectedOptions!: DropdownListOption | DropdownListOption[] | undefined;
-  protected focusedOption!: DropdownListOption | undefined;
-  protected lastSelectedOption!: DropdownListOption | undefined;
+  protected selectedOptions!: PercyDropdownListOption | PercyDropdownListOption[] | undefined;
+  protected focusedOption!: PercyDropdownListOption | undefined;
+  protected lastSelectedOption!: PercyDropdownListOption | undefined;
 
   private readonly _focusService = inject(FocusService);
   private readonly _keyboardExecutor = inject(KeyboardExecutorService);
@@ -80,7 +74,7 @@ export class PercyDropdownListComponent implements OnInit {
   }
 
   public get selectedOptionText(): string {
-    return (this.selectedOptions as DropdownListOption)?.text;
+    return (this.selectedOptions as PercyDropdownListOption)?.text;
   }
 
   public get labelId(): string {
@@ -131,7 +125,7 @@ export class PercyDropdownListComponent implements OnInit {
     }
   }
 
-  public selectOption(option: DropdownListOption | undefined): void {
+  public selectOption(option: PercyDropdownListOption | undefined): void {
     if (this.disabled() || !option || option.disabled) return;
 
     this.lastSelectedOption = option;
@@ -151,7 +145,7 @@ export class PercyDropdownListComponent implements OnInit {
     this.upateCounter();
   }
 
-  private setSelectedOption(option: DropdownListOption): void {
+  private setSelectedOption(option: PercyDropdownListOption): void {
     const newOptions = this._options().map(item => {
       if (item.value === option.value) {
         return { ...item, selected: true };
@@ -164,7 +158,7 @@ export class PercyDropdownListComponent implements OnInit {
     this.toggleDropdown();
   }
 
-  private setSelectedMultipleOptions(option: DropdownListOption): void {
+  private setSelectedMultipleOptions(option: PercyDropdownListOption): void {
     const newOptions = this._options().map(item => {
       if (item.value === option.value) {
         return { ...item, selected: !item.selected };
@@ -210,7 +204,7 @@ export class PercyDropdownListComponent implements OnInit {
     this._keyboardExecutor.execute(KeysMapper, event);
   }
 
-  private toggleDropdownOrSelectOption(option: DropdownListOption | undefined): void {
+  private toggleDropdownOrSelectOption(option: PercyDropdownListOption | undefined): void {
     this.isOpen ? this.selectOption(option) : this.toggleDropdown();
   }
 

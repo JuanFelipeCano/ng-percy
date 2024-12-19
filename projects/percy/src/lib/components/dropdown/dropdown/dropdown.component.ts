@@ -1,6 +1,6 @@
-import { animate, style, transition, trigger } from '@angular/animations';
-import { booleanAttribute, Component, input } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ShapeBase } from '../../../types';
+import { DROPDOWN_ANIMATION } from './dropdown.animation';
 
 type DropdownShape = ShapeBase;
 
@@ -10,23 +10,14 @@ type DropdownShape = ShapeBase;
   imports: [],
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'percy-dropdown',
     '[class.percy-dropdown_round]': 'shape() === "round"',
     '[class.percy-dropdown_square]': 'shape() === "square"',
     '[class.percy-dropdown_circle]': 'shape() === "circle"',
   },
-  animations: [
-    trigger('slideInOut', [
-      transition(':enter', [
-        style({ transform: 'translateY(-5%)', opacity: 0 }),
-        animate('200ms ease-out', style({ transform: 'translateY(0)', opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate('200ms ease-in', style({ transform: 'translateY(-5%)', opacity: 0 }))
-      ]),
-    ]),
-  ],
+  animations: [ DROPDOWN_ANIMATION ],
 })
 export class PercyDropdownComponent {
 
