@@ -1,8 +1,8 @@
 import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ShapeBase } from '../../../types';
+import { PercyShapeBase } from '../../../types';
 import { DROPDOWN_ANIMATION } from './dropdown.animation';
 
-type DropdownShape = ShapeBase;
+type DropdownShape = PercyShapeBase;
 
 @Component({
   selector: 'percy-dropdown',

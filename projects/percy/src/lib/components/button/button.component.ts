@@ -1,9 +1,17 @@
-import { booleanAttribute, Component, CUSTOM_ELEMENTS_SCHEMA, input, output } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  input,
+  output,
+} from '@angular/core';
+import { PercyShapeBase } from '../../types';
 
 type ButtonType = 'button' | 'submit' | 'reset';
 type IconPosition = 'left' | 'right';
 type ButtonSize = 'small' | 'medium' | 'large';
-type ButtonShape = 'round' | 'square' | 'circle';
+type ButtonShape = PercyShapeBase;
 type ButtonFill = 'filled' | 'ghosted' | 'cleaned' | 'linked';
 type ButtonExpand = 'block' | 'full';
 
@@ -13,6 +21,7 @@ type ButtonExpand = 'block' | 'full';
   imports: [],
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   host: {
     'class': 'percy-button',

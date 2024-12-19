@@ -8,9 +8,9 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ZERO } from '../../constants';
-import { PercyToastComponent } from './toast.component';
 import { sleep } from '../../utils';
-import { Toast } from './models/toast.model';
+import { PercyToast } from './models/toast.model';
+import { PercyToastComponent } from './toast.component';
 
 const DEFAULT_DURATION = 3000;
 
@@ -21,27 +21,27 @@ export class PercyToastController {
   private readonly _viewContainerRef = inject(ViewContainerRef);
   private readonly _appRef = inject(ApplicationRef);
 
-  public show(props: Toast): void {
+  public show(props: PercyToast): void {
     this.open(props);
   }
 
-  public success(props: Omit<Toast, 'type'>): void {
+  public success(props: Omit<PercyToast, 'type'>): void {
     this.open({ ...props, type: 'success' });
   }
 
-  public info(props: Omit<Toast, 'type'>): void {
+  public info(props: Omit<PercyToast, 'type'>): void {
     this.open({ ...props, type: 'info' });
   }
 
-  public warning(props: Omit<Toast, 'type'>): void {
+  public warning(props: Omit<PercyToast, 'type'>): void {
     this.open({ ...props, type: 'warning' });
   }
 
-  public error(props: Omit<Toast, 'type'>): void {
+  public error(props: Omit<PercyToast, 'type'>): void {
     this.open({ ...props, type: 'error' });
   }
 
-  private async open(props: Toast): Promise<void> {
+  private async open(props: PercyToast): Promise<void> {
     this.destroy();
 
     this.toastRef = this._viewContainerRef.createComponent(PercyToastComponent);
@@ -52,12 +52,12 @@ export class PercyToastController {
       (this.toastRef.hostView as EmbeddedViewRef<unknown>).rootNodes[ZERO]
     );
 
-    await sleep(props.duration || DEFAULT_DURATION);
+    await sleep(props.duration ?? DEFAULT_DURATION);
     await this.toastRef?.instance.close();
     this.destroy();
   }
 
-  private setComponentProperties(props: Toast) {
+  private setComponentProperties(props: PercyToast) {
     if (!this.toastRef) return;
 
     const componentInstance = this.toastRef.instance;

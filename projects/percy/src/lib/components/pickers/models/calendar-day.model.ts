@@ -1,4 +1,4 @@
-export interface CalendarDay {
+export interface PercyCalendarDay {
   date: Date;
   isFromAnotherMonth: boolean;
 }

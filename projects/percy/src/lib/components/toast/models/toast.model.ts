@@ -1,12 +1,12 @@
-import { ToastPosition, ToastShape, ToastType } from '../types';
+import { PercyToastShape, ToastPosition, ToastType } from '../types';
 
-export interface Toast {
+export interface PercyToast {
   message: string;
   position?: ToastPosition;
   type?: ToastType;
   description?: string;
   icon?: string;
-  shape?: ToastShape;
+  shape?: PercyToastShape;
   duration?: number;
   a11yTypeDescription?: string;
 }

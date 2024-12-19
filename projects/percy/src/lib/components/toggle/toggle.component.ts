@@ -1,9 +1,10 @@
-import { booleanAttribute, Component, HostListener, input, model, output } from '@angular/core';
+import { booleanAttribute, Component, forwardRef, HostListener, input, model, output } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { KeyboardKeys } from '../../constants';
+import { PercyShapeBase } from '../../types';
 import { randomId } from '../../utils';
-import { ControlValueAccessor } from '@angular/forms';
 
-type ToggleShape = 'round' | 'square' | 'circle';
+type ToggleShape = PercyShapeBase;
 
 @Component({
   selector: 'percy-toggle',
@@ -11,6 +12,11 @@ type ToggleShape = 'round' | 'square' | 'circle';
   imports: [],
   templateUrl: './toggle.component.html',
   styleUrl: './toggle.component.scss',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => PercyToggleComponent),
+    multi: true,
+  }],
   host: {
     'class': 'percy-toggle',
     '[class.percy-toggle_round]': 'shape() === "round"',
@@ -18,7 +24,7 @@ type ToggleShape = 'round' | 'square' | 'circle';
     '[class.percy-toggle_circle]': 'shape() === "circle"',
   },
 })
-export class ToggleComponent implements ControlValueAccessor {
+export class PercyToggleComponent implements ControlValueAccessor {
 
   public readonly label = input.required<string>();
   public readonly id = input<string>(randomId('percy-id'), { alias: 'toggle-id' });

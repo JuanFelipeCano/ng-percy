@@ -1,7 +1,7 @@
 import { Component, computed, CUSTOM_ELEMENTS_SCHEMA, input, OnInit, Signal } from '@angular/core';
 import { sleep } from '../../utils';
-import { ToastPosition, ToastShape, ToastType } from './types';
 import { TOAST_ANIMATION } from './toast.animations';
+import { PercyToastShape, ToastPosition, ToastType } from './types';
 
 const IconMapper: Record<ToastType, string | null> = {
   'default' : null,
@@ -54,7 +54,7 @@ export class PercyToastComponent implements OnInit {
   public readonly type = input<ToastType>('default');
   public readonly description = input<string>('');
   public readonly icon = input<string | null>(null);
-  public readonly shape = input<ToastShape>('round');
+  public readonly shape = input<PercyToastShape>('round');
   public readonly a11yTypeDescription = input<string>('', { alias: 'a11y-type-description' });
 
   protected _icon: Signal<string | null>;
@@ -63,7 +63,7 @@ export class PercyToastComponent implements OnInit {
   protected position!: ToastPosition;
 
   constructor() {
-    this._icon = computed(() => this.icon() || IconMapper[this.type()]);
+    this._icon = computed(() => this.icon() ?? IconMapper[this.type()]);
   }
 
   public ngOnInit(): void {

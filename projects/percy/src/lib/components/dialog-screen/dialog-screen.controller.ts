@@ -9,13 +9,13 @@ import {
 } from '@angular/core';
 import { defer, Observable, Subject } from 'rxjs';
 import { ZERO } from '../../constants';
-import { DialogScreenComponent } from './dialog-screen.component';
-import { DialogScreenOptions } from './models';
+import { PercyDialogScreenComponent } from './dialog-screen.component';
+import { PercyDialogScreenOptions } from './models';
 
 @Injectable()
-export class DialogScreenController {
+export class PercyDialogScreenController {
 
-  private dialogScreenRef!: ComponentRef<DialogScreenComponent<unknown>> | null;
+  private dialogScreenRef!: ComponentRef<PercyDialogScreenComponent<unknown>> | null;
   private subject!: Subject<unknown>;
 
   private readonly _viewContainerRef = inject(ViewContainerRef);
@@ -31,7 +31,7 @@ export class DialogScreenController {
    * @generic T - Component props type
    * @returns Observable<unknown>
    */
-  public create<T = unknown>(options: DialogScreenOptions<T>): Observable<unknown> {
+  public create<T = unknown>(options: PercyDialogScreenOptions<T>): Observable<unknown> {
     this.close();
 
     this.subject = new Subject();
@@ -39,7 +39,7 @@ export class DialogScreenController {
     return defer(() => {
       document.body.style.overflow = 'hidden';
 
-      this.dialogScreenRef = this._viewContainerRef.createComponent(DialogScreenComponent);
+      this.dialogScreenRef = this._viewContainerRef.createComponent(PercyDialogScreenComponent);
 
       this.setComponentProperties(options);
 
@@ -69,13 +69,13 @@ export class DialogScreenController {
    * @description Set the properties of the dialog screen
    * @param options - Dialog screen options
    */
-  private setComponentProperties<T = unknown>(options: DialogScreenOptions<T>) {
+  private setComponentProperties<T = unknown>(options: PercyDialogScreenOptions<T>) {
     if (!this.dialogScreenRef) return;
 
     const componentInstance = this.dialogScreenRef.instance;
 
     for (const key in options) {
-      const typedKey = key as keyof DialogScreenOptions<T>;
+      const typedKey = key as keyof PercyDialogScreenOptions<T>;
 
       if (typedKey in componentInstance) {
         const property = (componentInstance as any)[typedKey];

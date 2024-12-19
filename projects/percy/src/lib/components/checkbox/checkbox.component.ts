@@ -3,17 +3,19 @@ import {
   booleanAttribute,
   Component,
   ElementRef,
+  forwardRef,
   HostListener,
   input,
   model,
   output,
   viewChild,
 } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { KeyboardKeys } from '../../constants';
+import { PercyShapeBase } from '../../types';
 import { randomId } from '../../utils';
 
-type CheckboxShape = 'round' | 'square' | 'circle';
+type CheckboxShape = PercyShapeBase;
 
 @Component({
   selector: 'percy-checkbox',
@@ -21,6 +23,11 @@ type CheckboxShape = 'round' | 'square' | 'circle';
   imports: [],
   templateUrl: './checkbox.component.html',
   styleUrl: './checkbox.component.scss',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => PercyCheckboxComponent),
+    multi: true,
+  }],
   host: {
     'class': 'percy-checkbox',
     '[class.percy-checkbox_round]': 'shape() === "round"',

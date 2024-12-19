@@ -13,15 +13,15 @@ import {
   output,
   Type,
   viewChild,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { TrapFocusDirective } from '../../directives';
 import { ScreenSizeDetectionService } from '../../services';
 import { sleep } from '../../utils';
 import { DIALOG_SCREEN_ANIMATION } from './dialog-screen.animation';
-import { DragGesturesDirective } from './drag-gestures.directive';
-import { DialogScreenRequiredOptions } from './models';
+import { PercyDragGesturesDirective } from './drag-gestures.directive';
+import { PercyDialogScreenRequiredOptions } from './models';
 
 const ANIMATION_TIME = 500;
 const MOBILE_BREAKPOINT = 640;
@@ -29,7 +29,7 @@ const MOBILE_BREAKPOINT = 640;
 @Component({
   selector: 'percy-dialog-screen',
   standalone: true,
-  imports: [ CommonModule, TrapFocusDirective, DragGesturesDirective ],
+  imports: [ CommonModule, TrapFocusDirective, PercyDragGesturesDirective ],
   providers: [ ScreenSizeDetectionService ],
   templateUrl: './dialog-screen.component.html',
   styleUrl: './dialog-screen.component.scss',
@@ -41,7 +41,7 @@ const MOBILE_BREAKPOINT = 640;
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   animations: [ DIALOG_SCREEN_ANIMATION ],
 })
-export class DialogScreenComponent<T> implements DialogScreenRequiredOptions<T>, AfterViewInit, OnDestroy {
+export class PercyDialogScreenComponent<T> implements PercyDialogScreenRequiredOptions<T>, AfterViewInit, OnDestroy {
 
   public readonly dialogContent = viewChild.required('content', { read: ViewContainerRef });
   public readonly dialogContainer = viewChild.required('container', { read: ElementRef });

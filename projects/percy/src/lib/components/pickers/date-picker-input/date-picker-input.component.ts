@@ -2,23 +2,23 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
+  forwardRef,
   HostListener,
   input,
   model,
   OnInit,
   output,
-  viewChild,
-  ViewChild,
+  viewChild
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateTime as Luxon } from 'luxon';
 import { KeyboardKeys } from '../../../constants';
 import { TrapFocusDirective } from '../../../directives';
 import { randomId } from '../../../utils';
-import { InputComponent } from '../../input/input.component';
-import { DatePickerComponent } from '../date-picker/date-picker.component';
-import { DatePicker } from '../date-picker/models';
+import { PercyInputComponent } from '../../input/input.component';
+import { PercyDatePickerComponent } from '../date-picker/date-picker.component';
+import { PercyDatePicker } from '../models';
 import { PickerShape } from '../types';
-import { ControlValueAccessor } from '@angular/forms';
 
 /**
  * DatePickerInputComponent
@@ -28,9 +28,14 @@ import { ControlValueAccessor } from '@angular/forms';
 @Component({
   selector: 'percy-date-picker-input',
   standalone: true,
-  imports: [ DatePickerComponent, InputComponent, TrapFocusDirective ],
+  imports: [ PercyDatePickerComponent, PercyInputComponent, TrapFocusDirective ],
   templateUrl: './date-picker-input.component.html',
   styleUrl: './date-picker-input.component.scss',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => PercyDatePickerInputComponent),
+    multi: true,
+  }],
   host: { 'class': 'date-picker-input' },
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   animations: [
@@ -45,9 +50,9 @@ import { ControlValueAccessor } from '@angular/forms';
     ]),
   ],
 })
-export class DatePickerInputComponent implements OnInit, ControlValueAccessor {
+export class PercyDatePickerInputComponent implements OnInit, ControlValueAccessor {
 
-  public datePickerComponent = viewChild.required(DatePickerComponent);
+  public datePickerComponent = viewChild.required(PercyDatePickerComponent);
 
   private readonly defaultFormat = 'yyyy-MM-dd';
   private readonly defaultLocale = 'en-US';
@@ -81,10 +86,10 @@ export class DatePickerInputComponent implements OnInit, ControlValueAccessor {
   public readonly a11yHideMonthsAriaLabel
     = input<string | null>(null, { alias: 'hide-months-aria-label' });
 
-  public readonly onSelectedDate = output<DatePicker>();
+  public readonly onSelectedDate = output<PercyDatePicker>();
 
   protected isCalendarOpen!: boolean;
-  protected datePicker!: DatePicker;
+  protected datePicker!: PercyDatePicker;
 
   public onChange = (_value: Date) => {};
   public onTouched = () => {};
@@ -122,7 +127,7 @@ export class DatePickerInputComponent implements OnInit, ControlValueAccessor {
     this.closeFromBackground();
   }
 
-  protected selectDate(date: DatePicker): void {
+  protected selectDate(date: PercyDatePicker): void {
     this.value.set(date.date);
     this.datePicker = date;
     this.toggleCalendar();

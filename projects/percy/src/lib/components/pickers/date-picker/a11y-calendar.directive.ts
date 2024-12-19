@@ -2,8 +2,8 @@ import { AfterViewChecked, Directive, ElementRef, Host, HostListener, inject, in
 import { DateTime as Luxon } from 'luxon';
 import { ACTIVE_TAB_INDEX, INACTIVE_TAB_INDEX, KeyboardKeys, ONE, SEVEN, SIX, TAB_INDEX, ZERO } from '../../../constants';
 import { KeyboardExecutorService } from '../../../services';
-import { DatePickerComponent } from './date-picker.component';
-import { CalendarDay } from './models';
+import { PercyCalendarDay } from '../models';
+import { PercyDatePickerComponent } from './date-picker.component';
 
 const ONE_DAY = ONE;
 const ONE_WEEK = SEVEN;
@@ -13,12 +13,12 @@ const ONE_WEEK = SEVEN;
   standalone: true,
   providers: [ KeyboardExecutorService ],
 })
-export class A11yCalendarDirective implements AfterViewChecked {
+export class PercyA11yCalendarDirective implements AfterViewChecked {
 
-  public readonly calendarDay = input.required<CalendarDay>();
+  public readonly calendarDay = input.required<PercyCalendarDay>();
 
   @Host()
-  private readonly _datePicker = inject(DatePickerComponent);
+  private readonly _datePicker = inject(PercyDatePickerComponent);
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
   private readonly _keyboardExecutor = inject(KeyboardExecutorService);
 
