@@ -9,17 +9,17 @@ import {
   input,
   OnInit,
   output,
-  Signal
+  Signal,
 } from '@angular/core';
 import { KeyboardKeys, ONE, TEN, ZERO } from '../../../../constants';
-import { PercyDropdownListOption } from '../../../../models';
 import { FocusService, KeyboardExecutorService } from '../../../../services';
-import { ShapeBase } from '../../../../types';
+import { PercyShapeBase } from '../../../../types';
 import { randomId, sleep } from '../../../../utils';
 import { PercyOptionItemComponent } from '../../../option-item/option-item.component';
 import { PercyDropdownComponent } from '../../dropdown/dropdown.component';
+import { PercyDropdownListOption } from '../../models/dropdown-list-option.model';
 
-type DropdownListShape = ShapeBase;
+type DropdownListShape = PercyShapeBase;
 
 @Component({
   selector: 'percy-dropdown-list',
