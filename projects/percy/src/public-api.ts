@@ -2,10 +2,10 @@
  * Public API Surface of percy
  */
 
-export * from './lib/components';
-export * from './lib/config';
-export * from './lib/constants';
-export * from './lib/directives';
-export * from './lib/services';
-export * from './lib/types';
-export * from './lib/utils';
+export * from './components';
+export * from './config';
+export * from './constants';
+export * from './directives';
+export * from './services';
+export * from './types';
+export * from './utils';
