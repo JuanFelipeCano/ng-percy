@@ -4,7 +4,7 @@ globalThis.ngJest = {
 };
 
 /**
- * @type { import('@jest/types').Config.InitialOptions}
+ * @type { import('@jest/types').Config.InitialOptions }
  */
 module.exports = {
   preset: 'jest-preset-angular',
@@ -21,37 +21,10 @@ module.exports = {
     enableGlobally: true,
   },
   modulePathIgnorePatterns: [
-    "<rootDir>/dist/" // Ignora la carpeta dist
+    '<rootDir>/dist/' // Ignora la carpeta dist
   ],
   testPathIgnorePatterns: [
-    "<rootDir>/dist/" // Ignora las pruebas en dist
+    '<rootDir>/dist/' // Ignora las pruebas en dist
   ],
-  testMatch: ["**/+(*.)+(spec).+(ts)"],
+  testMatch: ['**/+(*.)+(spec).+(ts)'],
 };
-
-// const { pathsToModuleNameMapper } = require("ts-jest");
-// const { compilerOptions } = require("./tsconfig");
-
-// module.exports = {
-//   preset: "jest-preset-angular",
-//   roots: ["<rootDir>/src/"],
-//   testMatch: ["**/+(*.)+(spec).+(ts)"],
-//   setupFilesAfterEnv: ["<rootDir>/src/test.ts"],
-//   collectCoverage: true,
-//   coverageDirectory: 'test_output',
-//   coverageReporters: ["json", "html","text-summary", "clover"],
-//   coverageDirectory: "coverage",
-//   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
-//     prefix: "<rootDir>/",
-//   }),
-//   reporters: [
-//     "default",
-//     [
-//       "jest-junit",
-//       {
-//         outputDirectory: "test-results",
-//         outputName: "unit-test-results.xml"
-//       }
-//     ]
-//   ]
-// };
