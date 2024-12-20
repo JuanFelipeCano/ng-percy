@@ -1,12 +1,17 @@
 <button
   class="percy-button_wrapper"
+  data-testid="percy-button"
   [type]="type()"
   [disabled]="disabled()"
   (click)="percyClick.emit($event)"
   (focus)="percyFocus.emit($event)"
   (blur)="percyBlur.emit($event)"
 >
-  <span [class.visually-hidden]="onlyIcon()" class="percy-button_label">
+  <span
+    class="percy-button_label"
+    data-testid="percy-button_label"
+    [class.visually-hidden]="onlyIcon()"
+  >
     {{ label() }}
   </span>
 
