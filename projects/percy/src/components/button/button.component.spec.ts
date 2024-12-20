@@ -1,15 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PercyButtonComponent } from './button.component';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { PercyButtonComponent } from './button.component';
 
 describe('PercyButtonComponent', () => {
   let component: PercyButtonComponent;
   let fixture: ComponentFixture<PercyButtonComponent>;
 
-  let buttonDe: DebugElement;
   let button: HTMLElement;
-  let labelDe: DebugElement;
   let label: HTMLElement;
 
   const expectedLabel = 'Click me';
@@ -23,11 +20,8 @@ describe('PercyButtonComponent', () => {
     fixture = TestBed.createComponent(PercyButtonComponent);
     component = fixture.componentInstance;
 
-    buttonDe = fixture.debugElement.query(By.css('[data-testid="percy-button"]'));
-    button = buttonDe.nativeElement;
-
-    labelDe = fixture.debugElement.query(By.css('[data-testid="percy-button_label"]'));
-    label = labelDe.nativeElement;
+    button = fixture.debugElement.query(By.css('[data-testid="percy-button"]')).nativeElement;
+    label = fixture.debugElement.query(By.css('[data-testid="percy-button_label"]')).nativeElement;
 
     fixture.componentRef.setInput('label', expectedLabel);
     fixture.detectChanges();
@@ -59,7 +53,6 @@ describe('PercyButtonComponent', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledTimes(1);
-
   });
 
   it('shoult button element trigger percyFocus when focus event is called', () => {
@@ -69,6 +62,5 @@ describe('PercyButtonComponent', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledTimes(1);
-
   });
 });
