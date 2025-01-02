@@ -2,7 +2,7 @@
   class="percy-checkbox_wrapper"
   [for]="id()"
 >
-  <span class="percy-checkbox_label" [class.visually-hidden]="!showLabel()">
+  <span class="percy-checkbox_label" data-testid="percy-checkbox_label" [class.visually-hidden]="!showLabel()">
     {{ label() }}
   </span>
 
@@ -10,6 +10,7 @@
     <input
       #checkbox
       class="percy-checkbox_field"
+      data-testid="percy-checkbox"
       type="checkbox"
       [attr.aria-required]="required()"
       [attr.aria-readonly]="readonly()"

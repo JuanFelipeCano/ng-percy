@@ -16,7 +16,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { TrapFocusDirective } from '../../directives';
+import { PercyTrapFocusDirective } from '../../directives';
 import { ScreenSizeDetectionService } from '../../services';
 import { sleep } from '../../utils';
 import { DIALOG_SCREEN_ANIMATION } from './dialog-screen.animation';
@@ -29,7 +29,7 @@ const MOBILE_BREAKPOINT = 640;
 @Component({
   selector: 'percy-dialog-screen',
   standalone: true,
-  imports: [ CommonModule, TrapFocusDirective, PercyDragGesturesDirective ],
+  imports: [ CommonModule, PercyTrapFocusDirective, PercyDragGesturesDirective ],
   providers: [ ScreenSizeDetectionService ],
   templateUrl: './dialog-screen.component.html',
   styleUrl: './dialog-screen.component.scss',

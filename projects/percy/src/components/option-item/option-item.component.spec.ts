@@ -1,19 +1,27 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OptionsListComponent } from './option-item.component';
+import { PercyOptionItemComponent } from './option-item.component';
+import { PercyDropdownListOption } from '../dropdown';
 
-describe('OptionsListComponent', () => {
-  let component: OptionsListComponent;
-  let fixture: ComponentFixture<OptionsListComponent>;
+describe('PercyOptionItemComponent', () => {
+  let component: PercyOptionItemComponent;
+  let fixture: ComponentFixture<PercyOptionItemComponent>;
+
+  const optionMock: PercyDropdownListOption = {
+    text: '',
+    value: '',
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OptionsListComponent]
+      imports: [PercyOptionItemComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OptionsListComponent);
+    fixture = TestBed.createComponent(PercyOptionItemComponent);
     component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('option', optionMock);
     fixture.detectChanges();
   });
 

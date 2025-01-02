@@ -9,7 +9,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { KeyboardKeys, ONE, ZERO } from '../../constants';
-import { FocusService } from '../../services';
+import { PercyFocusService } from '../../services';
 import { sleep } from '../../utils';
 
 const EDITABLE_ELEMENTS = 'input:not([disabled]), textarea:not([disabled])';
@@ -22,16 +22,16 @@ const VIEW_CHECKED_TIME = 100;
 @Directive({
   selector: '[percyTrapFocus]',
   standalone: true,
-  providers: [ FocusService ],
+  providers: [ PercyFocusService ],
 })
-export class TrapFocusDirective implements AfterViewInit, AfterViewChecked, OnDestroy {
+export class PercyTrapFocusDirective implements AfterViewInit, AfterViewChecked, OnDestroy {
 
   private focusableElements!: HTMLElement[];
   private focusableInteractiveContentElements!: HTMLElement[];
 
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
   private readonly _detectorRef = inject(ChangeDetectorRef);
-  private readonly _focusService = inject(FocusService);
+  private readonly _focusService = inject(PercyFocusService);
 
   constructor() {
     this.focusableElements = [];

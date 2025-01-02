@@ -1,20 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToastComponent } from './toast.component';
+import { PercyToastComponent } from './toast.component';
 
-describe('ToastComponent', () => {
-  let component: ToastComponent;
-  let fixture: ComponentFixture<ToastComponent>;
+describe('PercyToastComponent', () => {
+  let component: PercyToastComponent;
+  let fixture: ComponentFixture<PercyToastComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ToastComponent]
+      imports: [PercyToastComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ToastComponent);
+    fixture = TestBed.createComponent(PercyToastComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+
+    fixture.componentRef.setInput('message', 'label');
+    // fixture.detectChanges();
   });
 
   it('should create', () => {

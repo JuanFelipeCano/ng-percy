@@ -13,7 +13,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateTime as Luxon } from 'luxon';
 import { KeyboardKeys } from '../../../constants';
-import { TrapFocusDirective } from '../../../directives';
+import { PercyTrapFocusDirective } from '../../../directives';
 import { randomId } from '../../../utils';
 import { PercyInputComponent } from '../../input/input.component';
 import { PercyDatePickerComponent } from '../date-picker/date-picker.component';
@@ -28,7 +28,7 @@ import { PickerShape } from '../types';
 @Component({
   selector: 'percy-date-picker-input',
   standalone: true,
-  imports: [ PercyDatePickerComponent, PercyInputComponent, TrapFocusDirective ],
+  imports: [ PercyDatePickerComponent, PercyInputComponent, PercyTrapFocusDirective ],
   templateUrl: './date-picker-input.component.html',
   styleUrl: './date-picker-input.component.scss',
   providers: [{

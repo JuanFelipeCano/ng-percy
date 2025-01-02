@@ -94,9 +94,6 @@ export class PercyCheckboxComponent implements AfterViewInit, ControlValueAccess
   }
 
   private setChecked(): void {
-    console.log(this.disabled());
-    if (this.disabled() || this.readonly()) return;
-
     this.checked.set(!this.checked());
     this.percyChange.emit(this.checked() as boolean);
   }

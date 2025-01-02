@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 
 @Injectable()
 export class ScreenSizeDetectionService {
-  private size = signal<DOMRect>(document.body.getBoundingClientRect());
+  private readonly size = signal<DOMRect>(document.body.getBoundingClientRect());
 
   constructor() {
     new ResizeObserver(() => {

@@ -74,6 +74,9 @@ export class PercyDialogScreenController {
 
     const componentInstance = this.dialogScreenRef.instance;
 
+    // TODO: this is a hack to set the input options
+    // this.dialogScreenRef.setInput('options', options);
+
     for (const key in options) {
       const typedKey = key as keyof PercyDialogScreenOptions<T>;
 

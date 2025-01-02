@@ -1,13 +1,13 @@
-import { TestBed } from '@angular/core/testing';
 
-import { FocusService } from './focus.service';
+import { PercyFocusService } from './focus.service';
 
-describe('FocusService', () => {
-  let service: FocusService;
+describe('PercyFocusService', () => {
+  let service: PercyFocusService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(FocusService);
+    // TestBed.configureTestingModule({});
+    // service = TestBed.inject(PercyFocusService);
+    service = new PercyFocusService();
   });
 
   it('should be created', () => {
