@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class FocusService {
+export class PercyFocusService {
 
   private lastFocusedElement!: HTMLElement | null;
 

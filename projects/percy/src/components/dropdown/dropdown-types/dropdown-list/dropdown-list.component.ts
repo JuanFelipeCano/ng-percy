@@ -12,7 +12,7 @@ import {
   Signal,
 } from '@angular/core';
 import { KeyboardKeys, ONE, TEN, ZERO } from '../../../../constants';
-import { FocusService, KeyboardExecutorService } from '../../../../services';
+import { PercyFocusService, PercyKeyboardExecutorService } from '../../../../services';
 import { PercyShapeBase } from '../../../../types';
 import { randomId, sleep } from '../../../../utils';
 import { PercyOptionItemComponent } from '../../../option-item/option-item.component';
@@ -25,7 +25,7 @@ type DropdownListShape = PercyShapeBase;
   selector: 'percy-dropdown-list',
   standalone: true,
   imports: [ CommonModule, PercyDropdownComponent, PercyOptionItemComponent ],
-  providers: [ FocusService, KeyboardExecutorService ],
+  providers: [ PercyFocusService, PercyKeyboardExecutorService ],
   templateUrl: './dropdown-list.component.html',
   styleUrl: './dropdown-list.component.scss',
   host: {
@@ -64,8 +64,8 @@ export class PercyDropdownListComponent implements OnInit {
   protected focusedOption!: PercyDropdownListOption | undefined;
   protected lastSelectedOption!: PercyDropdownListOption | undefined;
 
-  private readonly _focusService = inject(FocusService);
-  private readonly _keyboardExecutor = inject(KeyboardExecutorService);
+  private readonly _focusService = inject(PercyFocusService);
+  private readonly _keyboardExecutor = inject(PercyKeyboardExecutorService);
 
   constructor() {
     this.isOpen = false;

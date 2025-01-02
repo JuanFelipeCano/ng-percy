@@ -17,13 +17,13 @@ import {
   TWO,
   ZERO,
 } from '../../../constants';
-import { KeyboardExecutorService } from '../../../services';
+import { PercyKeyboardExecutorService } from '../../../services';
 import { PercyDatePickerComponent } from './date-picker.component';
 
 @Directive({
   selector: '[percyA11yMonths]',
   standalone: true,
-  providers: [ KeyboardExecutorService ],
+  providers: [ PercyKeyboardExecutorService ],
 })
 export class PercyA11yMonthsDirective implements AfterViewChecked {
 
@@ -35,7 +35,7 @@ export class PercyA11yMonthsDirective implements AfterViewChecked {
   @Host()
   private readonly _datePicker = inject(PercyDatePickerComponent);
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
-  private readonly _keyboardExecutor = inject(KeyboardExecutorService);
+  private readonly _keyboardExecutor = inject(PercyKeyboardExecutorService);
 
   public ngAfterViewChecked(): void {
     this.setTabIndex();

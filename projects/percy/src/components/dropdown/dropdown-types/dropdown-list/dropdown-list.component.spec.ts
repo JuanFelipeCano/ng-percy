@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PercyDropdownListComponent } from './dropdown-list.component';
-import { FocusService, KeyboardExecutorService } from '../../../../services';
+import { PercyFocusService, PercyKeyboardExecutorService } from '../../../../services';
 
-const MockFocusService = {
+const MockPercyFocusService = {
   setLastFocusedElement: jest.fn(),
   setFocusToLastFocusedElement: jest.fn(),
 };
 
-const MockKeyboardExecutorService = {
+const MockPercyKeyboardExecutorService = {
   execute: jest.fn(),
 };
 
@@ -21,8 +21,8 @@ describe('PercyDropdownListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ PercyDropdownListComponent ],
       providers: [
-        { provide: FocusService, useValue: MockFocusService },
-        { provide: KeyboardExecutorService, useValue: MockKeyboardExecutorService },
+        { provide: PercyFocusService, useValue: MockPercyFocusService },
+        { provide: PercyKeyboardExecutorService, useValue: MockPercyKeyboardExecutorService },
       ]
     })
     .compileComponents();

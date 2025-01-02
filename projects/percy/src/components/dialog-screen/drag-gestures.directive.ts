@@ -3,9 +3,8 @@ import {
   ElementRef,
   Host,
   HostListener,
-  inject,
   OnDestroy,
-  Renderer2,
+  Renderer2
 } from '@angular/core';
 import { ZERO } from '../../constants';
 import { PercyDialogScreenComponent } from './dialog-screen.component';
@@ -21,12 +20,12 @@ export class PercyDragGesturesDirective implements OnDestroy {
   private currentTranslateY!: number;
   private isDragging!: boolean;
 
-  @Host()
-  private readonly _dialogScreen = inject(PercyDialogScreenComponent);
-  private readonly _elementRef = inject(ElementRef<HTMLElement>);
-  private readonly _renderer = inject(Renderer2);
-
-  constructor() {
+  constructor(
+    @Host()
+    private readonly _dialogScreen: PercyDialogScreenComponent<unknown>,
+    private readonly _elementRef: ElementRef<HTMLElement>,
+    private readonly _renderer: Renderer2,
+  ) {
     this.currentTranslateY = 0;
     this.isDragging = false;
   }

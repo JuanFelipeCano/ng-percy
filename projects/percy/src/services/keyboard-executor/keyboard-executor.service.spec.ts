@@ -1,13 +1,13 @@
-import { TestBed } from '@angular/core/testing';
 
-import { KeyboardExecutorService } from './keyboard-executor.service';
+import { PercyKeyboardExecutorService } from './keyboard-executor.service';
 
-describe('KeyboardExecutorService', () => {
-  let service: KeyboardExecutorService;
+describe('PercyKeyboardExecutorService', () => {
+  let service: PercyKeyboardExecutorService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(KeyboardExecutorService);
+    // TestBed.configureTestingModule({});
+    // service = TestBed.inject(PercyKeyboardExecutorService);
+    service = new PercyKeyboardExecutorService();
   });
 
   it('should be created', () => {

@@ -1,19 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputComponent } from './input.component';
+import { PercyInputComponent } from './input.component';
 
-describe('InputComponent', () => {
-  let component: InputComponent;
-  let fixture: ComponentFixture<InputComponent>;
+describe('PercyInputComponent', () => {
+  let component: PercyInputComponent;
+  let fixture: ComponentFixture<PercyInputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InputComponent]
+      imports: [PercyInputComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InputComponent);
+    fixture = TestBed.createComponent(PercyInputComponent);
     component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('label', '');
     fixture.detectChanges();
   });
 
