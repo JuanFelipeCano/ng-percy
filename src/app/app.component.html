@@ -3,7 +3,48 @@
     <h1>Angular Components</h1>
   </header>
 
-  <percy-toggle label="Toggle" show-label></percy-toggle>
+  <percy-toggle label="Toggle" show-label />
+  <percy-button label="Open modal" (click)="openModal()" icon="calendar-outline" />
+  <percy-button label="Show toast" (click)="showToast()" />
+
+  <percy-checkbox label="Checkbox" />
+
+  <percy-toast message="Toast Message" description="This is a toast description" type="success" />
+
+  <br>
+  <percy-dropdown [is-open]="dropdownOpen" a11y-tabindex="-1">
+    <ng-container dropdown-header>
+      <percy-button class="btn-p" label="Open Dropdown" expand="full" fill="ghosted" (click)="showDropdown()" />
+    </ng-container>
+
+    <ng-container dropdown-content>
+      Juan Felipe
+      <br><br><br><br><br><br><br><br><br>
+      Betancur Cano
+    </ng-container>
+  </percy-dropdown>
+
+  <percy-dropdown-list
+    [options]="options"
+    label="Options"
+    a11y-not-selected-text="Not selected"
+    a11y-of-text="of"
+    a11y-selected-text="Selected"
+    a11y-badge-aria-label="Options selected."
+    a11y-clear-button-aria-label="Clear all options"
+    multiple="false"
+  />
+  <br>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates aperiam rem fuga doloribus, repellat adipisci accusamus modi beatae quia placeat id perferendis tenetur eos ab minima suscipit delectus eligendi incidunt!</p>
+  <br><br><br><br><br><br><br><br>
+
+  <select name="" id="">
+    <option value="">Select</option>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
+  </select>
+
 </div>
 
 <router-outlet />

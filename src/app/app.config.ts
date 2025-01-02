@@ -3,14 +3,15 @@ import { provideRouter } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
-import { withPercy } from 'percy';
+import { providePercy } from 'percy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     importProvidersFrom(BrowserAnimationsModule),
-    withPercy(),
+    providePercy({
+      theme: 'dark',
+    }),
   ],
 };
-
