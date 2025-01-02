@@ -1,0 +1,22 @@
+
+<div class="container">
+  <percy-input label="Example Input" />
+  <percy-toggle label="Example Toggle" show-label />
+  <percy-button label="Toggle" size="medium" expand="full" (percyClick)="toggleChange()" />
+
+  @if (showFields) {
+    <percy-toggle label="Example Toggle 2" />
+    <percy-input label="Example Input 2" />
+
+    <percy-date-picker
+      label="Example Date Picker Input"
+      [prev-month-aria-label]="'Previous month'"
+      [next-month-aria-label]="'Next month'"
+      [display-months-aria-label]="'Display months'"
+      [prev-year-aria-label]="'Previous year'"
+      [next-year-aria-label]="'Next year'"
+      [hide-months-aria-label]="'Hide months'"
+    />
+  }
+
+</div>
