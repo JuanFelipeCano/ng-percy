@@ -40,6 +40,7 @@ jobs:
       - name: Jest Code Coverage Report
         uses: ziishaned/jest-reporter-action@0.1.1
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           test-command: "npm run test:coverage --watch=false --browsers=ChromeHeadless"
 
       # 6. Build library
