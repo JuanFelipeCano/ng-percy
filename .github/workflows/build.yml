@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build
 
 on:
   push:
@@ -6,6 +6,9 @@ on:
       - main
       - release/*
   pull_request:
+    types:
+      - opened
+      - synchronize
   workflow_dispatch:
 
 jobs:
@@ -34,6 +37,11 @@ jobs:
       # 5. Run unit tests
       - name: Run unit tests
         run: npm run test:coverage --watch=false --browsers=ChromeHeadless
+      # - name: Jest Code Coverage Report
+      #   uses: ziishaned/jest-reporter-action@0.1.1
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     test-command: "npm run test:coverage --watch=false --browsers=ChromeHeadless"
 
       # 6. Build library
       - name: Build project
@@ -41,8 +49,8 @@ jobs:
 
       # 7. Upload build artifacts
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4.5.0
+        uses: actions/upload-artifact@v4
         with:
           name: build
-          path: dist/
-          
+          # name: build-${{ github.event.pull_request.number }}
+          path: dist/percy
