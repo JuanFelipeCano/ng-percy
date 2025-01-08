@@ -1,14 +1,6 @@
 # PercyButtonComponent
 
-A customizable and reusable button component with support for different styles, sizes, shapes, and events.
-
-## Installation
-
-Ensure your Angular project is configured to support standalone components.
-
-```bash
-npm install your-package-name
-```
+A reusable and customizable button component that supports various sizes, shapes, icon placements, and fill styles.
 
 ## Usage
 
@@ -17,23 +9,19 @@ npm install your-package-name
 Import the component into your module or directly in a template if using standalone components:
 
 ```typescript
-import { PercyButtonComponent } from 'path-to-package';
+import { PercyButtonComponent } from 'percy';
 ```
 
 ### Basic Example
 
 ```html
 <percy-button 
-  label="Submit"
-  type="submit"
-  disabled
-  icon="icon-name"
-  icon-position="left"
-  size="medium"
-  shape="round"
-  fill="filled"
-  expand="block"
-  (percyClick)="onButtonClick($event)">
+  label="Submit" 
+  [disabled]="false" 
+  [size]="'medium'" 
+  [icon]="'save'" 
+  [icon-position]="'left'" 
+  (percyClick)="onButtonClick()">
 </percy-button>
 ```
 
@@ -41,73 +29,85 @@ import { PercyButtonComponent } from 'path-to-package';
 
 ### Inputs
 
-| Name            | Type                               | Default       | Description                                                            |
-|------------------|------------------------------------|---------------|------------------------------------------------------------------------|
-| `label`         | `string`                          | **Required**  | The visible text on the button.                                        |
-| `type`          | `'button' | 'submit' | 'reset'`  | `'button'`   | The button type, following the HTML specification.                    |
-| `disabled`      | `boolean`                         | `false`       | Disables the button, making it non-interactive.                       |
-| `icon`          | `string | null`                   | `null`        | The name of the icon to display inside the button.                    |
-| `iconPosition`  | `'left' | 'right'`                | `'right'`     | The position of the icon relative to the text.                        |
-| `onlyIcon`      | `boolean`                         | `false`       | Indicates if the button should display only the icon, without text.   |
-| `size`          | `'small' | 'medium' | 'large'`   | `'medium'`    | The size of the button.                                               |
-| `shape`         | `'round' | 'square' | 'circle'`  | `'round'`     | The shape of the button.                                              |
-| `fill`          | `'filled' | 'ghosted' | 'cleaned' | 'linked'` | `'filled'`   | The visual style of the button.                                       |
-| `expand`        | `'block' | 'full'`                | `'block'`     | The horizontal expansion of the button.                               |
+| Name            | Type                             | Default           | Description                                                             |
+|-----------------|----------------------------------|-------------------|-------------------------------------------------------------------------|
+| `label`         | `string`                         | **Required**      | The label text for the button.                                          |
+| `type`          | `'button'` \| `'submit'` \| `'reset'` | `'button'`      | Specifies the button's behavior (e.g., form submission or reset).       |
+| `disabled`      | `boolean`                        | `false`           | Disables the button, making it non-interactive.                         |
+| `icon`          | `string \| null`                 | `null`            | The icon to be displayed on the button.                                 |
+| `icon-position`  | `'left'` \| `'right'`            | `'right'`         | Specifies the position of the icon (left or right).                    |
+| `only-icon`      | `boolean`                        | `false`           | If true, the button will only display the icon and no text.             |
+| `size`          | `'small'` \| `'medium'` \| `'large'` | `'medium'`      | The size of the button.                                                 |
+| `shape`         | `'round'` \| `'square'` \| `'circle'` | `'round'`      | The shape of the button.                                                |
+| `fill`          | `'filled'` \| `'ghosted'` \| `'cleaned'` \| `'linked'` | `'filled'` | The fill style of the button.                                           |
+| `expand`        | `'block'` \| `'full'`            | `'block'`         | Specifies the expansion style of the button (block or full width).      |
 
 ### Outputs
 
-| Name           | Type              | Description                                                           |
-|-----------------|-------------------|-----------------------------------------------------------------------|
-| `percyClick`   | `MouseEvent`      | Emits an event when the button is clicked.                           |
-| `percyFocus`   | `FocusEvent`      | Emits an event when the button gains focus.                          |
-| `percyBlur`    | `FocusEvent`      | Emits an event when the button loses focus.                          |
+| Name            | Type             | Description                                                             |
+|-----------------|------------------|-------------------------------------------------------------------------|
+| `percyClick`    | `MouseEvent`     | Emits an event when the button is clicked.                              |
+| `percyFocus`    | `FocusEvent`     | Emits an event when the button gains focus.                             |
+| `percyBlur`     | `FocusEvent`     | Emits an event when the button loses focus.                             |
 
-## CSS Styles
+### Host Bindings
 
-The following CSS classes are available for further customization:
+The `host` property in the component defines dynamic CSS class bindings based on the `shape`, `size`, `icon-position`, `fill`, and `expand` inputs.
 
-| Class                    | Description                                                   |
-|--------------------------|---------------------------------------------------------------|
-| `percy-button_filled`    | Applies the "filled" style.                                    |
-| `percy-button_ghosted`   | Applies the "ghosted" style.                                   |
-| `percy-button_cleaned`   | Applies the "cleaned" style.                                   |
-| `percy-button_linked`    | Applies the "linked" style.                                    |
-| `percy-button_small`     | Sets the button size to small.                                 |
-| `percy-button_medium`    | Sets the button size to medium.                                |
-| `percy-button_large`     | Sets the button size to large.                                 |
-| `percy-button_icon-left` | Positions the icon to the left of the text.                    |
-| `percy-button_icon-right`| Positions the icon to the right of the text.                   |
-| `percy-button_round`     | Sets the button shape to round.                                |
-| `percy-button_square`    | Sets the button shape to square.                               |
-| `percy-button_circle`    | Sets the button shape to circle.                               |
-| `percy-button_block`     | Sets the button to occupy its container’s width (`block`).     |
-| `percy-button_full`      | Sets the button to expand fully (`full`).                      |
+| Class                     | Condition                                    | Description                                    |
+|---------------------------|---------------------------------------------|------------------------------------------------|
+| `percy-button`            | Always applied                             | Base class for the button.                     |
+| `percy-button_filled`     | `fill = "filled"`                           | Applied when the button has a filled style.    |
+| `percy-button_ghosted`    | `fill = "ghosted"`                          | Applied when the button has a ghosted style.   |
+| `percy-button_linked`     | `fill = "linked"`                           | Applied when the button has a linked style.    |
+| `percy-button_cleaned`    | `fill = "cleaned"`                          | Applied when the button has a cleaned style.   |
+| `percy-button_small`      | `size = "small"`                            | Applied when the button is small.              |
+| `percy-button_medium`     | `size = "medium"`                           | Applied when the button is medium.             |
+| `percy-button_large`      | `size = "large"`                            | Applied when the button is large.              |
+| `percy-button_icon-left`  | `icon-position = "left"`                     | Applied when the icon is positioned left.      |
+| `percy-button_icon-right` | `icon-position = "right"`                    | Applied when the icon is positioned right.     |
+| `percy-button_round`      | `shape = "round"`                           | Applied when the button is round.              |
+| `percy-button_square`     | `shape = "square"`                          | Applied when the button is square.             |
+| `percy-button_circle`     | `shape = "circle"`                          | Applied when the button is circular.           |
+| `percy-button_full`       | `expand = "full"`                           | Applied when the button expands fully.         |
+| `percy-button_block`      | `expand = "block"`                          | Applied when the button expands in block style. |
 
-## Advanced Examples
-
-### Icon-only Button
+### Example with Icon and Position
 
 ```html
 <percy-button 
-  [icon]="'check-icon'" 
-  [only-icon]="true" 
-  [size]="'small'" 
-  [shape]="'circle'" 
-  [fill]="'ghosted'">
+  label="Save" 
+  [icon]="'save'" 
+  [icon-position]="'left'" 
+  [size]="'large'" 
+  [fill]="'filled'" 
+  (percyClick)="onSaveClick()">
 </percy-button>
 ```
 
-### Full-width Button
+### Example with Only Icon
 
 ```html
 <percy-button 
-  label="Full Width" 
+  [icon]="'edit'" 
+  [only-icon]="true" 
+  [size]="'medium'" 
+  (percyClick)="onEditClick()">
+</percy-button>
+```
+
+### Example with Full-width Button
+
+```html
+<percy-button 
+  label="Submit" 
   [expand]="'full'" 
-  [fill]="'linked'">
+  (percyClick)="onSubmitClick()">
 </percy-button>
 ```
 
 ## Notes
 
-- The component uses `ChangeDetectionStrategy.OnPush` for optimal performance.
-- Custom events (`percyClick`, `percyFocus`, `percyBlur`) are emitted for more granular control in your application.
+- The component supports different fill styles (`filled`, `ghosted`, `cleaned`, `linked`) for a variety of button appearances.
+- The `expand` property allows for full-width or block-level buttons, providing flexibility in layout.
+- The component is designed with accessibility in mind, allowing for easy icon placement and button shape customization.

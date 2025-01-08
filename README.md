@@ -2,26 +2,43 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.7.
 
-## Development server
+# Percy Documentation
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Overview
 
-## Code scaffolding
+Percy is an UI component library designed to provide a set of highly customizable and reusable components that can be easily integrated into Angular applications. It offers a wide variety of components and utilities to improve the development of interactive and accessible user interfaces, with a focus on performance, flexibility, and usability.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Key Features:
+- **Modular and Scalable:** Percy allows you to import only the components you need, making it ideal for both small and large-scale applications.
+- **Accessibility:** Designed with accessibility in mind, Percy components come with built-in ARIA attributes and keyboard navigation support to ensure that your application is usable by all users.
+- **Customizable:** Each component in Percy can be easily styled and configured through input properties, allowing you to adapt it to fit your design requirements.
+- **Focus Management:** Percy includes powerful directives and services for handling focus management and screen size detection, enabling more efficient navigation and interactions.
+- **Support for Angular Signals:** Percy utilizes Angular signals, offering reactive UI updates for a smoother experience without the need for complex state management.
 
-## Build
+## Components Included:
+- **Buttons, Toggles, and Switches**: Interactive UI elements for form controls and state toggling.
+- **Modals and Toasts**: Components for displaying temporary alerts and modal dialogs.
+- **Dropdowns, Lists, and Selects**: UI elements for selecting options and organizing content.
+- **Form Inputs**: Input fields, textareas, and other form-related components.
+- **Focus Management**: Tools for trapping and managing focus within modal dialogs and interactive content areas.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Ideal Use Cases:
+- **Building Accessible UIs**: Percy’s built-in support for accessibility makes it a perfect choice for applications targeting a broad audience.
+- **Responsive Design**: With its screen size detection and focus management utilities, Percy helps create dynamic UIs that adapt to different screen sizes and ensure smooth interactions.
+- **Reusable Components**: Whether building a new app or integrating into an existing Angular project, Percy provides a consistent and flexible set of components that can be reused across various parts of the application.
 
-## Running unit tests
+By leveraging Percy, developers can speed up the development process, ensure accessibility, and create more maintainable, responsive applications.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Table of Contents
+- [Installation](#installation)
+- [Setup](#setup)
+- [Components](./components/README.md)
+- [Services](./services/README.md)
+- [Directives](./directives/README.md)
+- [Usage](#usage)
+- [Configuration](#configuration)
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Installation
+```bash
+npm install percy
+```
