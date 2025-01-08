@@ -2,7 +2,7 @@ name: Release
 
 on:
   workflow_run:
-    workflows: ["Build"]
+    workflows: [Build]
     types:
       - completed
 
@@ -10,7 +10,7 @@ on:
     inputs:
       build_run_id:
         description: "ID Build Workflow"
-        required: false
+        required: true
         default: ""
 
 jobs:
