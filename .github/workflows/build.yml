@@ -23,7 +23,7 @@ jobs:
           node-version: 20
 
       # 3. Install Angular Cli
-      - name: Install dependencies
+      - name: Install Angular Cli
         run: npm install -g @angular/cli
 
       # 4. Install dependencies
