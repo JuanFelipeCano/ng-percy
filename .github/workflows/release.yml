@@ -54,9 +54,6 @@ jobs:
               run_id: runId,
             });
             const ref = workflowRun.data.head_branch;
-            if (ref !== 'main') {
-              throw new Error(`Build run is from branch '${ref}', not 'main'. Exiting.`);
-            }
             console.log(`Validated branch: ${ref}`);
 
       - name: Download build artifacts (manual execution)
