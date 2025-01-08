@@ -9,7 +9,15 @@ on:
 
 jobs:
   release:
-    if: ${{ github.event.pull_request.merged == true && contains(['main', 'release'], github.event.pull_request.base.ref) || github.event_name == 'workflow_dispatch' }}
+    if:
+      ${{
+        github.event.pull_request.merged == true &&
+        (
+          github.event.pull_request.base.ref == 'main' ||
+          github.event.pull_request.base.ref == 'release'
+        ) ||
+        github.event_name == 'workflow_dispatch'
+      }}
     runs-on: ubuntu-latest
 
     steps:
