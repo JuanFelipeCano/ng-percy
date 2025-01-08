@@ -1,7 +1,7 @@
 import { AfterViewChecked, Directive, ElementRef, Host, HostListener, inject, input } from '@angular/core';
 import { DateTime as Luxon } from 'luxon';
 import { ACTIVE_TAB_INDEX, INACTIVE_TAB_INDEX, KeyboardKeys, ONE, SEVEN, SIX, TAB_INDEX, ZERO } from '../../../constants';
-import { KeyboardExecutorService } from '../../../services';
+import { PercyKeyboardExecutorService } from '../../../services';
 import { PercyCalendarDay } from '../models';
 import { PercyDatePickerComponent } from './date-picker.component';
 
@@ -11,7 +11,7 @@ const ONE_WEEK = SEVEN;
 @Directive({
   selector: '[percyA11yCalendar]',
   standalone: true,
-  providers: [ KeyboardExecutorService ],
+  providers: [ PercyKeyboardExecutorService ],
 })
 export class PercyA11yCalendarDirective implements AfterViewChecked {
 
@@ -20,7 +20,7 @@ export class PercyA11yCalendarDirective implements AfterViewChecked {
   @Host()
   private readonly _datePicker = inject(PercyDatePickerComponent);
   private readonly _elementRef = inject(ElementRef<HTMLElement>);
-  private readonly _keyboardExecutor = inject(KeyboardExecutorService);
+  private readonly _keyboardExecutor = inject(PercyKeyboardExecutorService);
 
   public ngAfterViewChecked(): void {
     this.setTabIndex();

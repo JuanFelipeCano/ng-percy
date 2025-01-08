@@ -1,19 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DatePickerInputComponent } from './date-picker-input.component';
+import { PercyDatePickerInputComponent } from './date-picker-input.component';
 
-describe('DatePickerInputComponent', () => {
-  let component: DatePickerInputComponent;
-  let fixture: ComponentFixture<DatePickerInputComponent>;
+describe('PercyDatePickerInputComponent', () => {
+  let component: PercyDatePickerInputComponent;
+  let fixture: ComponentFixture<PercyDatePickerInputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DatePickerInputComponent]
+      imports: [PercyDatePickerInputComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DatePickerInputComponent);
+    fixture = TestBed.createComponent(PercyDatePickerInputComponent);
     component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('label', '');
     fixture.detectChanges();
   });
 

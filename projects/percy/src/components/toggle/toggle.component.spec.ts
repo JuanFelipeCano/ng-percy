@@ -1,19 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToggleComponent } from './toggle.component';
+import { PercyToggleComponent } from './toggle.component';
 
-describe('ToggleComponent', () => {
-  let component: ToggleComponent;
-  let fixture: ComponentFixture<ToggleComponent>;
+describe('PercyToggleComponent', () => {
+  let component: PercyToggleComponent;
+  let fixture: ComponentFixture<PercyToggleComponent>;
+
+  const expectedLabel = 'Click me';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ToggleComponent]
+      imports: [PercyToggleComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ToggleComponent);
+    fixture = TestBed.createComponent(PercyToggleComponent);
     component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('label', expectedLabel);
     fixture.detectChanges();
   });
 
