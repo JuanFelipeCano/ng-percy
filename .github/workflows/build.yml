@@ -35,14 +35,21 @@ jobs:
         run: npm install
 
       # 5. Run unit tests
-      # - name: Run unit tests
-      #   run: npm run test:coverage --watch=false --browsers=ChromeHeadless
+      - name: Run unit tests
+        run: npm run test:coverage --watch=false --browsers=ChromeHeadless
+
+      # Upload build artifacts
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/lcov-report
 
       # 6. Build library
       - name: Build project
         run: ng build percy
 
-      # 7. Upload build artifacts
+      # Upload build artifacts
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
