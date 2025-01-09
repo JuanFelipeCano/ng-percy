@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download artifacts
+        run: echo "BUILD_RUN_ID=${{ inputs.build_run_id }}" >> $GITHUB_ENV
+
       - name: Download build artifacts (manual execution)
         if: ${{ github.event_name == 'workflow_dispatch' }}
         uses: actions/download-artifact@v4
@@ -25,7 +28,7 @@ jobs:
           name: build
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
-          run_id: ${{ github.event.inputs.build_run_id }}
+          run_id: ${{ inputs.build_run_id }}
           path: percy
 
       - name: List downloaded files
