@@ -2,7 +2,7 @@ name: Release
 
 on:
   workflow_run:
-    workflows: ["Build"]
+    workflows: [Build]
     types:
       - completed
 
@@ -10,7 +10,7 @@ on:
     inputs:
       build_run_id:
         description: "ID Build Workflow"
-        required: false
+        required: true
         default: ""
 
 jobs:
@@ -18,51 +18,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Validar la rama (solo para ejecución automática)
-      - name: Validate branch (automatic execution)
+      - name: Show workflow_run
         if: ${{ github.event_name == 'workflow_run' }}
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const ref = github.event.workflow_run.head_branch;
-            if (ref !== 'main') {
-              throw new Error(`Build run is from branch '${ref}', not 'main'. Exiting.`);
-            }
-            console.log(`Validated branch: ${ref}`);
+        run: echo "BRANCH=${{ github.event.workflow_run.head_branch }}" >> $GITHUB_ENV
+      - name: Show workflow_run2
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: echo "BRANCH=${{ github.event.repository.default_branch }}" >> $GITHUB_ENV
 
-      # 2. Descargar artefacto automáticamente (solo para ejecución automática)
       - name: Download artifacts (from automatic execution)
         if: ${{ github.event_name == 'workflow_run' }}
         uses: actions/download-artifact@v4
         with:
           name: build
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          path: percy
 
-      # 3. Descargar artefacto manualmente al especificar un run_id
-      - name: Set run_id for manual execution
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.build_run_id != '' }}
-        run: echo "BUILD_RUN_ID=${{ github.event.inputs.build_run_id }}" >> $GITHUB_ENV
+      - name: Show Run number
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: echo "BUILD_RUN_ID=${{ inputs.build_run_id }}" >> $GITHUB_ENV
 
-      - name: Fetch artifacts from specific Build run
-        if: ${{ github.event_name == 'workflow_dispatch' && env.BUILD_RUN_ID != '' }}
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const runId = process.env.BUILD_RUN_ID;
-            const workflowRun = await github.actions.getWorkflowRun({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: runId,
-            });
-            const ref = workflowRun.data.head_branch;
-
-      - name: Download build artifacts (manual execution)
-        if: ${{ github.event_name == 'workflow_dispatch' && env.BUILD_RUN_ID != '' }}
-        uses: actions/download-artifact@v4
+      - name: Download build artifacts
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: dawidd6/action-download-artifact@v7
         with:
           name: build
+          path: percy
+          workflow: build.yml
+          github_token: ${{ github.token }}
+          repo: ${{ github.repository }}
+          run_number: ${{ inputs.build_run_id }}
+
+      # - name: Download build artifacts (manual execution)
+      #   if: ${{ github.event_name == 'workflow_dispatch' }}
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build
+      #     github-token: ${{ github.token }}
+      #     repository: ${{ github.repository }}
+      #     run-id: ${{ inputs.build_run_id }}
+      #     path: percy
 
       - name: List downloaded files
-        run: ls -l dist/percy
+        run: ls -l percy
 
     # steps:
     #   # 1. Download build artifacts
