@@ -37,14 +37,22 @@ jobs:
       - name: List downloaded files
         run: ls -l coverage-reports/${{ github.event.workflow_run.id }}
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy coverage
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: coverage-reports
+          github_token: ${{ github.token }}
+          keep_files: true
+          publish_dir: coverage-reports
+          destination_dir: ${{ github.event.workflow_run.id }}
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v5
+
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: coverage-reports
+
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
