@@ -18,7 +18,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download artifacts
+      # 1. Validar la rama (solo para ejecución automática)
+      - name: Validate branch (automatic execution)
+        if: ${{ github.event_name == 'workflow_run' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const ref = github.event.workflow_run.head_branch;
+            if (ref !== 'update-workflows') {
+              throw new Error(`Build run is from branch '${ref}', not 'update-workflows'. Exiting.`);
+            }
+            console.log(`Validated branch: ${ref}`);
+
+      - name: Download artifacts (from automatic execution)
+        if: ${{ github.event_name == 'workflow_run' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          path: percy
+
+      - name: Show build run id
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: echo "BUILD_RUN_ID=${{ inputs.build_run_id }}" >> $GITHUB_ENV
 
       - name: Download build artifacts (manual execution)
