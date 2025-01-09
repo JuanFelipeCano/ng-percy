@@ -18,21 +18,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Show workflow_run
-        if: ${{ github.event_name == 'workflow_run' }}
-        run: echo "BRANCH=${{ github.event.workflow_run.head_branch }}" >> $GITHUB_ENV
       - name: Show workflow_run2
         if: ${{ github.event_name == 'workflow_run' }}
-        run: echo "BRANCH=${{ github.event.repository.default_branch }}" >> $GITHUB_ENV
+        run: echo "BRANCH=${{ github.event.workflow_run.id }}" >> $GITHUB_ENV
 
       - name: Download artifacts (from automatic execution)
-        if: ${{ github.event_name == 'workflow_run' }}
+        if: ${{
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.head_branch == github.event.repository.default_branch
+          }}
         uses: actions/download-artifact@v4
         with:
           name: build
+          path: percy
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
-          path: percy
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Show Run number
         if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -48,16 +50,6 @@ jobs:
           github_token: ${{ github.token }}
           repo: ${{ github.repository }}
           run_number: ${{ inputs.build_run_id }}
-
-      # - name: Download build artifacts (manual execution)
-      #   if: ${{ github.event_name == 'workflow_dispatch' }}
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: build
-      #     github-token: ${{ github.token }}
-      #     repository: ${{ github.repository }}
-      #     run-id: ${{ inputs.build_run_id }}
-      #     path: percy
 
       - name: List downloaded files
         run: ls -l percy
