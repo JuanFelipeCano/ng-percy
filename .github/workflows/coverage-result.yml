@@ -29,13 +29,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: coverage
-          path: coverage-report
+          path: coverage-reports/${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
           run-id: ${{ github.event.workflow_run.id }}
 
       - name: List downloaded files
-        run: ls -l coverage-report
+        run: ls -l coverage-reports/${{ github.event.workflow_run.id }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -43,7 +43,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: coverage-report
+          path: coverage-reports
 
       - name: Deploy to GitHub Pages
         id: deployment
