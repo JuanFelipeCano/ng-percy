@@ -49,6 +49,10 @@ jobs:
           publish_dir: coverage-reports
           # destination_dir: ${{ github.event.workflow_run.id }}
 
+      - name: Coverage url
+        run: |
+          echo "Coverage url: https://juanfelipecano.github.io/ng-percy/${{ github.event.workflow_run.id }}"
+
       # - name: Setup Pages
       #   uses: actions/configure-pages@v5
 
