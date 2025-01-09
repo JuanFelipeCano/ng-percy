@@ -28,7 +28,7 @@ jobs:
           name: build
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
-          run_id: ${{ inputs.build_run_id }}
+          run-id: ${{ inputs.build_run_id }}
           path: percy
 
       - name: List downloaded files
